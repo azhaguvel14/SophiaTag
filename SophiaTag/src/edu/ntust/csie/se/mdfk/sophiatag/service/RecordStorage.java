@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @generated
  */
 
-public class DataStorage {
+public class RecordStorage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -33,7 +33,7 @@ public class DataStorage {
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
-	public DataStorage() {
+	public RecordStorage() {
 		file = new File(FILE_PATH);
 	}
 
@@ -44,7 +44,7 @@ public class DataStorage {
 	 * @ordered
 	 */
 	
-	public void saveData(NecessaryData data) {
+	public void saveData(NecessaryRecord data) {
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -75,16 +75,16 @@ public class DataStorage {
 	 * @ordered
 	 */
 	
-	public NecessaryData loadData() {
+	public NecessaryRecord loadData() {
 		if (!file.exists()) {
 			return null;
 		}
 		
-		NecessaryData data = null;
+		NecessaryRecord data = null;
 		
 		try {
 			ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
-			data = (NecessaryData) inStream.readObject();
+			data = (NecessaryRecord) inStream.readObject();
 			inStream.close();
 			
 		} catch (FileNotFoundException e) {
@@ -101,12 +101,12 @@ public class DataStorage {
 		return data;
 	}
 	
-	public static class NecessaryData implements Serializable{
+	public static class NecessaryRecord implements Serializable{
 		private final String rootDirectory;
 		private final MaterialPool pool;
 		private final MaterialSearcher searcher;
 		
-		public NecessaryData(String rootDirectory, MaterialPool pool, MaterialSearcher searcher) {
+		public NecessaryRecord(String rootDirectory, MaterialPool pool, MaterialSearcher searcher) {
 			this.rootDirectory = rootDirectory;
 			this.pool = pool;
 			this.searcher = searcher;

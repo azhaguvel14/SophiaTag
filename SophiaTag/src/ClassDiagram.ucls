@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.7" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="true" nesting-relationships="true">  
-  <class id="1" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.DataStorage.NecessaryData" 
-    project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/DataStorage.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1451" y="1869"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher" project="SophiaTag" 
+  <class id="1" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/MaterialSearcher.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1032" y="1853"/>    
@@ -21,7 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Material" project="SophiaTag" 
+  <class id="2" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Material" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/Material.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1826" y="3199"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -30,16 +20,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.DataStorage" project="SophiaTag" 
-    file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/DataStorage.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1452" y="1650"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Tag" project="SophiaTag" 
+  <class id="3" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Tag" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/Tag.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1145" y="3196"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -48,7 +29,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="6" language="java" 
+  <interface id="4" language="java" 
     name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialDiscardedListener" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1802" y="2197"/>    
@@ -58,7 +39,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="7" language="java" 
+  <interface id="5" language="java" 
     name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.AttachmentModifiedListener" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1461" y="2013"/>    
@@ -68,7 +49,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="8" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.EventDispatcher" 
+  <class id="6" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.EventDispatcher" 
     project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1471" y="2976"/>    
@@ -78,7 +59,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.EventInvoker" 
+  <class id="7" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.EventInvoker" 
     project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1338" y="2759"/>    
@@ -88,7 +69,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialPool" project="SophiaTag" 
+  <class id="8" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialPool" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/MaterialPool.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1888" y="1873"/>    
@@ -98,7 +79,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Attachable" project="SophiaTag" 
+  <class id="9" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.Attachable" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/Attachable.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1476" y="3190"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -107,7 +88,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="12" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener" 
+  <interface id="10" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener" 
     project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1462" y="2209"/>    
@@ -117,7 +98,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="13" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner" project="SophiaTag" 
+  <class id="11" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/MaterialScanner.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1890" y="1605"/>    
@@ -127,7 +108,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger" project="SophiaTag" 
+  <class id="12" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger" project="SophiaTag" 
     file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1463" y="2472"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -136,7 +117,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="15" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.TagTextChangedListener" 
+  <interface id="13" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.TagTextChangedListener" 
     project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/data/MaterialTagger.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1192" y="2183"/>    
@@ -146,24 +127,44 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
+  <class id="14" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.RecordStorage" project="SophiaTag" 
+    file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/RecordStorage.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1445" y="1652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="edu.ntust.csie.se.mdfk.sophiatag.service.RecordStorage.NecessaryRecord" 
+    project="SophiaTag" file="/SophiaTag/src/edu/ntust/csie/se/mdfk/sophiatag/service/RecordStorage.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1455" y="1855"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <nesting id="16">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="12"/>  
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="10"/>  
   </nesting>  
   <dependency id="17">    
     <bendpoint x="1048" y="3328"/>    
     <bendpoint x="1661" y="3329"/>    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </dependency>  
   <dependency id="18">    
     <bendpoint x="1669" y="2328"/>    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="2"/>  
   </dependency>  
   <association id="19">    
     <bendpoint x="2009" y="2072"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
+    <end type="SOURCE" refId="8" navigable="false">      
       <attribute id="20" name="materials">        
         <position height="17" width="51" x="1863" y="3003"/>      
       </attribute>      
@@ -171,170 +172,170 @@
         <position height="15" width="21" x="1867" y="3021"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="22">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <association id="23">    
-    <bendpoint x="1632" y="2675"/>    
-    <bendpoint x="1677" y="2630"/>    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="24" name="instance"/>      
-      <multiplicity id="25" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="26">    
-    <bendpoint x="1208" y="2592"/>    
-    <bendpoint x="1232" y="2312"/>    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <generalization id="27">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <dependency id="28">    
-    <bendpoint x="1720" y="2695"/>    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="29">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="10"/>  
-  </dependency>  
-  <realization id="30">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="15"/>  
-  </realization>  
-  <association id="31">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="32" name="searcher"/>      
-      <multiplicity id="33" minimum="0" maximum="1"/>    
-    </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="34">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <nesting id="35">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="8"/>  
-  </nesting>  
-  <nesting id="36">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="9"/>  
-  </nesting>  
-  <association id="37">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="38" name="invokers"/>      
-      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="40">    
+  <generalization id="22">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="1"/>  
-  </nesting>  
-  <nesting id="41">    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <nesting id="23">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="15"/>  
   </nesting>  
-  <dependency id="42">    
-    <bendpoint x="1225" y="2689"/>    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="43">    
-    <bendpoint x="1709" y="2617"/>    
-    <bendpoint x="1701" y="2242"/>    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="7"/>  
-  </dependency>  
-  <association id="44">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="45" name="tagMap"/>      
-      <multiplicity id="46" minimum="0" maximum="2147483647"/>    
+  <association id="24">    
+    <bendpoint x="1632" y="2675"/>    
+    <bendpoint x="1677" y="2630"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="25" name="instance"/>      
+      <multiplicity id="26" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="47">    
-    <bendpoint x="1564" y="2249"/>    
-    <bendpoint x="1560" y="2148"/>    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="7"/>  
-  </nesting>  
-  <generalization id="48">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <dependency id="49">    
-    <bendpoint x="2086" y="1780"/>    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <generalization id="50">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <realization id="51">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <dependency id="52">    
-    <bendpoint x="1265" y="2333"/>    
-    <end type="SOURCE" refId="12"/>    
+  <dependency id="27">    
+    <bendpoint x="1208" y="2592"/>    
+    <bendpoint x="1232" y="2312"/>    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <dependency id="53">    
-    <end type="SOURCE" refId="8"/>    
+  <generalization id="28">    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <dependency id="29">    
+    <bendpoint x="1720" y="2695"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="2"/>  
   </dependency>  
-  <dependency id="54">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="8"/>  
   </dependency>  
-  <association id="55">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="56" name="eventDispatcher"/>      
-      <multiplicity id="57" minimum="0" maximum="1"/>    
+  <realization id="31">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="13"/>  
+  </realization>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <association id="33">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="34" name="searcher"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="36">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <nesting id="37">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <association id="38">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="39" name="invokers"/>      
+      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="41">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <association id="42">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="43" name="pool"/>      
+      <multiplicity id="44" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="58">    
-    <end type="SOURCE" refId="15"/>    
+  <dependency id="45">    
+    <bendpoint x="1225" y="2689"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="46">    
+    <bendpoint x="1709" y="2617"/>    
+    <bendpoint x="1701" y="2242"/>    
+    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <nesting id="59">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <realization id="60">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="6"/>  
-  </realization>  
-  <association id="61">    
+  <association id="47">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="62" name="pool"/>      
-      <multiplicity id="63" minimum="0" maximum="1"/>    
+      <attribute id="48" name="tagMap"/>      
+      <multiplicity id="49" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="5"/>  
+  </generalization>  
+  <nesting id="51">    
+    <bendpoint x="1564" y="2249"/>    
+    <bendpoint x="1560" y="2148"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <dependency id="52">    
+    <bendpoint x="2086" y="1780"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <generalization id="53">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <realization id="54">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
+  <dependency id="55">    
+    <bendpoint x="1265" y="2333"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="56">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="57">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="58">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="59" name="eventDispatcher"/>      
+      <multiplicity id="60" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="61">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <nesting id="62">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <realization id="63">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
   <dependency id="64">    
     <bendpoint x="1153" y="3350"/>    
     <bendpoint x="1782" y="3359"/>    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
   </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
