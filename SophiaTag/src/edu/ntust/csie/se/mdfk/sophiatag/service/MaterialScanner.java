@@ -110,16 +110,16 @@ public class MaterialScanner {
 	}
 	
 	public void updateMaterialPool(MaterialPool pool) {
-		Set<File> newFiles = new HashSet<File>(rawScan());
+		Set<File> newFiles = new HashSet<File>(this.rawScan());
 		Set<File> intersection = new HashSet<File>(newFiles); 
-		Map<File, Material> map = bindMaterialToFile(pool);
+		Map<File, Material> map = this.bindMaterialToFile(pool);
 		Set<File> lostFiles = map.keySet();
 		
 		intersection.retainAll(lostFiles);
 		newFiles.removeAll(intersection);
 		lostFiles.removeAll(intersection);
 		
-		setMaterialsToLost(map.values());
+		this.setMaterialsToLost(map.values());
 		pool.addMaterials(this.convertToMaterials(newFiles));
 	}
 	

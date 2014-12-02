@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner;
+import edu.ntust.csie.se.mdfk.sophiatag.user.IdentityAuthorizer;
 
 import java.awt.FlowLayout;
 import java.io.File;
@@ -36,17 +37,16 @@ public class MainWindow {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow window = new MainWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MainWindow window = new MainWindow();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
 	}
 
 	/**
