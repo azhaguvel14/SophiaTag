@@ -1,6 +1,4 @@
 package edu.ntust.csie.se.mdfk.sophiatag.user;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.MainUIBuilder.UILimitation;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.MainUIBuilder.UILimitation.EditableComponent;
 
 
 /**
@@ -31,8 +29,10 @@ public class Designer extends User {
 	 * @ordered
 	 */
 	
-	public UILimitation makeUIRequest() {
-		return new UILimitation(EditableComponent.ROOT_DIRECTORY, EditableComponent.MATERIAL_PROFILE, EditableComponent.MATERIAL_TABLE);	
+	public FuntionalLimitation makeUIRequest() {
+		return new FuntionalLimitation(FuntionalLimitation.LimitableFunction.CHANGE_ROOT_DIRECTORY,
+									   FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL,
+									   FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE);	
 	}
 	
 }

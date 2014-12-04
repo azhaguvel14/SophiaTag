@@ -1,5 +1,4 @@
 package edu.ntust.csie.se.mdfk.sophiatag.user;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.MainUIBuilder.UILimitation;
 
 
 /**
@@ -29,8 +28,8 @@ public class Administrator extends User {
 	 * @ordered
 	 */
 	
-	public UILimitation makeUIRequest() {
-		return new UILimitation();	
+	public FuntionalLimitation makeUIRequest() {
+		return new FuntionalLimitation();	
 	}
 	
 }

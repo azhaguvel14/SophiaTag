@@ -1,15 +1,14 @@
 package edu.ntust.csie.se.mdfk.sophiatag.gui;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
+
 
 
 /**
@@ -26,9 +25,9 @@ public class MainUIBuilder {
 	 * @ordered
 	 */
 	
-	private Map<UILimitation.EditableComponent, Boolean> editableFlagMap;
+	private Map<FuntionalLimitation.LimitableFunction, Boolean> editableFlagMap;
 	private final String userTitle;
-	private static final Map<UILimitation.EditableComponent, SubUIBuilder> SUB_BUIDLER_MAP = new HashMap<UILimitation.EditableComponent, SubUIBuilder>();
+	private static final Map<FuntionalLimitation.LimitableFunction, SubUIBuilder> SUB_BUIDLER_MAP = new HashMap<FuntionalLimitation.LimitableFunction, SubUIBuilder>();
 	
 	static {
 		initSubBuilders();
@@ -42,22 +41,22 @@ public class MainUIBuilder {
 	 * @ordered
 	 */
 	
-	public MainUIBuilder(String userTitle, UILimitation limitation) {
+	public MainUIBuilder(String userTitle, FuntionalLimitation limitation) {
 		this.userTitle = userTitle;
-		this.editableFlagMap = new HashMap<UILimitation.EditableComponent, Boolean>();
-		this.setupComponentMap(Arrays.asList(UILimitation.EditableComponent.values()), true);
+		this.editableFlagMap = new HashMap<FuntionalLimitation.LimitableFunction, Boolean>();
+		this.setupComponentMap(Arrays.asList(FuntionalLimitation.LimitableFunction.values()), true);
 		this.setupComponentMap(limitation, false);
 		
 	}
 	
-	private void setupComponentMap(Iterable<UILimitation.EditableComponent> iterable, boolean editable) {
-		for (UILimitation.EditableComponent component: iterable) {
+	private void setupComponentMap(Iterable<FuntionalLimitation.LimitableFunction> iterable, boolean editable) {
+		for (FuntionalLimitation.LimitableFunction component: iterable) {
 			this.editableFlagMap.put(component, editable);
 		}
 	}
 	
 	private static void initSubBuilders() {
-		SUB_BUIDLER_MAP.put(UILimitation.EditableComponent.ROOT_DIRECTORY, new SubUIBuilder() {
+		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.CHANGE_ROOT_DIRECTORY, new SubUIBuilder() {
 
 			@Override
 			public JComponent buildComponent(boolean editable) {
@@ -66,7 +65,7 @@ public class MainUIBuilder {
 			
 		});
 		
-		SUB_BUIDLER_MAP.put(UILimitation.EditableComponent.SEARCH_BAR, new SubUIBuilder() {
+		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.SEARCH_BAR, new SubUIBuilder() {
 
 			@Override
 			public JComponent buildComponent(boolean editable) {
@@ -75,7 +74,7 @@ public class MainUIBuilder {
 			
 		});
 		
-		SUB_BUIDLER_MAP.put(UILimitation.EditableComponent.MATERIAL_PROFILE, new SubUIBuilder() {
+		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL, new SubUIBuilder() {
 
 			@Override
 			public JComponent buildComponent(boolean editable) {
@@ -84,7 +83,7 @@ public class MainUIBuilder {
 			
 		});
 		
-		SUB_BUIDLER_MAP.put(UILimitation.EditableComponent.MATERIAL_TABLE, new SubUIBuilder() {
+		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE, new SubUIBuilder() {
 
 			@Override
 			public JComponent buildComponent(boolean editable) {
@@ -103,7 +102,7 @@ public class MainUIBuilder {
 	
 	public JPanel build(JPanel panel) {
 		panel.add(this.buildUserStatus());
-		for (UILimitation.EditableComponent component: UILimitation.EditableComponent.values()) {
+		for (FuntionalLimitation.LimitableFunction component: FuntionalLimitation.LimitableFunction.values()) {
 			panel.add(SUB_BUIDLER_MAP.get(component).buildComponent(editableFlagMap.get(component)));
 		}
 		
@@ -116,41 +115,6 @@ public class MainUIBuilder {
 	
 	private interface SubUIBuilder {
 		public JComponent buildComponent(boolean editable);
-	}
-	
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 */
-	
-	public static class UILimitation implements Iterable<UILimitation.EditableComponent> {
-		
-		public enum EditableComponent {
-			ROOT_DIRECTORY, SEARCH_BAR, MATERIAL_PROFILE, MATERIAL_TABLE
-		}
-		
-		private final List<EditableComponent> limitedComponents; 
-		/**
-		 * <!-- begin-user-doc -->
-		 * <!--  end-user-doc  -->
-		 * @generated
-		 */
-		public UILimitation(EditableComponent... components) {
-			this.limitedComponents = Arrays.asList(components);
-			
-		}
-	
-		public void limit(EditableComponent component) {
-			this.limitedComponents.add(component);
-		}
-
-		@Override
-		public Iterator<EditableComponent> iterator() {
-			return this.limitedComponents.iterator();
-		}
-
 	}
 }
 

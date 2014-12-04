@@ -1,6 +1,5 @@
 package edu.ntust.csie.se.mdfk.sophiatag.user;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.MainUIBuilder.UILimitation;
 
 
 /**
@@ -74,7 +73,7 @@ public abstract class User {
 	 * @ordered
 	 */
 	
-	public abstract UILimitation makeUIRequest() ;
+	public abstract FuntionalLimitation makeUIRequest() ;
 	
 }
 
