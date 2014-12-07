@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
 
@@ -25,7 +27,7 @@ public class MainUIBuilder {
 	 * @ordered
 	 */
 	
-	private Map<FuntionalLimitation.LimitableFunction, Boolean> editableFlagMap;
+	private Map<FuntionalLimitation.LimitableFunction, Boolean> limitedFlagMap;
 	private final String userTitle;
 	private static final Map<FuntionalLimitation.LimitableFunction, SubUIBuilder> SUB_BUIDLER_MAP = new HashMap<FuntionalLimitation.LimitableFunction, SubUIBuilder>();
 	
@@ -43,15 +45,15 @@ public class MainUIBuilder {
 	
 	public MainUIBuilder(String userTitle, FuntionalLimitation limitation) {
 		this.userTitle = userTitle;
-		this.editableFlagMap = new HashMap<FuntionalLimitation.LimitableFunction, Boolean>();
+		this.limitedFlagMap = new HashMap<FuntionalLimitation.LimitableFunction, Boolean>();
 		this.setupComponentMap(Arrays.asList(FuntionalLimitation.LimitableFunction.values()), true);
 		this.setupComponentMap(limitation, false);
 		
 	}
 	
-	private void setupComponentMap(Iterable<FuntionalLimitation.LimitableFunction> iterable, boolean editable) {
+	private void setupComponentMap(Iterable<FuntionalLimitation.LimitableFunction> iterable, boolean limited) {
 		for (FuntionalLimitation.LimitableFunction component: iterable) {
-			this.editableFlagMap.put(component, editable);
+			this.limitedFlagMap.put(component, limited);
 		}
 	}
 	
@@ -59,7 +61,7 @@ public class MainUIBuilder {
 		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.CHANGE_ROOT_DIRECTORY, new SubUIBuilder() {
 
 			@Override
-			public JComponent buildComponent(boolean editable) {
+			public JComponent buildComponent(MainUIController boundController, boolean limited) {
 				return null;
 			}
 			
@@ -68,7 +70,7 @@ public class MainUIBuilder {
 		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.SEARCH_BAR, new SubUIBuilder() {
 
 			@Override
-			public JComponent buildComponent(boolean editable) {
+			public JComponent buildComponent(MainUIController boundController, boolean limited) {
 				return null;
 			}
 			
@@ -77,7 +79,7 @@ public class MainUIBuilder {
 		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL, new SubUIBuilder() {
 
 			@Override
-			public JComponent buildComponent(boolean editable) {
+			public JComponent buildComponent(MainUIController boundController, boolean limited) {
 				return null;
 			}
 			
@@ -86,7 +88,7 @@ public class MainUIBuilder {
 		SUB_BUIDLER_MAP.put(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE, new SubUIBuilder() {
 
 			@Override
-			public JComponent buildComponent(boolean editable) {
+			public JComponent buildComponent(MainUIController boundController, boolean limited) {
 				return null;
 			}
 			
@@ -100,13 +102,32 @@ public class MainUIBuilder {
 	 * @ordered
 	 */
 	
-	public JPanel build(JPanel panel) {
-		panel.add(this.buildUserStatus());
-		for (FuntionalLimitation.LimitableFunction component: FuntionalLimitation.LimitableFunction.values()) {
-			panel.add(SUB_BUIDLER_MAP.get(component).buildComponent(editableFlagMap.get(component)));
-		}
+	public JFrame build(MainUIController boundController) {
+		JFrame mainFrame = getEmptyMainFrame();
 		
-		return panel;
+		JPanel mainUIPanel = new JPanel();
+		mainUIPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+//		
+//		mainUIPanel.add(this.buildUserStatus());
+//		for (FuntionalLimitation.LimitableFunction limitableFunction: FuntionalLimitation.LimitableFunction.values()) {
+//			mainUIPanel.add(SUB_BUIDLER_MAP.get(limitableFunction).buildComponent(boundController, limitedFlagMap.get(limitableFunction)));
+//		}
+		
+		
+		mainFrame.getContentPane().add(mainUIPanel);
+		return mainFrame;
+	}
+	
+	private JFrame getEmptyMainFrame() {
+		JFrame mainFrame = new JFrame();
+		mainFrame = new JFrame();
+		mainFrame.setTitle("SophiaTag");
+		mainFrame.setBounds(100, 100, 600, 500);
+//		mainFrame.setResizable(false);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		return mainFrame;
 	}
 	
 	private JComponent buildUserStatus() {
@@ -114,7 +135,7 @@ public class MainUIBuilder {
 	}
 	
 	private interface SubUIBuilder {
-		public JComponent buildComponent(boolean editable);
+		public JComponent buildComponent(MainUIController boundController, boolean limited);
 	}
 }
 

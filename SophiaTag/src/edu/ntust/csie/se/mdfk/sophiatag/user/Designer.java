@@ -29,7 +29,7 @@ public class Designer extends User {
 	 * @ordered
 	 */
 	
-	public FuntionalLimitation makeUIRequest() {
+	public FuntionalLimitation getFunctionalLimitation() {
 		return new FuntionalLimitation(FuntionalLimitation.LimitableFunction.CHANGE_ROOT_DIRECTORY,
 									   FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL,
 									   FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE);	

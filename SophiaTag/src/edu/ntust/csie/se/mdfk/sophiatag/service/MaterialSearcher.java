@@ -1,4 +1,5 @@
 package edu.ntust.csie.se.mdfk.sophiatag.service;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -6,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
-import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.TagTextChangedListener;
 
 import java.util.List;
@@ -21,25 +21,21 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
  * @generated
  */
 
-public class MaterialSearcher implements TagTextChangedListener, MaterialTaggedListener {
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+public class MaterialSearcher {
 	
-	public Map<String, Tag> tagMap;
 	
+	private final TagDatabase database;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
 	public MaterialSearcher(){
-		this.tagMap = new HashMap<String, Tag>();
-		MaterialTagger.getInstance().addMaterialTaggedListener(this);
-		MaterialTagger.getInstance().addTagTextChangedListener(this);
+		this.database = new TagDatabase();
+	}
+	
+	public MaterialSearcher(TagDatabase database){
+		this.database = database;
 	}
 
 	/**
@@ -57,6 +53,9 @@ public class MaterialSearcher implements TagTextChangedListener, MaterialTaggedL
 		
 	}
 	
+	public TagDatabase getDatabase() {
+		return this.database;
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -106,7 +105,7 @@ public class MaterialSearcher implements TagTextChangedListener, MaterialTaggedL
 		Tag tag;
 		Set<Tag> tagSet = new HashSet<Tag>();
 		for (String literal: tagLiterals) {
-			tag = this.tagMap.get(literal);
+			tag = this.database.getTag(literal);
 			if (tag == null) {
 				tagSet.clear();
 				return tagSet;
@@ -128,43 +127,37 @@ public class MaterialSearcher implements TagTextChangedListener, MaterialTaggedL
 		return materialList;	
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
+	public static class TagDatabase implements Serializable, TagTextChangedListener, MaterialTaggedListener {
+		private Map<String, Tag> tagMap;
+		
+		public TagDatabase() {
+			this.tagMap = new HashMap<String, Tag>();
+		}
+		
+		public Tag getTag(String tagLiteral) {
+			return tagMap.get(tagLiteral);
+		}
+		
+		public void drop() {
+			this.tagMap.clear();
+		}
+		
+		public void onTextChanged(String oldText, Tag newTag) {
+			this.tagMap.remove(oldText);
+			this.tagMap.put(newTag.getText(), newTag);
+		}
+		
+		public void onTag(Tag tag, Material material) {
+			if (!this.tagMap.containsKey(tag.getText())) {
+				this.tagMap.put(tag.getText(), tag);
+			}
+		}
 	
-	public void onTextChanged(String oldText, Tag newTag) {
-		this.tagMap.remove(oldText);
-		this.tagMap.put(newTag.getText(), newTag);
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void onTag(Tag tag, Material material) {
-		if (!this.tagMap.containsKey(tag.getText())) {
-			this.tagMap.put(tag.getText(), tag);
+		public void onDetag(Tag tag, Material material) {
+			if (!tag.isAttached()) {
+				this.tagMap.remove(tag.getText());
+			}
 		}
 	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void onDetag(Tag tag, Material material) {
-		if (!tag.isAttached()) {
-			this.tagMap.remove(tag.getText());
-		}
-	}
-	
 }
 

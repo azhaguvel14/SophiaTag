@@ -44,8 +44,8 @@ public class RecordStorage {
 	 * @ordered
 	 */
 	
-	public void saveData(NecessaryRecord data) {
-		if (!file.exists()) {
+	public void saveRecord(NecessaryRecord record) {
+		if (!this.hasSavedRecord()) {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
@@ -56,7 +56,7 @@ public class RecordStorage {
 		
 		try {
 			ObjectOutputStream outStream = new ObjectOutputStream(new FileOutputStream(file));
-			outStream.writeObject(data);
+			outStream.writeObject(record);
 			outStream.close();
 			
 		} catch (FileNotFoundException e) {
@@ -75,16 +75,16 @@ public class RecordStorage {
 	 * @ordered
 	 */
 	
-	public NecessaryRecord loadData() {
-		if (!file.exists()) {
+	public NecessaryRecord loadRecord() {
+		if (!this.hasSavedRecord()) {
 			return null;
 		}
 		
-		NecessaryRecord data = null;
+		NecessaryRecord record = null;
 		
 		try {
 			ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
-			data = (NecessaryRecord) inStream.readObject();
+			record = (NecessaryRecord) inStream.readObject();
 			inStream.close();
 			
 		} catch (FileNotFoundException e) {
@@ -98,18 +98,22 @@ public class RecordStorage {
 			e.printStackTrace();
 		}
 		
-		return data;
+		return record;
+	}
+	
+	public boolean hasSavedRecord() {
+		return this.file.exists();
 	}
 	
 	public static class NecessaryRecord implements Serializable{
 		private final String rootDirectory;
 		private final MaterialPool pool;
-		private final MaterialSearcher searcher;
+		private final MaterialSearcher.TagDatabase tagDatabase;
 		
-		public NecessaryRecord(String rootDirectory, MaterialPool pool, MaterialSearcher searcher) {
+		public NecessaryRecord(String rootDirectory, MaterialPool pool, MaterialSearcher.TagDatabase database) {
 			this.rootDirectory = rootDirectory;
 			this.pool = pool;
-			this.searcher = searcher;
+			this.tagDatabase = database;
 			
 		}
 
@@ -117,12 +121,12 @@ public class RecordStorage {
 			return rootDirectory;
 		}
 
-		public MaterialPool getPool() {
+		public MaterialPool getMaterialPool() {
 			return pool;
 		}
 
-		public MaterialSearcher getSearcher() {
-			return searcher;
+		public MaterialSearcher.TagDatabase getTagDatabase() {
+			return tagDatabase;
 		}
 		
 		

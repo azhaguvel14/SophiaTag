@@ -73,7 +73,7 @@ public abstract class User {
 	 * @ordered
 	 */
 	
-	public abstract FuntionalLimitation makeUIRequest() ;
+	public abstract FuntionalLimitation getFunctionalLimitation() ;
 	
 }
 

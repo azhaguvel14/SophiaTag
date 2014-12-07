@@ -18,7 +18,7 @@ public class Administrator extends User {
 	 * @generated
 	 */
 	public Administrator(){
-		super(ADMINISTRATOR_TITLE, ADMINISTRATOR_ACCOUNT, ADMINISTRATOR_ACCOUNT);
+		super(ADMINISTRATOR_TITLE, ADMINISTRATOR_ACCOUNT, ADMINISTRATOR_HASHED_PASSWORD);
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class Administrator extends User {
 	 * @ordered
 	 */
 	
-	public FuntionalLimitation makeUIRequest() {
+	public FuntionalLimitation getFunctionalLimitation() {
 		return new FuntionalLimitation();	
 	}
 	

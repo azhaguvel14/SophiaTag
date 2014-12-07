@@ -35,6 +35,7 @@ public class IdentityAuthorizer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		char[] a;
 		
 		byte[] message = digest.digest(rawPassword.getBytes());
 		

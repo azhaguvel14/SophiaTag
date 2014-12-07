@@ -1,4 +1,5 @@
 package edu.ntust.csie.se.mdfk.sophiatag.service;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
@@ -20,7 +21,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialDiscardedLis
  * @generated
  */
 
-public class MaterialPool implements MaterialDiscardedListener, Iterable<Material>{
+public class MaterialPool implements MaterialDiscardedListener, Iterable<Material>, Serializable{
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -39,12 +40,20 @@ public class MaterialPool implements MaterialDiscardedListener, Iterable<Materia
 	 * @ordered
 	 */
 	
+	public MaterialPool() {
+		this(new HashSet<Material>());
+	}
+	
 	public MaterialPool(Collection<Material> materials) {
+			this.materials = new HashSet<Material>(materials.size());
 			this.addMaterials(materials);
 			MaterialTagger.getInstance().addMaterialDiscardedListener(this);
 	}
 	
 	
+	
+
+
 	public void addMaterial(Material material) {
 		this.materials.add(material);
 	}
@@ -68,6 +77,10 @@ public class MaterialPool implements MaterialDiscardedListener, Iterable<Materia
 		return this.materials.size();
 	}
 	
+	public void setPool(Collection<Material> newMaterials) {
+		this.materials.clear();
+		this.addMaterials(newMaterials);
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
