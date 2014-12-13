@@ -33,7 +33,7 @@ public abstract class MVCGlue {
 			this.view = view;
 			this.bundle = bundle;
 			
-			this.view.resortEventToGlue(this);
+			this.view.bindEvent(this);
 		}
 
 		@Override

@@ -303,7 +303,7 @@ public class MainView extends View {
 	}
 
 	@Override
-	public void resortEventToGlue(final MVCGlue glue) {
+	public void bindEvent(final MVCGlue glue) {
 		ActionListener sharedListener = new ActionListener() {
 
 			@Override

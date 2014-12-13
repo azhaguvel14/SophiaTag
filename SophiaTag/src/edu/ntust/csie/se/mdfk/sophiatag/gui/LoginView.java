@@ -160,7 +160,7 @@ public class LoginView extends View {
 	}
 
 	@Override
-	public void resortEventToGlue(final MVCGlue glue) {
+	public void bindEvent(final MVCGlue glue) {
 
 		ActionListener listener = new ActionListener() {
 

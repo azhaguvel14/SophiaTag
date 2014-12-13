@@ -31,7 +31,7 @@ public abstract class View {
 	}
 	
 	protected abstract void buildView(JFrame frame);
-	public abstract void resortEventToGlue(final MVCGlue glue);
+	public abstract void bindEvent(final MVCGlue glue);
 	
 	public JFrame getFrame() {
 		return this.frame;
