@@ -22,7 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.LoginBundle;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner;
+import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 import edu.ntust.csie.se.mdfk.sophiatag.user.IdentityAuthorizer;
 
 import java.awt.FlowLayout;
@@ -66,9 +69,14 @@ public class SophiaTagLauncher {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					
 //					SophiaTagLauncher loginForm = new SophiaTagLauncher();
-					LoginView loginForm = new LoginView();
 //					loginForm.frmSophiatag.setVisible(true);
-					loginForm.getLoginFrame().setVisible(true);
+					
+					//framework: Model: services, View: view, Controller: bundle, Linker: glue 
+					SophiaTagServices services = new SophiaTagServices();
+					LoginView loginForm = new LoginView(services.isServiceReady());
+					MVCGlue.glue(services, loginForm, new LoginBundle());
+					
+					loginForm.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

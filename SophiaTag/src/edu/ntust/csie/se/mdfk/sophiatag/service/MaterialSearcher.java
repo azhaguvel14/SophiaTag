@@ -30,11 +30,11 @@ public class MaterialSearcher {
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
-	public MaterialSearcher(){
+	MaterialSearcher(){
 		this.database = new TagDatabase();
 	}
 	
-	public MaterialSearcher(TagDatabase database){
+	MaterialSearcher(TagDatabase database){
 		this.database = database;
 	}
 

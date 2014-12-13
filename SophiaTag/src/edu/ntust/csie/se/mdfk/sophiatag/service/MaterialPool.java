@@ -40,7 +40,7 @@ public class MaterialPool implements MaterialDiscardedListener, Iterable<Materia
 	 * @ordered
 	 */
 	
-	public MaterialPool() {
+	MaterialPool() {
 		this(new HashSet<Material>());
 	}
 	

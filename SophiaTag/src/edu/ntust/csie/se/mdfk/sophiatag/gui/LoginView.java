@@ -19,25 +19,23 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LoginController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialPool;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher;
 import edu.ntust.csie.se.mdfk.sophiatag.service.RecordStorage;
-import edu.ntust.csie.se.mdfk.sophiatag.user.Administrator;
-import edu.ntust.csie.se.mdfk.sophiatag.user.Designer;
 import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
-import edu.ntust.csie.se.mdfk.sophiatag.user.IdentityAuthorizer;
-import edu.ntust.csie.se.mdfk.sophiatag.user.User;
 
 /**
  * @author maeglin89273
  *
  */
-public class LoginView {
+public class LoginView extends View {
 	
-	private static final String ADMIN_COMMAND = "ADMIN";
-	private static final String DESIGNER_COMMAND = "DESIGNER";
+	public static final String ADMIN_COMMAND = "ADMIN";
+	public static final String DESIGNER_COMMAND = "DESIGNER";
 	
-	private JFrame frame;
 	private JTextField accountField;
 	private JPasswordField passwordField;
 	private JLabel trademarkLabel;
@@ -46,30 +44,16 @@ public class LoginView {
 	private JButton designerLoginButton;
 	private JPanel mainPanel;
 	
-	private LoginGuard guard;
 	/**
 	 * 
 	 */
-	public LoginView() {
-		this.guard = new LoginGuard();
-		initializeView();
-		
+	public LoginView(boolean isDesignerForbidden) {
+		super(100, 100, 270, 260);
+		designerLoginButton.setEnabled(isDesignerForbidden);
 	}
-	
-	public Frame getLoginFrame() {
-		return this.frame;
-	}
-	
-	
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initializeView() {
-		frame = new JFrame();
-		frame.setTitle("SophiaTag");
-		frame.setBounds(100, 100, 270, 260);
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	@Override
+	protected void buildView(JFrame frame) {
 		
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
 		gbl_mainPanel.columnWidths = new int[]{0, 0};
@@ -139,9 +123,7 @@ public class LoginView {
 		gbc_loginAsLabel.gridx = 0;
 		gbc_loginAsLabel.gridy = 7;
 		mainPanel.add(loginAsLabel, gbc_loginAsLabel);
-		
-		ActionListener loginListener = new LoginProcessor();
-		
+				
 		adminLoginButton = new JButton("Adminitrator");
 		GridBagConstraints gbc_adminLoginButton = new GridBagConstraints();
 		gbc_adminLoginButton.anchor = GridBagConstraints.WEST;
@@ -151,8 +133,6 @@ public class LoginView {
 		gbc_adminLoginButton.gridy = 8;
 		mainPanel.add(adminLoginButton, gbc_adminLoginButton);
 		adminLoginButton.setActionCommand(ADMIN_COMMAND);
-		adminLoginButton.addActionListener(loginListener);
-		
 		
 		designerLoginButton = new JButton("Designer");
 		GridBagConstraints gbc_designerLoginButton = new GridBagConstraints();
@@ -163,83 +143,37 @@ public class LoginView {
 		gbc_designerLoginButton.gridy = 8;
 		mainPanel.add(designerLoginButton, gbc_designerLoginButton);
 		designerLoginButton.setActionCommand(DESIGNER_COMMAND);
-		designerLoginButton.addActionListener(loginListener);
-		if (this.guard.isDesignerForbidden()) {
-			designerLoginButton.setEnabled(false);
-		}
+		
 	}
 	
-	private void clearFields() {
+	public void clearFields() {
 		accountField.setText("");
 		passwordField.setText("");
 	}
 	
-	private class LoginProcessor implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			User user = createUser(e.getActionCommand());
-			
-			if (IdentityAuthorizer.authorize(accountField.getText(), new String(passwordField.getPassword()), user)) {
-				if (!guard.guardLoginProgress()) {
-					return;
-				}
-				
-				createMainUI(user).setVisible(true);
-				frame.setVisible(false);
-			}
-			
-			clearFields();
-		}
-		
-		
-		
-		private User createUser(String actionCommand) {
-			User user = null;
-			if (actionCommand.equals(ADMIN_COMMAND)) {
-				user = new Administrator();
-			} else if (actionCommand.equals(DESIGNER_COMMAND)) {
-				user = new Designer();
-			}
-	
-			return user;
-		}
-		
-		private JFrame createMainUI(User user) {
-			
-			MainUIController controller = new MainUIController();
-			MainUIBuilder builder = new MainUIBuilder(user.getTitle(), user.getFunctionalLimitation());
-			
-			return builder.build(controller);	
-		}
-		
-		
+	public JTextField getAccountField() {
+		return this.accountField;
 	}
 	
-	private class LoginGuard {
-		private RecordStorage storage;
-		public LoginGuard() {
-			this.storage = new RecordStorage();
-		}
-		
-		public boolean isDesignerForbidden() {
-			return !storage.hasSavedRecord();
-		}
-		
-		//return true indicates that it's valid to progress, else it should return back to the original dialog with no side effects
-		public boolean guardLoginProgress() {
-			if (storage.hasSavedRecord()) {
-				return true;
+	public JPasswordField getPasswordField() {
+		return this.passwordField;
+	}
+
+	@Override
+	public void resortEventToGlue(final MVCGlue glue) {
+
+		ActionListener listener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				glue.handleEvent("login", e);
+				
 			}
 			
-			String path = SelectDirectoryDialog.showSelectDirectoryDialog(getLoginFrame(), "Choose the root directory of the materials:");
-			if (path == null) {
-				return false;
-			}
-			
-			RecordStorage.NecessaryRecord record = new RecordStorage.NecessaryRecord(path, new MaterialPool(), new MaterialSearcher.TagDatabase());
-			this.storage.saveRecord(record);
-			return true;
-		}
+		};
+		
+		adminLoginButton.addActionListener(listener);
+		designerLoginButton.addActionListener(listener);
 	}
 }
+

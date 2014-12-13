@@ -33,7 +33,7 @@ public class RecordStorage {
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
-	public RecordStorage() {
+	RecordStorage() {
 		file = new File(FILE_PATH);
 	}
 

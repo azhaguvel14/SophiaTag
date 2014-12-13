@@ -32,7 +32,7 @@ public class MaterialScanner {
 	 * @ordered
 	 */
 	
-	public File rootDirectory;
+	private File rootDirectory;
 	
 
 	/**
@@ -43,8 +43,8 @@ public class MaterialScanner {
 	 * @ordered
 	 */
 	
-	public MaterialScanner(String rootDirectory) {	
-		this.rootDirectory = new File(rootDirectory);
+	MaterialScanner(String rootDirectory) {	
+		setRootDirectory(rootDirectory);
 		// TODO construct me	
 	}
 	
@@ -69,6 +69,7 @@ public class MaterialScanner {
 	public String getRootDirectory() {
 		return this.rootDirectory.getAbsolutePath();	
 	}
+	
 	
 	/**
 	 * <!-- begin-user-doc -->
