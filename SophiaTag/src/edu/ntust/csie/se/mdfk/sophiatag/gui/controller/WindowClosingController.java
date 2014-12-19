@@ -12,7 +12,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
  * @author maeglin89273
  *
  */
-public class WindowClosingController implements	EventController<WindowEvent, MainView> {
+public class WindowClosingController implements	MainViewEventController<WindowEvent> {
 
 	
 	@Override

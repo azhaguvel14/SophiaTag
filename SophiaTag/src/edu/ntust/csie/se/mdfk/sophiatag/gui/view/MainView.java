@@ -18,6 +18,7 @@ import java.awt.event.WindowListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,7 +29,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
+import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable.MaterialListModel;
@@ -50,8 +55,8 @@ public class MainView extends View {
 	private JLabel rootDirLabel;
 	private JButton changeRootDirButton;
 	private JButton searchButton;
-	private JLabel fileNameLabel;
-	private JLabel fileDirLabel;
+	private JLabel materialNameLabel;
+	private JLabel materialDirLabel;
 	private JButton openDirButton;
 	private JPanel materialProfilePanel;
 	private JButton addTagButton;
@@ -61,6 +66,7 @@ public class MainView extends View {
 
 	private JPanel searchPanel;
 	
+	private MaterialTable.MaterialListModel tableModel;
 	/**
 	 * @param x
 	 * @param y
@@ -91,6 +97,7 @@ public class MainView extends View {
 		this.getFrame().setResizable(true);
 		this.getFrame().setMinimumSize(new Dimension(600, 600));
 		
+//		materialProfilePanel.setVisible(false);
 		
 		this.userLabel.setText(user.getTitle());
 		this.rootDirLabel.setText(rootDir);
@@ -204,14 +211,13 @@ public class MainView extends View {
 		gbc_materialProfilePanel.fill = GridBagConstraints.BOTH;
 		gbc_materialProfilePanel.gridx = 0;
 		gbc_materialProfilePanel.gridy = 3;
-		mainPanel.add(getMaterialProfilePanel(), gbc_materialProfilePanel);
+		mainPanel.add(materialProfilePanel, gbc_materialProfilePanel);
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 0, 1.0};
 		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
-		getMaterialProfilePanel().setLayout(gbl_materialProfilePanel);
-		getMaterialProfilePanel().setVisible(false);
+		materialProfilePanel.setLayout(gbl_materialProfilePanel);
 		
 		JLabel fileNameHeader = new JLabel("File Name:");
 		GridBagConstraints gbc_fileNameHeader = new GridBagConstraints();
@@ -220,15 +226,15 @@ public class MainView extends View {
 		gbc_fileNameHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_fileNameHeader.gridx = 0;
 		gbc_fileNameHeader.gridy = 0;
-		getMaterialProfilePanel().add(fileNameHeader, gbc_fileNameHeader);
+		materialProfilePanel.add(fileNameHeader, gbc_fileNameHeader);
 		
-		fileNameLabel = new JLabel();
+		materialNameLabel = new JLabel();
 		GridBagConstraints gbc_fileNameLabel = new GridBagConstraints();
 		gbc_fileNameLabel.anchor = GridBagConstraints.WEST;
 		gbc_fileNameLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_fileNameLabel.gridx = 2;
 		gbc_fileNameLabel.gridy = 0;
-		getMaterialProfilePanel().add(getFileNameLabel(), gbc_fileNameLabel);
+		materialProfilePanel.add(materialNameLabel, gbc_fileNameLabel);
 		
 		JLabel directoryHeader = new JLabel("Directory:");
 		GridBagConstraints gbc_directoryHeader = new GridBagConstraints();
@@ -237,15 +243,15 @@ public class MainView extends View {
 		gbc_directoryHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_directoryHeader.gridx = 0;
 		gbc_directoryHeader.gridy = 1;
-		getMaterialProfilePanel().add(directoryHeader, gbc_directoryHeader);
+		materialProfilePanel.add(directoryHeader, gbc_directoryHeader);
 		
-		fileDirLabel = new JLabel();
+		materialDirLabel = new JLabel();
 		GridBagConstraints gbc_fileDirectoryLabel = new GridBagConstraints();
 		gbc_fileDirectoryLabel.anchor = GridBagConstraints.WEST;
 		gbc_fileDirectoryLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_fileDirectoryLabel.gridx = 2;
 		gbc_fileDirectoryLabel.gridy = 1;
-		getMaterialProfilePanel().add(getFileDirLabel(), gbc_fileDirectoryLabel);
+		materialProfilePanel.add(materialDirLabel, gbc_fileDirectoryLabel);
 		
 		openDirButton = new JButton("Open");
 		GridBagConstraints gbc_openDirButton = new GridBagConstraints();
@@ -253,7 +259,7 @@ public class MainView extends View {
 		gbc_openDirButton.insets = new Insets(0, 0, 5, 0);
 		gbc_openDirButton.gridx = 3;
 		gbc_openDirButton.gridy = 1;
-		getMaterialProfilePanel().add(openDirButton, gbc_openDirButton);
+		materialProfilePanel.add(openDirButton, gbc_openDirButton);
 		
 		
 		JLabel tagHeader = new JLabel("Tag:");
@@ -262,7 +268,7 @@ public class MainView extends View {
 		gbc_tagHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_tagHeader.gridx = 0;
 		gbc_tagHeader.gridy = 2;
-		getMaterialProfilePanel().add(tagHeader, gbc_tagHeader);
+		materialProfilePanel.add(tagHeader, gbc_tagHeader);
 		
 		addTagButton = new JButton("+");
 		GridBagConstraints gbc_addTagButton = new GridBagConstraints();
@@ -270,7 +276,7 @@ public class MainView extends View {
 		gbc_addTagButton.insets = new Insets(0, 0, 5, 5);
 		gbc_addTagButton.gridx = 1;
 		gbc_addTagButton.gridy = 2;
-		getMaterialProfilePanel().add(addTagButton, gbc_addTagButton);
+		materialProfilePanel.add(addTagButton, gbc_addTagButton);
 		
 		tagPanel = new JPanel();
 		GridBagConstraints gbc_tagPanel = new GridBagConstraints();
@@ -279,8 +285,8 @@ public class MainView extends View {
 		gbc_tagPanel.fill = GridBagConstraints.BOTH;
 		gbc_tagPanel.gridx = 0;
 		gbc_tagPanel.gridy = 3;
-		getMaterialProfilePanel().add(getTagPanel(), gbc_tagPanel);
-		getTagPanel().setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		materialProfilePanel.add(tagPanel, gbc_tagPanel);
+		tagPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
@@ -317,6 +323,8 @@ public class MainView extends View {
 		materialTable = new MaterialTable();
 		materialTable.setFillsViewportHeight(true);
 		scrollPane.setViewportView(materialTable);
+		
+		tableModel = (MaterialListModel) materialTable.getModel();
 			
 		discardButton = new JButton("Discard");
 		GridBagConstraints gbc_discardButton = new GridBagConstraints();
@@ -343,6 +351,15 @@ public class MainView extends View {
 		this.addTagButton.addActionListener(sharedListener);
 		this.discardButton.addActionListener(sharedListener);
 		
+		this.materialTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				glue.handleEvent("material_selected", e);
+			}
+			
+		});
+		
 		this.getFrame().addWindowListener(new WindowAdapter() {
 
 			@Override
@@ -354,30 +371,24 @@ public class MainView extends View {
 	}
 	
 	public MaterialTable.MaterialListModel getTableModel() {
-		return (MaterialListModel) this.materialTable.getModel();
+		return tableModel;
 	}
 	public JTextField getQueryField() {
-		return this.queryField;
+		return queryField;
 	}
 
 	public JLabel getRootDirLabel() {
 		return rootDirLabel;
 	}
 
-	public JLabel getFileNameLabel() {
-		return fileNameLabel;
+	public void setMaterialToProfile(Material material) {
+		// TODO: implemented by Tung, notice the helper method below
+		// refer to the fields declared on top of this class  
 	}
-
-	public JLabel getFileDirLabel() {
-		return fileDirLabel;
+	
+	private void setupTagPanel(Iterable<Tag> tags) {
+		// you should generate TagButtons that bind to tags,
+		// and add buttons into tagPanel with "add" method(the layout is set beforehand, don't worry about it)
+		
 	}
-
-	public JPanel getMaterialProfilePanel() {
-		return materialProfilePanel;
-	}
-
-	public JPanel getTagPanel() {
-		return tagPanel;
-	}
-
 }

@@ -41,7 +41,6 @@ public class Tag extends Attachable<Material>{
 	 */
 	
 	public String getText() {
-		// TODO implement me
 		return this.text;	
 	}
 	

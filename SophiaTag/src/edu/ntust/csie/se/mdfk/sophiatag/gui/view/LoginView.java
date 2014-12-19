@@ -50,9 +50,15 @@ public class LoginView extends View {
 	 */
 	public LoginView(boolean isDesignerForbidden) {
 		super(100, 100, 270, 260);
+		this.initializeButtonState(isDesignerForbidden);
+	}
+	
+	private void initializeButtonState(boolean isDesignerForbidden) {
+		adminLoginButton.setDefaultCapable(true);
+		getFrame().getRootPane().setDefaultButton(adminLoginButton);
 		designerLoginButton.setEnabled(isDesignerForbidden);
 	}
-
+	
 	@Override
 	protected void buildView(JFrame frame) {
 		GridBagLayout gbl_mainPanel = new GridBagLayout();

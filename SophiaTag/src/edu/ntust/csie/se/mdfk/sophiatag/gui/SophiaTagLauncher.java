@@ -1,50 +1,24 @@
 package edu.ntust.csie.se.mdfk.sophiatag.gui;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JButton;
-
-import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.Box;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
-import java.awt.Component;
-
-import javax.swing.SpringLayout;
-import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
-import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.LoginBundle;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.LoginView;
-import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
-import edu.ntust.csie.se.mdfk.sophiatag.user.IdentityAuthorizer;
-
-import java.awt.FlowLayout;
-import java.io.File;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-
-import javax.swing.JPasswordField;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Font;
-import java.awt.event.ActionListener;
-
-import javax.swing.border.EmptyBorder;
 
 public class SophiaTagLauncher {
 

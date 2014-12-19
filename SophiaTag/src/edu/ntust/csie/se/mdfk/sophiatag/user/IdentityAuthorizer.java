@@ -32,7 +32,6 @@ public class IdentityAuthorizer {
 		try {
 			digest = MessageDigest.getInstance(HASH_ARGORITHOM);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		char[] a;

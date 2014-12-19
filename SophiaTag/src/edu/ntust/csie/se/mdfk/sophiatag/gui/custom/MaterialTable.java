@@ -31,6 +31,10 @@ public class MaterialTable extends JTable {
 	public MaterialTable() {
 		super(new MaterialListModel());
 		this.setSelectionRestrictions();
+		
+		this.getColumnModel().getColumn(0).setPreferredWidth(50);
+		this.getColumnModel().getColumn(1).setPreferredWidth(50);
+		
 		this.getTableHeader().setReorderingAllowed(false);
 		this.getColumnModel().getColumn(0).setCellRenderer(new MaterialNameCellRenderer());
 		
