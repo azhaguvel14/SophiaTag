@@ -110,7 +110,7 @@ public class MaterialScanner {
 		return result;
 	}
 	
-	public void updateMaterialPool(MaterialPool pool) {
+	public void updateMaterialPool(MaterialList pool) {
 		Set<File> newFiles = new HashSet<File>(this.rawScan());
 		Set<File> intersection = new HashSet<File>(newFiles); 
 		Map<File, Material> map = this.bindMaterialToFile(pool);
@@ -124,7 +124,7 @@ public class MaterialScanner {
 		pool.addMaterials(this.convertToMaterials(newFiles));
 	}
 	
-	private Map<File, Material> bindMaterialToFile(MaterialPool pool) {
+	private Map<File, Material> bindMaterialToFile(MaterialList pool) {
 		Map<File, Material> map = new HashMap<File, Material>(pool.size());
 		for (Material material: pool) {
 			map.put(material.getUnderlyingFile(), material);

@@ -5,7 +5,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.controller;
 
 import java.util.EventObject;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.View;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.view.View;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 
 /**

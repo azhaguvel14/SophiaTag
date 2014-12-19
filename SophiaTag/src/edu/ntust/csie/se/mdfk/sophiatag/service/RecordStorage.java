@@ -107,10 +107,10 @@ public class RecordStorage {
 	
 	public static class NecessaryRecord implements Serializable{
 		private final String rootDirectory;
-		private final MaterialPool pool;
+		private final MaterialList pool;
 		private final MaterialSearcher.TagDatabase tagDatabase;
 		
-		public NecessaryRecord(String rootDirectory, MaterialPool pool, MaterialSearcher.TagDatabase database) {
+		public NecessaryRecord(String rootDirectory, MaterialList pool, MaterialSearcher.TagDatabase database) {
 			this.rootDirectory = rootDirectory;
 			this.pool = pool;
 			this.tagDatabase = database;
@@ -121,7 +121,7 @@ public class RecordStorage {
 			return rootDirectory;
 		}
 
-		public MaterialPool getMaterialPool() {
+		public MaterialList getMaterialPool() {
 			return pool;
 		}
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.ntust.csie.se.mdfk.sophiatag.gui;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import javax.swing.JFrame;
 

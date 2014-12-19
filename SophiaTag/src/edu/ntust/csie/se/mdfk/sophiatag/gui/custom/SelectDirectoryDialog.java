@@ -1,4 +1,4 @@
-package edu.ntust.csie.se.mdfk.sophiatag.gui;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.custom;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

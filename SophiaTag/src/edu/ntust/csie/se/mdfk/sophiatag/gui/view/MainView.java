@@ -1,15 +1,20 @@
 /**
  * 
  */
-package edu.ntust.csie.se.mdfk.sophiatag.gui;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +23,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable.MaterialListModel;
+import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
 import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
 import edu.ntust.csie.se.mdfk.sophiatag.user.User;
 
@@ -50,16 +60,17 @@ public class MainView extends View {
 	private JLabel userLabel;
 
 	private JPanel searchPanel;
+	
 	/**
 	 * @param x
 	 * @param y
 	 * @param width
 	 * @param height
 	 */
-	public MainView(User user, String rootDir) {
+	public MainView(User user, String rootDir, MaterialList list) {
 		super(100, 100, 600, 600);
 		this.initializeLimitedFlagMap(user.getFunctionalLimitation());
-		this.initializeComponentState(user, rootDir);
+		this.initializeComponentState(user, rootDir, list);
 	}
 	
 	private void initializeLimitedFlagMap(FuntionalLimitation limitation) {
@@ -75,7 +86,12 @@ public class MainView extends View {
 		}
 	}
 	
-	private void initializeComponentState(User user, String rootDir) {
+	private void initializeComponentState(User user, String rootDir, MaterialList list) {
+		
+		this.getFrame().setResizable(true);
+		this.getFrame().setMinimumSize(new Dimension(600, 600));
+		
+		
 		this.userLabel.setText(user.getTitle());
 		this.rootDirLabel.setText(rootDir);
 		
@@ -92,6 +108,8 @@ public class MainView extends View {
 		this.discardButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE));
 		
 		this.discardButton.setEnabled(false);
+		this.getTableModel().setList(list);
+		
 	}
 	
 	@Override
@@ -248,7 +266,7 @@ public class MainView extends View {
 		
 		addTagButton = new JButton("+");
 		GridBagConstraints gbc_addTagButton = new GridBagConstraints();
-		gbc_addTagButton.anchor = GridBagConstraints.WEST;
+		gbc_addTagButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_addTagButton.insets = new Insets(0, 0, 5, 5);
 		gbc_addTagButton.gridx = 1;
 		gbc_addTagButton.gridy = 2;
@@ -286,14 +304,20 @@ public class MainView extends View {
 		gbc_resultHeader.gridy = 0;
 		tablePanel.add(resultHeader, gbc_resultHeader);
 		
-		materialTable = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.insets = new Insets(0, 0, 5, 0);
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 1;
-		tablePanel.add(getMaterialTable(), gbc_table);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		tablePanel.add(scrollPane, gbc_scrollPane);
 		
+		materialTable = new MaterialTable();
+		materialTable.setFillsViewportHeight(true);
+		scrollPane.setViewportView(materialTable);
+			
 		discardButton = new JButton("Discard");
 		GridBagConstraints gbc_discardButton = new GridBagConstraints();
 		gbc_discardButton.anchor = GridBagConstraints.SOUTHEAST;
@@ -319,14 +343,21 @@ public class MainView extends View {
 		this.addTagButton.addActionListener(sharedListener);
 		this.discardButton.addActionListener(sharedListener);
 		
-	}
+		this.getFrame().addWindowListener(new WindowAdapter() {
 
+			@Override
+			public void windowClosing(WindowEvent e) {
+				glue.handleEvent("window_closing", e);
+			}
+		});
+		
+	}
+	
+	public MaterialTable.MaterialListModel getTableModel() {
+		return (MaterialListModel) this.materialTable.getModel();
+	}
 	public JTextField getQueryField() {
 		return this.queryField;
-	}
-
-	public JTable getMaterialTable() {
-		return materialTable;
 	}
 
 	public JLabel getRootDirLabel() {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.ntust.csie.se.mdfk.sophiatag.gui;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.Font;
 import java.awt.Frame;
@@ -18,11 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LoginController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
-import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialPool;
+import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher;
 import edu.ntust.csie.se.mdfk.sophiatag.service.RecordStorage;
 import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
@@ -54,7 +55,6 @@ public class LoginView extends View {
 
 	@Override
 	protected void buildView(JFrame frame) {
-		
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
 		gbl_mainPanel.columnWidths = new int[]{0, 0};
 		gbl_mainPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -124,7 +124,7 @@ public class LoginView extends View {
 		gbc_loginAsLabel.gridy = 7;
 		mainPanel.add(loginAsLabel, gbc_loginAsLabel);
 				
-		adminLoginButton = new JButton("Adminitrator");
+		adminLoginButton = new JButton("Administrator");
 		GridBagConstraints gbc_adminLoginButton = new GridBagConstraints();
 		gbc_adminLoginButton.anchor = GridBagConstraints.WEST;
 		gbc_adminLoginButton.insets = new Insets(5, 0, 5, 5);

@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.LoginBundle;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.view.LoginView;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialScanner;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 import edu.ntust.csie.se.mdfk.sophiatag.user.IdentityAuthorizer;

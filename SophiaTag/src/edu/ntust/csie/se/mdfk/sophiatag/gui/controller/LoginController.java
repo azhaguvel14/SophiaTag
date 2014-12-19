@@ -2,11 +2,11 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.controller;
 
 import java.awt.event.ActionEvent;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.LoginView;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.MainView;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.SelectDirectoryDialog;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.View;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.MainBundle;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.SelectDirectoryDialog;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.view.LoginView;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.view.View;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 import edu.ntust.csie.se.mdfk.sophiatag.user.Administrator;
 import edu.ntust.csie.se.mdfk.sophiatag.user.Designer;
@@ -67,7 +67,7 @@ public class LoginController implements EventController<ActionEvent, LoginView> 
 	}
 	
 	private MainView setupMainView(SophiaTagServices services, User user) {
-		MainView view = new MainView(user, services.getRootDirectory());
+		MainView view = new MainView(user, services.getRootDirectory(), services.getMaterialList());
 		MVCGlue.glue(services, view, new MainBundle());
 		return view;
 			

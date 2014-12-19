@@ -76,8 +76,11 @@ public class Tag extends Attachable<Material>{
 		Tag tag = (Tag)object;
 		return this.getText().equals(tag.getText()) && this.getTargetsView().equals(tag.getTargetsView());
 	}
-
 	
+	@Override
+	public String toString() {
+		return this.getText();
+	}
 	
 }
 

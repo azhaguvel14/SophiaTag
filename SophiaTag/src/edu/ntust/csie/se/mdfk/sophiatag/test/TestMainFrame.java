@@ -23,12 +23,14 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Font;
 
 public class TestMainFrame {
 
 	private JFrame frame;
 	private JTextField queryField;
-	private JTable materialTable;
 	private JButton logoutButton;
 	private JLabel rootDirLabel;
 	private JButton changeDirButton;
@@ -40,11 +42,15 @@ public class TestMainFrame {
 	private JButton newTagButton;
 	private JPanel tagPanel;
 	private JButton discardButton;
+	private JScrollPane scrollPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+	
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -168,7 +174,7 @@ public class TestMainFrame {
 		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 0, 1.0};
 		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
-		materialProfilePanel.setVisible(false);
+//		materialProfilePanel.setVisible(false);
 		
 		JLabel fileNameHeader = new JLabel("File Name:");
 		GridBagConstraints gbc_fileNameHeader = new GridBagConstraints();
@@ -222,7 +228,7 @@ public class TestMainFrame {
 		
 		newTagButton = new JButton("+");
 		GridBagConstraints gbc_newTagButton = new GridBagConstraints();
-		gbc_newTagButton.anchor = GridBagConstraints.WEST;
+		gbc_newTagButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_newTagButton.insets = new Insets(0, 0, 5, 5);
 		gbc_newTagButton.gridx = 1;
 		gbc_newTagButton.gridy = 2;
@@ -248,7 +254,7 @@ public class TestMainFrame {
 		GridBagLayout gbl_tablePanel = new GridBagLayout();
 		gbl_tablePanel.columnWidths = new int[]{0};
 		gbl_tablePanel.rowHeights = new int[]{0, 0, 0};
-		gbl_tablePanel.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_tablePanel.columnWeights = new double[]{1.0};
 		gbl_tablePanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		tablePanel.setLayout(gbl_tablePanel);
 		
@@ -260,13 +266,19 @@ public class TestMainFrame {
 		gbc_resultHeader.gridy = 0;
 		tablePanel.add(resultHeader, gbc_resultHeader);
 		
-		materialTable = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.insets = new Insets(0, 0, 5, 0);
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 1;
-		tablePanel.add(materialTable, gbc_table);
+		scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		tablePanel.add(scrollPane, gbc_scrollPane);
+		
+		table = new JTable();
+		table.setFillsViewportHeight(true);
+		scrollPane.setViewportView(table);
 		
 		discardButton = new JButton("Discard");
 		GridBagConstraints gbc_discardButton = new GridBagConstraints();
@@ -275,6 +287,4 @@ public class TestMainFrame {
 		gbc_discardButton.gridy = 2;
 		tablePanel.add(discardButton, gbc_discardButton);	
 	}
-	
-	
 }
