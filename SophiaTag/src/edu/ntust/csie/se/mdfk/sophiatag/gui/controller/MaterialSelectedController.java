@@ -27,7 +27,7 @@ public class MaterialSelectedController implements MainViewEventController<ListS
 			// add the selected material to Scope,and then set to the Material Profile
 			
 		} else {
-			// remove the selected material from Scope,and then set to the Material Profile to null
+			// remove the selected material from Scope,and then set the Material Profile to null
 			
 		}
 		
