@@ -4,21 +4,22 @@
 package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -35,8 +36,12 @@ import javax.swing.event.ListSelectionListener;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialListModel;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable.MaterialListModel;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton.TextChangedEvent;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton.TextChangedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
 import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
 import edu.ntust.csie.se.mdfk.sophiatag.user.User;
@@ -66,7 +71,10 @@ public class MainView extends View {
 
 	private JPanel searchPanel;
 	
-	private MaterialTable.MaterialListModel tableModel;
+	private MaterialListModel tableModel;
+	
+	private ActionListener sharedTagRemovedListner;
+	private TextChangedListener sharedTagEditedListener;
 	/**
 	 * @param x
 	 * @param y
@@ -74,7 +82,8 @@ public class MainView extends View {
 	 * @param height
 	 */
 	public MainView(User user, String rootDir, MaterialList list) {
-		super(100, 100, 600, 600);
+		super(100, 100, 1000, 700);
+		
 		this.initializeLimitedFlagMap(user.getFunctionalLimitation());
 		this.initializeComponentState(user, rootDir, list);
 	}
@@ -95,12 +104,11 @@ public class MainView extends View {
 	private void initializeComponentState(User user, String rootDir, MaterialList list) {
 		
 		this.getFrame().setResizable(true);
-		this.getFrame().setMinimumSize(new Dimension(600, 600));
-		
-//		materialProfilePanel.setVisible(false);
+		this.getFrame().setMinimumSize(new Dimension(600, 700));
+		materialProfilePanel.setVisible(false);
 		
 		this.userLabel.setText(user.getTitle());
-		this.rootDirLabel.setText(rootDir);
+		this.setRootDirText(rootDir);
 		
 		this.logoutButton.setActionCommand("logout");
 		this.changeRootDirButton.setActionCommand("change_root_dir");
@@ -114,7 +122,8 @@ public class MainView extends View {
 		this.addTagButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL));
 		this.discardButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE));
 		
-		this.discardButton.setEnabled(false);
+		this.setDiscardButtonEnabled(false);
+		
 		this.getTableModel().setList(list);
 		
 	}
@@ -142,6 +151,7 @@ public class MainView extends View {
 		mainPanel.add(userPanel, gbc_userPanel);
 		
 		JLabel userHeader = new JLabel("User:");
+		boldLabel(userHeader);
 		userPanel.add(userHeader);
 		
 		userLabel = new JLabel();
@@ -163,17 +173,18 @@ public class MainView extends View {
 		mainPanel.add(rootDirPanel, gbc_rootDirPanel);
 		
 		JLabel rootDirHeader = new JLabel("Root Directory:");
+		boldLabel(rootDirHeader);
 		rootDirPanel.add(rootDirHeader);
 		
 		rootDirLabel = new JLabel();
-		rootDirPanel.add(getRootDirLabel());
+		rootDirPanel.add(rootDirLabel);
 		
 		changeRootDirButton = new JButton("Change");
 		rootDirPanel.add(changeRootDirButton);
 		
 		searchPanel = new JPanel();
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.gridwidth = 2;
+		gbc_panel_3.gridwidth = 1;
 		gbc_panel_3.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_3.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_3.gridx = 0;
@@ -192,8 +203,8 @@ public class MainView extends View {
 		gbc_queryField.insets = new Insets(0, 0, 0, 5);
 		gbc_queryField.gridx = 0;
 		gbc_queryField.gridy = 0;
-		searchPanel.add(getQueryField(), gbc_queryField);
-		getQueryField().setColumns(10);
+		searchPanel.add(queryField, gbc_queryField);
+		queryField.setColumns(10);
 		
 		searchButton = new JButton("Search");
 		GridBagConstraints gbc_searchButton = new GridBagConstraints();
@@ -206,6 +217,7 @@ public class MainView extends View {
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();
+		gbc_materialProfilePanel.weighty = 2;
 		gbc_materialProfilePanel.insets = new Insets(10, 0, 10, 0);
 		gbc_materialProfilePanel.gridwidth = 2;
 		gbc_materialProfilePanel.fill = GridBagConstraints.BOTH;
@@ -215,11 +227,12 @@ public class MainView extends View {
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 0, 1.0};
+		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0};
 		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
 		
 		JLabel fileNameHeader = new JLabel("File Name:");
+		boldLabel(fileNameHeader);
 		GridBagConstraints gbc_fileNameHeader = new GridBagConstraints();
 		gbc_fileNameHeader.gridwidth = 2;
 		gbc_fileNameHeader.anchor = GridBagConstraints.WEST;
@@ -237,6 +250,7 @@ public class MainView extends View {
 		materialProfilePanel.add(materialNameLabel, gbc_fileNameLabel);
 		
 		JLabel directoryHeader = new JLabel("Directory:");
+		boldLabel(directoryHeader);
 		GridBagConstraints gbc_directoryHeader = new GridBagConstraints();
 		gbc_directoryHeader.gridwidth = 2;
 		gbc_directoryHeader.anchor = GridBagConstraints.WEST;
@@ -262,7 +276,8 @@ public class MainView extends View {
 		materialProfilePanel.add(openDirButton, gbc_openDirButton);
 		
 		
-		JLabel tagHeader = new JLabel("Tag:");
+		JLabel tagHeader = new JLabel("Tags:");
+		boldLabel(tagHeader);
 		GridBagConstraints gbc_tagHeader = new GridBagConstraints();
 		gbc_tagHeader.anchor = GridBagConstraints.WEST;
 		gbc_tagHeader.insets = new Insets(0, 0, 5, 5);
@@ -278,18 +293,27 @@ public class MainView extends View {
 		gbc_addTagButton.gridy = 2;
 		materialProfilePanel.add(addTagButton, gbc_addTagButton);
 		
+
+		JScrollPane tagScrollPane = new JScrollPane();
+		
+		tagScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		GridBagConstraints gbc_tagScrollPane = new GridBagConstraints();
+		gbc_tagScrollPane.gridwidth = 4;
+		gbc_tagScrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_tagScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_tagScrollPane.gridx = 0;
+		gbc_tagScrollPane.gridy = 3;
+		materialProfilePanel.add(tagScrollPane, gbc_tagScrollPane);
+		
 		tagPanel = new JPanel();
-		GridBagConstraints gbc_tagPanel = new GridBagConstraints();
-		gbc_tagPanel.gridwidth = 4;
-		gbc_tagPanel.insets = new Insets(0, 0, 0, 5);
-		gbc_tagPanel.fill = GridBagConstraints.BOTH;
-		gbc_tagPanel.gridx = 0;
-		gbc_tagPanel.gridy = 3;
-		materialProfilePanel.add(tagPanel, gbc_tagPanel);
-		tagPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		tagScrollPane.setViewportView(tagPanel);
+		WrapLayout wl_tagPanel = new WrapLayout();
+		wl_tagPanel.setAlignment(FlowLayout.LEFT);
+		tagPanel.setLayout(wl_tagPanel);
 		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
+		gbc_tablePanel.weighty = 10.0;
 		gbc_tablePanel.gridwidth = 2;
 		gbc_tablePanel.fill = GridBagConstraints.BOTH;
 		gbc_tablePanel.gridx = 0;
@@ -333,9 +357,31 @@ public class MainView extends View {
 		gbc_discardButton.gridy = 2;
 		tablePanel.add(discardButton, gbc_discardButton);	
 	}
-
+	
+	private void boldLabel(JLabel label) {
+		label.setFont(label.getFont().deriveFont(Font.BOLD));
+	}
+	
 	@Override
 	public void bindEvent(final MVCGlue glue) {
+		this.sharedTagEditedListener = new TextChangedListener() {
+
+			@Override
+			public void textChanged(TextChangedEvent event) {
+				glue.handleEvent("edit_tag", event);
+			}
+			
+		};
+		
+		this.sharedTagRemovedListner = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				glue.handleEvent("remove_tag", event);
+			}
+			
+		};
+		
 		ActionListener sharedListener = new ActionListener() {
 
 			@Override
@@ -351,6 +397,20 @@ public class MainView extends View {
 		this.addTagButton.addActionListener(sharedListener);
 		this.discardButton.addActionListener(sharedListener);
 		
+		this.queryField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					glue.handleEvent("search", null);
+				}
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				glue.handleEvent("search", null);
+			}
+		});
+		
 		this.materialTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -365,30 +425,86 @@ public class MainView extends View {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				glue.handleEvent("window_closing", e);
+				getTableModel().unsubscribeUpdates();
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.out.println("closed");
+				
 			}
 		});
 		
 	}
 	
-	public MaterialTable.MaterialListModel getTableModel() {
+	public MaterialListModel getTableModel() {
 		return tableModel;
 	}
-	public JTextField getQueryField() {
-		return queryField;
+	public String getQueryText() {
+		return queryField.getText();
 	}
-
-	public JLabel getRootDirLabel() {
-		return rootDirLabel;
+	
+	public void setDiscardButtonEnabled(boolean enabled) {
+		this.discardButton.setEnabled(enabled);
 	}
-
+	
+	public void setRootDirText(String rootDir) {
+		this.rootDirLabel.setText(rootDir);
+		this.getTableModel().setRootDirectory(rootDir);
+	}
+	
+	public void addTag(Tag tag) {
+		this.addTagButton(tag, true).editTag();
+	}
+	
+	public void removeTagButton(TagButton button) {
+		this.removeListenersFromTagButton(button);
+		this.tagPanel.remove(button);
+		this.tagPanel.validate();
+		this.tagPanel.repaint();
+	}
+	
 	public void setMaterialToProfile(Material material) {
 		// TODO: implemented by Tung, notice the helper method below
-		// refer to the fields declared on top of this class  
+		// refer to the fields declared on top of this class
+		// it may pass null as the argument, then you have to hide profilePanel 
+		
 	}
 	
 	private void setupTagPanel(Iterable<Tag> tags) {
-		// you should generate TagButtons that bind to tags,
-		// and add buttons into tagPanel with "add" method(the layout is set beforehand, don't worry about it)
+		/* you should clear buttons on tagPanel first (use clearTagPanel())
+		* 1. loop through the tags (using "for each" loop),
+		* 2. using "addTagButton" method to convert the tag into a button then add it into the panel.
+		* 3. you should use "limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL)" 
+		* to set the editability of buttons
+		* 4. after adding buttons, you have to call "validate()" and "repaint()" method of tagPanel to 
+		* make sure the buttons are laied out and painted properly   
+		*/
 		
 	}
+	
+	private void clearTagPanel() {
+		Component[] buttons = (Component[])this.tagPanel.getComponents();
+		for (Component button: buttons) {
+			removeListenersFromTagButton((TagButton) button);
+		}
+		
+		this.tagPanel.removeAll();
+		
+		
+	}
+	
+	private void removeListenersFromTagButton(TagButton button) {
+		button.removeTextChangedListener(sharedTagEditedListener);
+		button.removeRemoveListener(sharedTagRemovedListner);
+	}
+	
+	private TagButton addTagButton(Tag tag, boolean editable) {
+		TagButton button = new TagButton(tag, editable);
+		button.addTextChangedListener(sharedTagEditedListener);
+		button.addRemoveListener(sharedTagRemovedListner);
+		this.tagPanel.add(button);
+		return button;
+	}
+	
 }

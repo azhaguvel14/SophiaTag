@@ -4,7 +4,6 @@
 package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,15 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LoginController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
-import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
-import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
-import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher;
-import edu.ntust.csie.se.mdfk.sophiatag.service.RecordStorage;
-import edu.ntust.csie.se.mdfk.sophiatag.user.FuntionalLimitation;
 
 /**
  * @author maeglin89273

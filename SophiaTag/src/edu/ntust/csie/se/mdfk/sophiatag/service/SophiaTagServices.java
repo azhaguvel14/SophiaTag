@@ -3,10 +3,8 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 
-import java.awt.event.ActionListener;
+import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher.TagDatabase;
 
-import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.SelectDirectoryDialog;
 
 /**
  * @author maeglin89273
@@ -20,12 +18,14 @@ public class SophiaTagServices {
 	private MaterialScanner scanner;
 	private MaterialList list;
 	private RecordStorage storage;
+	private Scope scope;
 	
 	private boolean ready = false;
 	
 	public SophiaTagServices() {
 		
 		this.storage = new RecordStorage();
+		this.scope = new Scope();
 		
 		if (storage.hasSavedRecord()) {
 			initializeRecordedServices(this.storage);
@@ -33,11 +33,6 @@ public class SophiaTagServices {
 			this.ready = true;
 		}
 		
-		
-//		
-//		for(Material material: this.pool) {
-//			System.out.println(material.getName());
-//		}
 		
 	}
 	
@@ -52,15 +47,17 @@ public class SophiaTagServices {
 	}
 	
 	private void initializeRecordedServices(RecordStorage storage) {
-		//the record is guaranteed available due to the record guard
 		if (!storage.hasSavedRecord()) {
 			throw new IllegalStateException("The record file should be created on the file system beforehand");
 		}
 		
 		RecordStorage.NecessaryRecord record = storage.loadRecord();
 		this.scanner = new MaterialScanner(record.getRootDirectory());
-		this.list = record.getMaterialPool();
-		this.searcher = new MaterialSearcher(record.getTagDatabase());
+		this.list = record.getMaterialList();
+		this.list.restoreInit();
+		TagDatabase db = record.getTagDatabase();
+		db.restoreInit();
+		this.searcher = new MaterialSearcher(db);
 					
 	}
 	
@@ -75,7 +72,7 @@ public class SophiaTagServices {
 	public void saveRecord() {
 		RecordStorage.NecessaryRecord record = new RecordStorage.NecessaryRecord(this.scanner.getRootDirectory(),
 																				 this.getMaterialList(),
-																				 this.getMaterialSearcher().getDatabase());
+																				 this.getMaterialSearcher().getTagDatabase());
 		this.storage.saveRecord(record);
 	}
 	
@@ -89,7 +86,7 @@ public class SophiaTagServices {
 			return;
 		}
 		
-		this.getMaterialSearcher().getDatabase().drop();
+		this.getMaterialSearcher().getTagDatabase().drop();
 		this.scanner.setRootDirectory(path);
 		this.getMaterialList().setList(this.scanner.newScan());
 		
@@ -99,6 +96,10 @@ public class SophiaTagServices {
 	
 	public String getRootDirectory() {
 		return this.scanner.getRootDirectory();
+	}
+	
+	public Scope getScope() {
+		return this.scope;
 	}
 
 }

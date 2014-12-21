@@ -1,31 +1,27 @@
 package edu.ntust.csie.se.mdfk.sophiatag.test;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-
 import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-
-import javax.swing.border.EmptyBorder;
-
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
-
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JTextField;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JTable;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import java.awt.Font;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
+import java.awt.Color;
 
 public class TestMainFrame {
 
@@ -40,10 +36,16 @@ public class TestMainFrame {
 	private JButton openDirButton;
 	private JPanel materialProfilePanel;
 	private JButton newTagButton;
-	private JPanel tagPanel;
 	private JButton discardButton;
 	private JScrollPane scrollPane;
 	private JTable table;
+	private JScrollPane tagScrollPane;
+	private JPanel tagPanel;
+	private JButton btnNewButton;
+	private JButton btnNewButton_1;
+	private JButton btnNewButton_2;
+	private JButton btnNewButton_3;
+	private TagButton tagButton;
 
 	/**
 	 * Launch the application.
@@ -86,7 +88,7 @@ public class TestMainFrame {
 		gbl_mainPanel.columnWidths = new int[]{0};
 		gbl_mainPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_mainPanel.columnWeights = new double[]{1.0};
-		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
 		mainPanel.setLayout(gbl_mainPanel);
 		
 		JPanel userPanel = new JPanel();
@@ -162,6 +164,7 @@ public class TestMainFrame {
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();
+		gbc_materialProfilePanel.weighty = 1.5;
 		gbc_materialProfilePanel.insets = new Insets(10, 0, 10, 0);
 		gbc_materialProfilePanel.gridwidth = 2;
 		gbc_materialProfilePanel.fill = GridBagConstraints.BOTH;
@@ -171,23 +174,24 @@ public class TestMainFrame {
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 0, 1.0};
+		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 1, 0};
 		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
 //		materialProfilePanel.setVisible(false);
 		
 		JLabel fileNameHeader = new JLabel("File Name:");
 		GridBagConstraints gbc_fileNameHeader = new GridBagConstraints();
-		gbc_fileNameHeader.gridwidth = 2;
 		gbc_fileNameHeader.anchor = GridBagConstraints.WEST;
+		gbc_fileNameHeader.gridwidth = 2;
 		gbc_fileNameHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_fileNameHeader.gridx = 0;
 		gbc_fileNameHeader.gridy = 0;
 		materialProfilePanel.add(fileNameHeader, gbc_fileNameHeader);
 		
 		fileNameLabel = new JLabel();
+		fileNameLabel.setText("filienamefilienamefilienamefilienamefiliename");
 		GridBagConstraints gbc_fileNameLabel = new GridBagConstraints();
-		gbc_fileNameLabel.anchor = GridBagConstraints.WEST;
+		gbc_fileNameLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fileNameLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_fileNameLabel.gridx = 2;
 		gbc_fileNameLabel.gridy = 0;
@@ -195,16 +199,17 @@ public class TestMainFrame {
 		
 		JLabel directoryHeader = new JLabel("Directory:");
 		GridBagConstraints gbc_directoryHeader = new GridBagConstraints();
-		gbc_directoryHeader.gridwidth = 2;
 		gbc_directoryHeader.anchor = GridBagConstraints.WEST;
+		gbc_directoryHeader.gridwidth = 2;
 		gbc_directoryHeader.insets = new Insets(0, 0, 5, 5);
 		gbc_directoryHeader.gridx = 0;
 		gbc_directoryHeader.gridy = 1;
 		materialProfilePanel.add(directoryHeader, gbc_directoryHeader);
 		
 		fileDirLabel = new JLabel();
+		fileDirLabel.setText("directorydirectorydirectorydirectorydirectory");
 		GridBagConstraints gbc_fileDirectoryLabel = new GridBagConstraints();
-		gbc_fileDirectoryLabel.anchor = GridBagConstraints.WEST;
+		gbc_fileDirectoryLabel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fileDirectoryLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_fileDirectoryLabel.gridx = 2;
 		gbc_fileDirectoryLabel.gridy = 1;
@@ -234,18 +239,41 @@ public class TestMainFrame {
 		gbc_newTagButton.gridy = 2;
 		materialProfilePanel.add(newTagButton, gbc_newTagButton);
 		
+		tagScrollPane = new JScrollPane();
+		
+		tagScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		GridBagConstraints gbc_tagScrollPane = new GridBagConstraints();
+		gbc_tagScrollPane.gridwidth = 4;
+		gbc_tagScrollPane.insets = new Insets(0, 0, 0, 5);
+		gbc_tagScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_tagScrollPane.gridx = 0;
+		gbc_tagScrollPane.gridy = 3;
+		materialProfilePanel.add(tagScrollPane, gbc_tagScrollPane);
+		
 		tagPanel = new JPanel();
-		GridBagConstraints gbc_tagPanel = new GridBagConstraints();
-		gbc_tagPanel.gridwidth = 4;
-		gbc_tagPanel.insets = new Insets(0, 0, 0, 5);
-		gbc_tagPanel.fill = GridBagConstraints.BOTH;
-		gbc_tagPanel.gridx = 0;
-		gbc_tagPanel.gridy = 3;
-		materialProfilePanel.add(tagPanel, gbc_tagPanel);
-		tagPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		tagScrollPane.setViewportView(tagPanel);
+		WrapLayout wl_tagPanel = new WrapLayout();
+		wl_tagPanel.setAlignment(FlowLayout.LEFT);
+		tagPanel.setLayout(wl_tagPanel);
+		
+		btnNewButton = new JButton("New button");
+		tagPanel.add(btnNewButton);
+		
+		btnNewButton_1 = new JButton("New button");
+		tagPanel.add(btnNewButton_1);
+		
+		tagButton = new TagButton();
+		tagPanel.add(tagButton);
+		
+		btnNewButton_2 = new JButton("New button");
+		tagPanel.add(btnNewButton_2);
+		
+		btnNewButton_3 = new JButton("New button");
+		tagPanel.add(btnNewButton_3);
 		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
+		gbc_tablePanel.weighty = 5.0;
 		gbc_tablePanel.gridwidth = 2;
 		gbc_tablePanel.fill = GridBagConstraints.BOTH;
 		gbc_tablePanel.gridx = 0;

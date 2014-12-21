@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
@@ -32,7 +33,7 @@ public class MaterialScanner {
 	 * @ordered
 	 */
 	
-	private File rootDirectory;
+	private Path rootDirectory;
 	
 
 	/**
@@ -56,7 +57,7 @@ public class MaterialScanner {
 	 */
 	
 	public void setRootDirectory(String directory) {
-		this.rootDirectory = new File(directory);	
+		this.rootDirectory = Paths.get(directory);	
 	}
 	
 	/**
@@ -67,9 +68,8 @@ public class MaterialScanner {
 	 */
 	
 	public String getRootDirectory() {
-		return this.rootDirectory.getAbsolutePath();	
+		return this.rootDirectory.toAbsolutePath().toString();	
 	}
-	
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -95,7 +95,7 @@ public class MaterialScanner {
 		final List<File> result = new LinkedList<File>();
 		
 		try {
-			Files.walkFileTree(this.rootDirectory.toPath(), new SimpleFileVisitor<Path>() {
+			Files.walkFileTree(this.rootDirectory, new SimpleFileVisitor<Path>() {
 				@Override
 				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 					result.add(file.toFile().getAbsoluteFile());

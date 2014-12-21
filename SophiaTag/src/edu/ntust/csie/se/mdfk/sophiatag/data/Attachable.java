@@ -36,9 +36,12 @@ public abstract class Attachable<T> implements Serializable{
 		return Collections.unmodifiableSet(targets);
 	}
 	
+	public final boolean isAttachedTo(T target) {
+		return targets.contains(target);
+	}
+	
 	protected final void clearTargets() {
 		targets.clear();
 	}
 	
-	public abstract int hashCode();
 }

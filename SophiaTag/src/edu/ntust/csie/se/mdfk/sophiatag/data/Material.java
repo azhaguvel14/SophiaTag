@@ -1,7 +1,7 @@
 package edu.ntust.csie.se.mdfk.sophiatag.data;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -12,6 +12,11 @@ import java.util.Set;
  */
 
 public class Material extends Attachable<Tag>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2932481917508753080L;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -30,7 +35,6 @@ public class Material extends Attachable<Tag>{
 	
 	private final File path;
 	
-
 	/**
 	 * constructor
 	 * <!-- begin-user-doc -->
@@ -51,7 +55,7 @@ public class Material extends Attachable<Tag>{
 	 */
 	
 	public String getName() {
-		return path.getName();	
+		return this.path.getName();	
 	}
 	
 	/**
@@ -61,7 +65,7 @@ public class Material extends Attachable<Tag>{
 	 * @ordered
 	 */
 	
-	public String getDirectoryPath() {
+	public String getDirectory() {
 		return this.path.getParent();
 	}
 	
@@ -103,38 +107,6 @@ public class Material extends Attachable<Tag>{
 		this.clearTargets();
 		return tags;	
 	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public int hashCode() {
-		return path.hashCode();	
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public boolean equals(Object object) {
-		if (!(object instanceof Material)) {
-			return false;
-		}
-		
-		Material material = (Material)object;
-		
-		return this.path.equals(material.path) &&
-			   this.isLost() == material.isLost() &&
-			   this.getTargetsView().equals(material.getTargetsView());
-	}
-	
-	
 	
 }
 

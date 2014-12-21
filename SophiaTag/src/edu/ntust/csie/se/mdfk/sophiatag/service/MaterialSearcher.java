@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
+import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.TagTextChangedListener;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class MaterialSearcher {
 		
 	}
 	
-	public TagDatabase getDatabase() {
+	public TagDatabase getTagDatabase() {
 		return this.database;
 	}
 	/**
@@ -132,6 +133,7 @@ public class MaterialSearcher {
 		
 		public TagDatabase() {
 			this.tagMap = new HashMap<String, Tag>();
+			this.restoreInit();
 		}
 		
 		public Tag getTag(String tagLiteral) {
@@ -157,6 +159,13 @@ public class MaterialSearcher {
 			if (!tag.isAttached()) {
 				this.tagMap.remove(tag.getText());
 			}
+			
+		}
+		
+
+		void restoreInit() {
+			MaterialTagger.getInstance().addMaterialTaggedListener(this);
+			MaterialTagger.getInstance().addTagTextChangedListener(this);
 		}
 	}
 }

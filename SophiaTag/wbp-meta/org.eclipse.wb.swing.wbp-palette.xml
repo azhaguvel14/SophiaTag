@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <palette>
 	<category id="someUniqueId" name="Custom category" description="Category added for project SophiaTag" open="true">
-		<component class="javax.swing.JButton"/>
-		<component class="javax.swing.JRadioButton" name="Your name" description="You can write any description here."/>
+		<component class="edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton" description="Tag Button"/>
 	</category>
 </palette>

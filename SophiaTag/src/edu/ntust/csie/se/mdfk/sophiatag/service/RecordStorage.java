@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
+
+import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 
 
 /**
@@ -107,12 +110,12 @@ public class RecordStorage {
 	
 	public static class NecessaryRecord implements Serializable{
 		private final String rootDirectory;
-		private final MaterialList pool;
+		private final MaterialList list;
 		private final MaterialSearcher.TagDatabase tagDatabase;
 		
-		public NecessaryRecord(String rootDirectory, MaterialList pool, MaterialSearcher.TagDatabase database) {
+		public NecessaryRecord(String rootDirectory, MaterialList list, MaterialSearcher.TagDatabase database) {
 			this.rootDirectory = rootDirectory;
-			this.pool = pool;
+			this.list = list;
 			this.tagDatabase = database;
 			
 		}
@@ -121,8 +124,8 @@ public class RecordStorage {
 			return rootDirectory;
 		}
 
-		public MaterialList getMaterialPool() {
-			return pool;
+		public MaterialList getMaterialList() {
+			return list;
 		}
 
 		public MaterialSearcher.TagDatabase getTagDatabase() {

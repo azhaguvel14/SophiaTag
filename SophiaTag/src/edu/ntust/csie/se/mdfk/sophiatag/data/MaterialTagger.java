@@ -1,13 +1,9 @@
 package edu.ntust.csie.se.mdfk.sophiatag.data;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Set;
-import java.util.HashSet;
 
 
 /**
@@ -132,7 +128,6 @@ public class MaterialTagger {
 	public void detachTagFromMaterial(Tag tag, Material material) {
 		tag.detachedFrom(material);	
 		material.detachedFrom(tag);
-		
 		this.eventDispatcher.dispatch(this.invokers.get("dtfm"), tag, material);
 	}
 	
@@ -160,9 +155,10 @@ public class MaterialTagger {
 	 */
 	
 	public void changeTextOfTag(String text, Tag tag) {
+		String oldText = tag.getText();
 		tag.setText(text);
 		
-		this.eventDispatcher.dispatch(this.invokers.get("ctot"), text, tag);
+		this.eventDispatcher.dispatch(this.invokers.get("ctot"), oldText, tag);
 	}
 	
 	
@@ -175,7 +171,7 @@ public class MaterialTagger {
 	}
 	
 	public void addMaterialDiscardedListener(MaterialDiscardedListener listener) {
-		this.eventDispatcher.addListener(MaterialTaggedListener.class, listener);
+		this.eventDispatcher.addListener(MaterialDiscardedListener.class, listener);
 	}
 	
 	public void removeMaterialDiscardedListener(MaterialDiscardedListener listener) {

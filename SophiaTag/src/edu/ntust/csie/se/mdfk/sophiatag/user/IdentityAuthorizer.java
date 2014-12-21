@@ -34,7 +34,6 @@ public class IdentityAuthorizer {
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-		char[] a;
 		
 		byte[] message = digest.digest(rawPassword.getBytes());
 		

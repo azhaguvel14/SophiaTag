@@ -1,33 +1,35 @@
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
-import edu.ntust.csie.se.mdfk.sophiatag.data.UniqueList;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.List;
-import java.util.HashSet;
-
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialDiscardedListener;
+import edu.ntust.csie.se.mdfk.sophiatag.data.UniqueList;
 
 
 public class MaterialList implements MaterialDiscardedListener, Iterable<Material>, Serializable {
 	
 	private List<Material> materials;
-	private MaterialList selection = null;
+	private transient MaterialList selection = null;
+	private transient List<MaterialRemovedListener> listeners;
 	
 	MaterialList() {
 		this(new UniqueList<Material>());
 	}
 	
-	public MaterialList(Collection<Material> materials) {
-			this.materials = new UniqueList<Material>(materials);
-			MaterialTagger.getInstance().addMaterialDiscardedListener(this);
+	MaterialList(Collection<Material> materials) {
+		this.materials = new UniqueList<Material>(materials);
+		restoreInit();
+	}
+	
+	void restoreInit() {
+		this.listeners = new ArrayList<MaterialRemovedListener>();
+		MaterialTagger.getInstance().addMaterialDiscardedListener(this);
 	}
 	
 	public void addMaterial(Material material) {
@@ -46,6 +48,10 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		return this.materials.get(index);
 	}
 	
+	public int indexOf(Material material) {
+		return this.materials.indexOf(material);
+	}
+	
 	public int size() {
 		return this.materials.size();
 	}
@@ -56,7 +62,18 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	}
 	
 	public void onDiscarded(Material material) {
+		
+		int index = materials.indexOf(material);
 		materials.remove(material);
+		
+		this.notifyMaterialRemovedListener(material, index);
+	}
+	
+	private void notifyMaterialRemovedListener(Material material, int index) {
+		for (int i = listeners.size() - 1; i >= 0; i--)  {
+			listeners.get(i).onRemoved(material, index);
+		}
+		
 	}
 	
 	public MaterialList select(Set<Material> selections) {
@@ -69,14 +86,26 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		return this.selection;
 		
 	}
-
+	
 	@Override
 	public Iterator<Material> iterator() {
 		return this.materials.iterator();
 	}
 	
+	public void addMaterialRemovedListener(MaterialRemovedListener listener) {
+		this.listeners.add(listener);
+	}
+	
+	public void removeMaterialRemovedListener(MaterialRemovedListener listener) {
+		this.listeners.remove(listener);
+	}
+	
+	
+	public interface MaterialRemovedListener {
+		public abstract void onRemoved(Material material, int indexInList);
+	}
+	
 	private class Selection extends MaterialList {
-		private List<Material> parent;
 		
 		private Selection(Set<Material> selections, List<Material> parent) {
 			selections.retainAll(parent);
@@ -85,16 +114,25 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		
 		@Override
 		public void addMaterial(Material material) {
-			this.parent.add(material);
+			MaterialList.this.addMaterial(material);
 			super.addMaterial(material);
 		}
 		
 		@Override
 		public void addMaterials(Collection<Material> materials) {
-			this.parent.addAll(materials);
+			MaterialList.this.addMaterials(materials);
 			super.addMaterials(materials);
 		}
 		
+		@Override
+		public void addMaterialRemovedListener(MaterialRemovedListener listener) {
+			MaterialList.this.addMaterialRemovedListener(listener);
+		}
+		
+		@Override
+		public void removeMaterialRemovedListener(MaterialRemovedListener listener) {
+			MaterialList.this.removeMaterialRemovedListener(listener);
+		}
 	}
 	
 }
