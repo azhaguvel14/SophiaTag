@@ -11,7 +11,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LogoutController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialSelectedController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.SearchController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.WindowClosingController;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton.TextChangedEvent;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.TextChangedEvent;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
 
 /**

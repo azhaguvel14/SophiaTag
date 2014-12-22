@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -26,7 +26,7 @@ import javax.swing.plaf.synth.SynthTextFieldUI;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButtonBorder.Mode;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButtonBorder.Mode;
 
 /**
  * @author maeglin89273

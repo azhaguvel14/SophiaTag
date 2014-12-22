@@ -16,10 +16,11 @@ import java.awt.Font;
 
 import javax.swing.UIManager;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButtonBorder;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButtonUI;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButtonBorder;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButtonUI;
+
 import javax.swing.BoxLayout;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton;
 import javax.swing.JLabel;
 
 public class TestTagButton extends JFrame {

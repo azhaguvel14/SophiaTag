@@ -76,7 +76,7 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		
 	}
 	
-	public MaterialList select(Set<Material> selections) {
+	public MaterialList select(Collection<Material> selections) {
 		if (this.selection == null) {
 			this.selection = new Selection(selections, materials);
 		} else {
@@ -107,7 +107,7 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	
 	private class Selection extends MaterialList {
 		
-		private Selection(Set<Material> selections, List<Material> parent) {
+		private Selection(Collection<Material> selections, List<Material> parent) {
 			selections.retainAll(parent);
 			this.addMaterials(selections);
 		}

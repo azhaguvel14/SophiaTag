@@ -19,8 +19,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton;
+
 import java.awt.Color;
 
 public class TestMainFrame {

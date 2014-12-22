@@ -1,4 +1,4 @@
-package edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton;
 
 import java.awt.Color;
 import java.awt.RenderingHints;

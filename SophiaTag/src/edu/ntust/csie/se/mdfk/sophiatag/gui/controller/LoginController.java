@@ -55,15 +55,16 @@ public class LoginController implements EventController<ActionEvent, LoginView> 
 	}
 	
 	private void makeServicesReady(SophiaTagServices services, View view) throws IllegalStateException {
-		if (!services.isServiceReady()) {
-			String path = SelectDirectoryDialog.showSelectDirectoryDialog(view.getFrame(), "Choose the root directory of the materials:");
-			if (path == null) {
-				throw new IllegalStateException("The scanning path is not set");
-			}
-			
-			services.newScan(path);
+		if (services.isServiceReady()) {
+			return;
 		}
 		
+		String path = SelectDirectoryDialog.showSelectDirectoryDialog(view.getFrame(), "Choose the root directory of the materials:");
+		if (path == null) {
+			throw new IllegalStateException("The scanning path is not set");
+		}
+		
+		services.newScan(path);
 	}
 	
 	private MainView setupMainView(SophiaTagServices services, User user) {

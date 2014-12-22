@@ -2,6 +2,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.custom;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -21,8 +22,12 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	
 	private List<String> columnList;
 	private MaterialListModel.GetFieldFunction[] getFieldFunctions;
+	
 	private MaterialList content = null;
+	private Collection<Tag> highlights;
 	private Path rootDir;
+	
+	private static final Class<?>[] classes = {Material.class, String.class, Collection.class};
 	
 	public MaterialListModel() {
 		initializeColumnList();
@@ -63,20 +68,10 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 		this.getFieldFunctions[2] = new GetFieldFunction() {
 			@Override
 			public Object getSpecificField(Material material) {
-				return this.toTagsString(material.getTargetsView());
+				return material.getTargetsView();
 			}
 			
-			private String toTagsString(Set<Tag> tags) {
-				StringBuffer value = new StringBuffer();
-				for (Iterator<Tag> iter = tags.iterator(); iter.hasNext();) {
-					value.append(iter.next().getText());
-					if (iter.hasNext()) {
-						value.append(", ");
-					}
-				}
-				
-				return value.toString();
-			}
+			
 		};
 		
 	}
@@ -92,7 +87,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 
     
     public Class<?> getColumnClass(int columnIndex) {
-        return columnIndex == 0 ? Material.class: String.class;
+        return classes[columnIndex];
     }
 	
 	@Override
@@ -133,6 +128,15 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 		MaterialTagger.getInstance().removeTagTextChangedListener(this);
 	}
 	
+
+	public void setHighlightedTags(Collection<Tag> tags) {
+		this.highlights = tags;
+	}
+	
+	public Collection<Tag> getHighlightedTags() {
+		return this.highlights;
+	}
+	
 	public void setRootDirectory(String rootDir) {
 		this.rootDir = Paths.get(rootDir);
 	}
@@ -167,4 +171,5 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	private interface GetFieldFunction {
 		public abstract Object getSpecificField(Material material);
 	}
+
 }

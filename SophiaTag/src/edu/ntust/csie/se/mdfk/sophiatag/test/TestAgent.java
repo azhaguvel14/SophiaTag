@@ -3,15 +3,11 @@ package edu.ntust.csie.se.mdfk.sophiatag.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
+
 public class TestAgent {
 	public static void main(String[] args) {
-		List<Integer> list = new ArrayList<Integer>();
-		for (int i = 0; i < 10; i++) {
-			list.add(i);
-		}
-		
-		List<Integer> sub = list.subList(1, 5);
-		sub.remove(2);
-		System.out.println(sub.size());
+		System.out.println(ColorSwatch.BLUE.toString());
+		System.out.println("#" + Integer.toHexString(ColorSwatch.BLUE.getRGB() & 0x00ffffff));
 	}
 }

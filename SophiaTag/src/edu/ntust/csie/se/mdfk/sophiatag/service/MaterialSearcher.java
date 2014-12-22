@@ -1,5 +1,6 @@
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -46,12 +47,11 @@ public class MaterialSearcher {
 	 * @ordered
 	 */
 	
-	public Set<Material> query(String text) {
-		
+	public SearchResult query(String text) {
 		Set<Tag> tags = this.queryTags(parseQueryText(text));
 		List<Set<Material>> materialList = this.getMaterialList(tags);
-		return this.findIntersection(materialList);
 		
+		return new SearchResult(this.findIntersection(materialList), tags);
 	}
 	
 	public TagDatabase getTagDatabase() {
@@ -106,7 +106,7 @@ public class MaterialSearcher {
 		Tag tag;
 		Set<Tag> tagSet = new HashSet<Tag>();
 		for (String literal: tagLiterals) {
-			tag = this.database.getTag(literal);
+			tag = this.database.getTagIfExist(literal);
 			if (tag == null) {
 				tagSet.clear();
 				return tagSet;
@@ -128,7 +128,35 @@ public class MaterialSearcher {
 		return materialList;	
 	}
 	
+	public static class SearchResult {
+		private final Collection<Material> result;
+		private final Collection<Tag> queryTags;
+		
+		private SearchResult(Collection<Material> result,Collection<Tag> queryTags) {
+			this.result = result;
+			this.queryTags = queryTags;
+		}
+
+		public Collection<Material> getResult() {
+			return result;
+		}
+
+		public Collection<Tag> getQueryTags() {
+			return queryTags;
+		}
+		
+		public boolean hasResult() {
+			return !this.result.isEmpty();
+		}
+		
+	}
+	
+	
 	public static class TagDatabase implements Serializable, TagTextChangedListener, MaterialTaggedListener {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -749559691139964422L;
 		private Map<String, Tag> tagMap;
 		
 		public TagDatabase() {
@@ -136,8 +164,13 @@ public class MaterialSearcher {
 			this.restoreInit();
 		}
 		
-		public Tag getTag(String tagLiteral) {
+		public Tag getTagIfExist(String tagLiteral) {
 			return tagMap.get(tagLiteral);
+		}
+		
+		public Tag getTag(String tagLiteral) {
+			Tag tag = this.getTagIfExist(tagLiteral);
+			return tag == null? new Tag(tagLiteral): tag;
 		}
 		
 		public void drop() {
