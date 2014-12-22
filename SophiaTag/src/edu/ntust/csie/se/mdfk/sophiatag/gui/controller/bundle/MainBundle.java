@@ -7,6 +7,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.event.ListSelectionEvent;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LogoutController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialSelectedController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.WindowClosingController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton.TextChangedEvent;
@@ -23,7 +24,7 @@ public class MainBundle extends ControllerBundle<MainView> {
 		this.addController("window_closing", WindowEvent.class, new WindowClosingController());
 		
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 
-		this.addActionEventController("logout", null); //Tung
+		this.addActionEventController("logout", new LogoutController()); //Tung
 		this.addActionEventController("change_root_dir", null); //紀
 		this.addActionEventController("search", null); //紀
 		this.addActionEventController("open_dir", null); //常
