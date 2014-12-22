@@ -42,7 +42,7 @@ public class TagsCellRenderer extends DefaultTableCellRenderer {
 	}
 	
 	private static String toHighlightedTagString(Collection<Tag> tags, Collection<Tag> highlights) {
-		StringBuffer value = new StringBuffer("<html>");
+		StringBuffer value = new StringBuffer("<html><body style=\"white-space:nowrap\">");
 		Tag tag;
 		for (Iterator<Tag> iter = tags.iterator(); iter.hasNext();) {
 			tag = iter.next();
@@ -57,7 +57,7 @@ public class TagsCellRenderer extends DefaultTableCellRenderer {
 			}
 		}
 		
-		value.append("</html>");
+		value.append("</body></html>");
 		return value.toString();
 	}
 	

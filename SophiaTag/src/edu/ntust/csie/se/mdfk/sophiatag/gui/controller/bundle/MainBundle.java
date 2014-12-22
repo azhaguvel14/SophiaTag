@@ -25,15 +25,15 @@ public class MainBundle extends ControllerBundle<MainView> {
 		this.addController("window_closing", WindowEvent.class, new WindowClosingController());
 		
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 
-		this.addActionEventController("logout", new LogoutController()); //Tung
+		this.addActionEventController("logout", new LogoutController());
 		this.addActionEventController("change_root_dir", null); //紀
 		this.addActionEventController("search", new SearchController()); //紀
-		this.addActionEventController("open_dir", null); //常
-		this.addActionEventController("add_tag", null); //CoZy
+		this.addActionEventController("open_dir", null); //CoZy
+		this.addActionEventController("add_tag", null); //常
 		this.addActionEventController("remove_tag", null);//常
 		this.addActionEventController("discard_material", null); //CoZy
 		
-		this.addController("material_selected", ListSelectionEvent.class, new MaterialSelectedController()); //Tung
+		this.addController("material_selected", ListSelectionEvent.class, new MaterialSelectedController());
 		this.addController("edit_tag", TextChangedEvent.class, null);//常
 	}
 

@@ -34,6 +34,7 @@ public class LoginController implements EventController<ActionEvent, LoginView> 
 			view.getFrame().dispose();
 		} else {
 			view.clearFields();
+			view.getAccountField().requestFocusInWindow();
 		}
 	}
 	

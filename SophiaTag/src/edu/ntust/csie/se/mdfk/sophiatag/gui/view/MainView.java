@@ -104,8 +104,7 @@ public class MainView extends View {
 	private void initializeComponentState(User user, String rootDir, MaterialList list) {
 		
 		this.getFrame().setResizable(true);
-		this.getFrame().setMinimumSize(new Dimension(600, 700));
-		materialProfilePanel.setVisible(false);
+//		this.getFrame().setMinimumSize(new Dimension(600, 700));
 		
 		this.userLabel.setText(user.getTitle());
 		this.setRootDirText(rootDir);
@@ -116,6 +115,9 @@ public class MainView extends View {
 		this.openDirButton.setActionCommand("open_dir");
 		this.addTagButton.setActionCommand("add_tag");
 		this.discardButton.setActionCommand("discard_material");
+		
+		this.openDirButton.setEnabled(false);
+		this.addTagButton.setEnabled(false);
 		
 		this.changeRootDirButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_ROOT_DIRECTORY));
 		this.searchPanel.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.SEARCH_BAR));
@@ -137,7 +139,7 @@ public class MainView extends View {
 		gbl_mainPanel.columnWidths = new int[]{0};
 		gbl_mainPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_mainPanel.columnWeights = new double[]{1.0};
-		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1};
 		mainPanel.setLayout(gbl_mainPanel);
 		
 		JPanel userPanel = new JPanel();
@@ -217,7 +219,6 @@ public class MainView extends View {
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();
-		gbc_materialProfilePanel.weighty = 2;
 		gbc_materialProfilePanel.insets = new Insets(10, 0, 10, 0);
 		gbc_materialProfilePanel.gridwidth = 2;
 		gbc_materialProfilePanel.fill = GridBagConstraints.BOTH;
@@ -226,9 +227,9 @@ public class MainView extends View {
 		mainPanel.add(materialProfilePanel, gbc_materialProfilePanel);
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 80};
 		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0};
-		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
+		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 0.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
 		
 		JLabel fileNameHeader = new JLabel("File Name:");
@@ -295,7 +296,6 @@ public class MainView extends View {
 		
 
 		JScrollPane tagScrollPane = new JScrollPane();
-		
 		tagScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_tagScrollPane = new GridBagConstraints();
 		gbc_tagScrollPane.gridwidth = 4;
@@ -313,7 +313,6 @@ public class MainView extends View {
 		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
-		gbc_tablePanel.weighty = 10.0;
 		gbc_tablePanel.gridwidth = 2;
 		gbc_tablePanel.fill = GridBagConstraints.BOTH;
 		gbc_tablePanel.gridx = 0;
@@ -469,16 +468,21 @@ public class MainView extends View {
 	public void setMaterialToProfile(Material material) {
 		// TODO: implemented by Tung, notice the helper method below
 		// refer to the fields declared on top of this class
-		// it may pass null as the argument, then you have to hide profilePanel 
-		if (material != null)
+		// it may pass null as the argument, then you have to hide profilePanel
+		
+		boolean isClear = material == null;
+		if (isClear)
 		{
+			clearMaterialNameDirLabel();
+			clearTagPanel();
+		} else
+		{	
 			setMaterialNameDirLabel(material);
 			setupTagPanel(material.getTargetsView());
-			materialProfilePanel.setVisible(true);
-		}else
-		{
-			materialProfilePanel.setVisible(false);
 		}
+		
+		this.addTagButton.setEnabled(!isClear);
+		this.openDirButton.setEnabled(!isClear);
 	}
 	
 	private void setupTagPanel(Iterable<Tag> tags) {
@@ -502,9 +506,17 @@ public class MainView extends View {
 	
 	private void setMaterialNameDirLabel(Material material)
 	{
+	
 		materialNameLabel.setText(material.getName());
 		materialDirLabel.setText(material.getDirectory());
 	}
+	
+	private void clearMaterialNameDirLabel()
+	{
+		materialNameLabel.setText("");
+		materialDirLabel.setText("");
+	}
+	
 	
 	private void clearTagPanel() {
 		Component[] buttons = (Component[])this.tagPanel.getComponents();

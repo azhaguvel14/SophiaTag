@@ -42,10 +42,6 @@ public class TestMainFrame {
 	private JTable table;
 	private JScrollPane tagScrollPane;
 	private JPanel tagPanel;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
-	private JButton btnNewButton_3;
 	private TagButton tagButton;
 
 	/**
@@ -89,7 +85,7 @@ public class TestMainFrame {
 		gbl_mainPanel.columnWidths = new int[]{0};
 		gbl_mainPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_mainPanel.columnWeights = new double[]{1.0};
-		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0, 1.0};
 		mainPanel.setLayout(gbl_mainPanel);
 		
 		JPanel userPanel = new JPanel();
@@ -165,7 +161,7 @@ public class TestMainFrame {
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();
-		gbc_materialProfilePanel.weighty = 1.5;
+//		gbc_materialProfilePanel.weighty = 2;
 		gbc_materialProfilePanel.insets = new Insets(10, 0, 10, 0);
 		gbc_materialProfilePanel.gridwidth = 2;
 		gbc_materialProfilePanel.fill = GridBagConstraints.BOTH;
@@ -174,9 +170,9 @@ public class TestMainFrame {
 		mainPanel.add(materialProfilePanel, gbc_materialProfilePanel);
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 80};
 		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 1, 0};
-		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 1.0};
+		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 0.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
 //		materialProfilePanel.setVisible(false);
 		
@@ -257,24 +253,12 @@ public class TestMainFrame {
 		wl_tagPanel.setAlignment(FlowLayout.LEFT);
 		tagPanel.setLayout(wl_tagPanel);
 		
-		btnNewButton = new JButton("New button");
-		tagPanel.add(btnNewButton);
-		
-		btnNewButton_1 = new JButton("New button");
-		tagPanel.add(btnNewButton_1);
-		
 		tagButton = new TagButton();
 		tagPanel.add(tagButton);
 		
-		btnNewButton_2 = new JButton("New button");
-		tagPanel.add(btnNewButton_2);
-		
-		btnNewButton_3 = new JButton("New button");
-		tagPanel.add(btnNewButton_3);
-		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
-		gbc_tablePanel.weighty = 5.0;
+//		gbc_tablePanel.weighty = 5.0;
 		gbc_tablePanel.gridwidth = 2;
 		gbc_tablePanel.fill = GridBagConstraints.BOTH;
 		gbc_tablePanel.gridx = 0;
