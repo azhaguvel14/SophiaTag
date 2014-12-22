@@ -20,6 +20,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButtonBorder;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButtonUI;
 import javax.swing.BoxLayout;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton;
+import javax.swing.JLabel;
 
 public class TestTagButton extends JFrame {
 
@@ -62,14 +63,14 @@ public class TestTagButton extends JFrame {
 		TagButton tagButton = new TagButton();
 		panel.add(tagButton);
 		
+		JLabel lblTest = new JLabel("<html>456, <span style=\"background:rgb(255, 192, 25);\">test</span>, 123</html>");
+		panel.add(lblTest);
+		
 		TagButton tagButton_1 = new TagButton();
 		panel.add(tagButton_1);
 		
 		TagButton tagButton_2 = new TagButton();
 		panel.add(tagButton_2);
-		
-		
-		
 		
 		this.getRootPane().add(contentPane);
 		
