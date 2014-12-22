@@ -25,13 +25,18 @@ public class MaterialSelectedController implements MainViewEventController<ListS
 		//remember to enable or disable the discard button
 		if (isSelectionInList(selectedIndex, view.getTableModel())) {
 			// add the selected material to Scope,and then set to the Material Profile
+			Material material = view.getTableModel().getMaterialAt(selectedIndex);
+			
+			services.getScope().set("selectedMaterial", material);
+			view.setMaterialToProfile(material);	
+			view.setDiscardButtonEnabled(material.isLost());
 			
 		} else {
 			// remove the selected material from Scope,and then set the Material Profile to null
-			
+			view.setDiscardButtonEnabled(false);
+			services.getScope().remove("selectedMaterial");			
+			view.setMaterialToProfile(null);
 		}
-		
-		
 	}
 
 	private boolean isSelectionInList(int selectedIndex, TableModel model) {

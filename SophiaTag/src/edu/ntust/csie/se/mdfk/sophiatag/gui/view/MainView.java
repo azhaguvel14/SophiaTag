@@ -355,7 +355,9 @@ public class MainView extends View {
 		gbc_discardButton.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_discardButton.gridx = 0;
 		gbc_discardButton.gridy = 2;
-		tablePanel.add(discardButton, gbc_discardButton);	
+		tablePanel.add(discardButton, gbc_discardButton);
+		
+		
 	}
 	
 	private void boldLabel(JLabel label) {
@@ -468,7 +470,15 @@ public class MainView extends View {
 		// TODO: implemented by Tung, notice the helper method below
 		// refer to the fields declared on top of this class
 		// it may pass null as the argument, then you have to hide profilePanel 
-		
+		if (material != null)
+		{
+			setMaterialNameDirLabel(material);
+			setupTagPanel(material.getTargetsView());
+			materialProfilePanel.setVisible(true);
+		}else
+		{
+			materialProfilePanel.setVisible(false);
+		}
 	}
 	
 	private void setupTagPanel(Iterable<Tag> tags) {
@@ -480,7 +490,20 @@ public class MainView extends View {
 		* 4. after adding buttons, you have to call "validate()" and "repaint()" method of tagPanel to 
 		* make sure the buttons are laied out and painted properly   
 		*/
-		
+		clearTagPanel();
+		boolean isEistable = limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL);
+		for (Tag tag: tags)
+		{
+			addTagButton(tag, isEistable);
+		}
+		tagPanel.validate();
+		tagPanel.repaint();
+	}
+	
+	private void setMaterialNameDirLabel(Material material)
+	{
+		materialNameLabel.setText(material.getName());
+		materialDirLabel.setText(material.getDirectory());
 	}
 	
 	private void clearTagPanel() {
