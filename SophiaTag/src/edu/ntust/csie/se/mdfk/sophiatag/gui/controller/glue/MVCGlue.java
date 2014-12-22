@@ -1,10 +1,11 @@
 /**
  * 
  */
-package edu.ntust.csie.se.mdfk.sophiatag.gui.controller;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue;
 
 import java.util.EventObject;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.EventController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.ControllerBundle;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.View;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
@@ -15,9 +16,22 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
  */
 public abstract class MVCGlue {
 	
+	protected final Scope scope;
+	
+	MVCGlue() {
+		this.scope = new Scope();
+	}
+	
 	public static <V extends View> MVCGlue glue(SophiaTagServices services, V view, ControllerBundle<V> bundle) {
 		return new MVCGlueImpl<V>(services, view, bundle);
 	}
+	
+	public Scope getScope() {
+		return this.scope;
+	}
+	
+	public abstract SophiaTagServices getServices();
+	public abstract View getView();
 	
 	public abstract void handleEvent(String eventName, EventObject event);
 	
@@ -43,8 +57,18 @@ public abstract class MVCGlue {
 				throw new IllegalArgumentException("There is no controllers can handle this event");
 			}
 			
-			controller.handle(event, this.services, this.view);
+			controller.handle(this.scope, event, this.services, this.view);
 			
+		}
+
+		@Override
+		public SophiaTagServices getServices() {
+			return this.services;
+		}
+		
+		@Override
+		public View getView() {
+			return view;
 		}
 	}
 }

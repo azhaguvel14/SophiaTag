@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.LoginBundle;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.LoginView;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
@@ -19,7 +21,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 public class LogoutController implements MainViewActionEventController {
 
 	@Override
-	public void handle(ActionEvent event, SophiaTagServices services, MainView view) {
+	public void handle(Scope scope, ActionEvent event, SophiaTagServices services, MainView view) {
 		int userDecision =
 		JOptionPane.showConfirmDialog(view.getFrame(), "Are you sure to logout?", "Logout Confirm", JOptionPane.YES_NO_OPTION);
 		

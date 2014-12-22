@@ -5,7 +5,6 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +34,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
+import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
+import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.ModelChangeEvent;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.ModelChangeListener;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialListModel;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
@@ -75,17 +80,20 @@ public class MainView extends View {
 	
 	private ActionListener sharedTagRemovedListner;
 	private TextChangedListener sharedTagEditedListener;
+
+	private MaterialOperationListener materialOperaionListener;
+
 	/**
 	 * @param x
 	 * @param y
 	 * @param width
 	 * @param height
 	 */
-	public MainView(User user, String rootDir, MaterialList list) {
+	public MainView(User user) {
 		super(100, 100, 1000, 700);
 		
 		this.initializeLimitedFlagMap(user.getFunctionalLimitation());
-		this.initializeComponentState(user, rootDir, list);
+		this.initializeComponentState(user);
 	}
 	
 	private void initializeLimitedFlagMap(FuntionalLimitation limitation) {
@@ -101,13 +109,12 @@ public class MainView extends View {
 		}
 	}
 	
-	private void initializeComponentState(User user, String rootDir, MaterialList list) {
+	private void initializeComponentState(User user) {
 		
 		this.getFrame().setResizable(true);
 //		this.getFrame().setMinimumSize(new Dimension(600, 700));
 		
 		this.userLabel.setText(user.getTitle());
-		this.setRootDirText(rootDir);
 		
 		this.logoutButton.setActionCommand("logout");
 		this.changeRootDirButton.setActionCommand("change_root_dir");
@@ -124,9 +131,7 @@ public class MainView extends View {
 		this.addTagButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL));
 		this.discardButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE));
 		
-		this.setDiscardButtonEnabled(false);
-		
-		this.getTableModel().setList(list);
+		this.setDiscardButtonEnabled(null);;
 		
 	}
 	
@@ -227,7 +232,7 @@ public class MainView extends View {
 		mainPanel.add(materialProfilePanel, gbc_materialProfilePanel);
 		GridBagLayout gbl_materialProfilePanel = new GridBagLayout();
 		gbl_materialProfilePanel.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 80};
+		gbl_materialProfilePanel.rowHeights = new int[]{0, 0, 0, 75};
 		gbl_materialProfilePanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0};
 		gbl_materialProfilePanel.rowWeights = new double[]{0.0, 0.0, 0, 0.0};
 		materialProfilePanel.setLayout(gbl_materialProfilePanel);
@@ -347,7 +352,7 @@ public class MainView extends View {
 		materialTable.setFillsViewportHeight(true);
 		scrollPane.setViewportView(materialTable);
 		
-		tableModel = (MaterialListModel) materialTable.getModel();
+		this.tableModel = (MaterialListModel) materialTable.getModel();
 			
 		discardButton = new JButton("Discard");
 		GridBagConstraints gbc_discardButton = new GridBagConstraints();
@@ -365,6 +370,17 @@ public class MainView extends View {
 	
 	@Override
 	public void bindEvent(final MVCGlue glue) {
+		bindControllers(glue);
+		bindModels(glue.getScope());
+		bindTagger();
+	}
+
+	private void bindTagger() {
+		this.materialOperaionListener = new MaterialOperationListener();
+		MaterialTagger.getInstance().addMaterialTaggedListener(this.materialOperaionListener);
+	}
+
+	private void bindControllers(final MVCGlue glue) {
 		this.sharedTagEditedListener = new TextChangedListener() {
 
 			@Override
@@ -383,7 +399,7 @@ public class MainView extends View {
 			
 		};
 		
-		ActionListener sharedListener = new ActionListener() {
+		ActionListener sharedButtonListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -391,12 +407,12 @@ public class MainView extends View {
 			}
 		};
 		
-		this.logoutButton.addActionListener(sharedListener);
-		this.changeRootDirButton.addActionListener(sharedListener);
-		this.searchButton.addActionListener(sharedListener);
-		this.openDirButton.addActionListener(sharedListener);
-		this.addTagButton.addActionListener(sharedListener);
-		this.discardButton.addActionListener(sharedListener);
+		this.logoutButton.addActionListener(sharedButtonListener);
+		this.changeRootDirButton.addActionListener(sharedButtonListener);
+		this.searchButton.addActionListener(sharedButtonListener);
+		this.openDirButton.addActionListener(sharedButtonListener);
+		this.addTagButton.addActionListener(sharedButtonListener);
+		this.discardButton.addActionListener(sharedButtonListener);
 		
 		this.queryField.addKeyListener(new KeyAdapter() {
 			@Override
@@ -412,6 +428,7 @@ public class MainView extends View {
 			}
 		});
 		
+		
 		this.materialTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -422,50 +439,81 @@ public class MainView extends View {
 		});
 		
 		this.getFrame().addWindowListener(new WindowAdapter() {
-
+			@Override
+			public void windowOpened(WindowEvent e) {
+				glue.handleEvent("init", e);
+			}
+			
 			@Override
 			public void windowClosing(WindowEvent e) {
 				glue.handleEvent("window_closing", e);
-				getTableModel().unsubscribeUpdates();
+				System.out.println("closing");
 			}
 			
 			@Override
 			public void windowClosed(WindowEvent e) {
-				System.out.println("closed");
-				
+				tableModel.unsubscribeUpdates();
+				MaterialTagger.getInstance().removeMaterialTaggedListener(materialOperaionListener);
 			}
 		});
+	}
+	
+	private void bindModels(Scope scope) {
+		scope.addModelChangeListener("selectedMaterial", new ModelChangeListener<Material>() {
+
+			@Override
+			public void modelChange(ModelChangeEvent<Material> evt) {
+				setMaterialProfile(evt.getModel());
+				setDiscardButtonEnabled(evt.getModel());
+			}
+			
+		});
+		scope.addModelChangeListener("listModel", new ModelChangeListener<MaterialList>() {
+
+			@Override
+			public void modelChange(ModelChangeEvent<MaterialList> evt) {
+				tableModel.setList(evt.getModel());
+			}
+			
+		});
 		
+		scope.addModelChangeListener("rootDir", new ModelChangeListener<String>() {
+
+			@Override
+			public void modelChange(ModelChangeEvent<String> evt) {
+				rootDirLabel.setText(evt.getModel());
+				tableModel.setRootDirectory(evt.getModel());
+			}
+			
+		});
+		
+		scope.addModelChangeListener("highlights", new ModelChangeListener<Collection<Tag>>() {
+
+			@Override
+			public void modelChange(ModelChangeEvent<Collection<Tag>> evt) {
+				tableModel.setHighlightedTags(evt.getModel());
+			}
+			
+		});
 	}
 	
-	public MaterialListModel getTableModel() {
-		return tableModel;
-	}
 	public String getQueryText() {
-		return queryField.getText();
+		return this.queryField.getText();
 	}
 	
-	public void setDiscardButtonEnabled(boolean enabled) {
-		this.discardButton.setEnabled(enabled);
+	public TagButton getLastTagButton() {
+		return (TagButton) this.tagPanel.getComponent(this.tagPanel.getComponentCount() - 1);
 	}
 	
-	public void setRootDirText(String rootDir) {
-		this.rootDirLabel.setText(rootDir);
-		this.getTableModel().setRootDirectory(rootDir);
+	private void setDiscardButtonEnabled(Material material) {
+		if (material == null) {
+			this.discardButton.setEnabled(false);
+			return;
+		}
+		this.discardButton.setEnabled(material.isLost());
 	}
 	
-	public void addTag(Tag tag) {
-		this.addTagButton(tag, true).editTag();
-	}
-	
-	public void removeTagButton(TagButton button) {
-		this.removeListenersFromTagButton(button);
-		this.tagPanel.remove(button);
-		this.tagPanel.validate();
-		this.tagPanel.repaint();
-	}
-	
-	public void setMaterialToProfile(Material material) {
+	private void setMaterialProfile(Material material) {
 		// TODO: implemented by Tung, notice the helper method below
 		// refer to the fields declared on top of this class
 		// it may pass null as the argument, then you have to hide profilePanel
@@ -506,7 +554,6 @@ public class MainView extends View {
 	
 	private void setMaterialNameDirLabel(Material material)
 	{
-	
 		materialNameLabel.setText(material.getName());
 		materialDirLabel.setText(material.getDirectory());
 	}
@@ -517,7 +564,6 @@ public class MainView extends View {
 		materialDirLabel.setText("");
 	}
 	
-	
 	private void clearTagPanel() {
 		Component[] buttons = (Component[])this.tagPanel.getComponents();
 		for (Component button: buttons) {
@@ -525,8 +571,6 @@ public class MainView extends View {
 		}
 		
 		this.tagPanel.removeAll();
-		
-		
 	}
 	
 	private void removeListenersFromTagButton(TagButton button) {
@@ -542,4 +586,34 @@ public class MainView extends View {
 		return button;
 	}
 	
+	private void removeTagButton(Tag tag) {
+		Component[] buttons = this.tagPanel.getComponents();
+		TagButton button = null;
+		int i;
+		for (i = 0; i < buttons.length; i++) {
+			button = (TagButton)buttons[i]; 
+			if (button.getTag().equals(tag)) {
+				break;
+			}
+		}
+		
+		this.removeListenersFromTagButton(button);
+		this.tagPanel.remove(i);
+		this.tagPanel.validate();
+		this.tagPanel.repaint();
+	}
+
+	private class MaterialOperationListener implements MaterialTaggedListener {
+
+		@Override
+		public void onDetag(Tag tag, Material material) {
+			removeTagButton(tag);
+		}
+
+		@Override
+		public void onTag(Tag tag, Material material) {
+			addTagButton(tag, true);
+		}
+		
+	}
 }

@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LogoutController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MainViewInitController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialSelectedController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.SearchController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.WindowClosingController;
@@ -22,6 +23,7 @@ public class MainBundle extends ControllerBundle<MainView> {
 
 	@Override
 	protected void register() {
+		this.addController("init", WindowEvent.class, new MainViewInitController());
 		this.addController("window_closing", WindowEvent.class, new WindowClosingController());
 		
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 

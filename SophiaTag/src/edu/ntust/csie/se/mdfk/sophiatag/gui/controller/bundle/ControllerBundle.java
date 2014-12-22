@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.EventController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.View;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 
@@ -50,8 +51,8 @@ public abstract class ControllerBundle<V extends View> {
 		}
 		
 		@Override
-		public void handle(EventObject event, SophiaTagServices services, V view) {
-			this.controller.handle(this.eventCaster.cast(event), services, view);
+		public void handle(Scope scope, EventObject event, SophiaTagServices services, V view) {
+			this.controller.handle(scope, this.eventCaster.cast(event), services, view);
 		}
 		
 	}

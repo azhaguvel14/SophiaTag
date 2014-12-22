@@ -3,6 +3,7 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher.TagDatabase;
 
 
@@ -18,14 +19,12 @@ public class SophiaTagServices {
 	private MaterialScanner scanner;
 	private MaterialList list;
 	private RecordStorage storage;
-	private Scope scope;
 	
 	private boolean ready = false;
 	
 	public SophiaTagServices() {
 		
 		this.storage = new RecordStorage();
-		this.scope = new Scope();
 		
 		if (storage.hasSavedRecord()) {
 			initializeRecordedServices(this.storage);
@@ -97,9 +96,4 @@ public class SophiaTagServices {
 	public String getRootDirectory() {
 		return this.scanner.getRootDirectory();
 	}
-	
-	public Scope getScope() {
-		return this.scope;
-	}
-
 }

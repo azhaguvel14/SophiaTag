@@ -13,12 +13,12 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
  * @author maeglin89273
  *
  */
-public class WindowClosingController implements	MainViewEventController<WindowEvent> {
+public class MainViewInitController implements MainViewEventController<WindowEvent> {
 
-	
 	@Override
 	public void handle(Scope scope, WindowEvent event, SophiaTagServices services, MainView view) {
-		services.saveRecord();
+		scope.set("rootDir", services.getRootDirectory());
+		scope.set("listModel", services.getMaterialList());
 	}
 
 }

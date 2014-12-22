@@ -15,8 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle.LoginBundle;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.LoginView;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 

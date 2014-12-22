@@ -5,6 +5,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.controller;
 
 import java.util.EventObject;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.View;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 
@@ -13,5 +14,5 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
  *
  */
 public interface EventController<E extends EventObject, V extends View> {
-	public abstract void handle(E event, SophiaTagServices services, V view);
+	public abstract void handle(Scope scope, E event, SophiaTagServices services, V view);
 }

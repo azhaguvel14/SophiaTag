@@ -92,7 +92,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	
 	@Override
 	public int getRowCount() {
-		return this.content.size();
+		return this.content != null? this.content.size(): 0;
 	}
 
 	@Override

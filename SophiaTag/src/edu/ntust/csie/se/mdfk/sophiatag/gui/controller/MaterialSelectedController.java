@@ -8,7 +8,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableModel;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
+import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 
 /**
@@ -18,29 +20,24 @@ import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 public class MaterialSelectedController implements MainViewEventController<ListSelectionEvent> {
 
 	@Override
-	public void handle(ListSelectionEvent event, SophiaTagServices services, MainView view) {
+	public void handle(Scope scope, ListSelectionEvent event, SophiaTagServices services, MainView view) {
+		
 		ListSelectionModel model = (ListSelectionModel)event.getSource();
 		int selectedIndex = model.getAnchorSelectionIndex();
+		MaterialList listModel = scope.get("listModel");
 		
-		//remember to enable or disable the discard button
-		if (isSelectionInList(selectedIndex, view.getTableModel())) {
-			// add the selected material to Scope,and then set to the Material Profile
-			Material material = view.getTableModel().getMaterialAt(selectedIndex);
-			
-			services.getScope().set("selectedMaterial", material);
-			view.setMaterialToProfile(material);	
-			view.setDiscardButtonEnabled(material.isLost());
+		if (isSelectionInList(selectedIndex, listModel.size())) {
+			// add the selected material to Scope
+			scope.set("selectedMaterial", listModel.get(selectedIndex));
 			
 		} else {
-			// remove the selected material from Scope,and then set the Material Profile to null
-			view.setDiscardButtonEnabled(false);
-			services.getScope().remove("selectedMaterial");			
-			view.setMaterialToProfile(null);
+			// remove the selected material from Scope
+			scope.remove("selectedMaterial");			
 		}
 	}
 
-	private boolean isSelectionInList(int selectedIndex, TableModel model) {
-		return selectedIndex >= 0 && selectedIndex < model.getRowCount();
+	private boolean isSelectionInList(int selectedIndex, int size) {
+		return selectedIndex >= 0 && selectedIndex < size;
 	}
 	
 	

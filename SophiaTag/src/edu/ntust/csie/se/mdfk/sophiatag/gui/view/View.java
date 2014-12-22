@@ -5,7 +5,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import javax.swing.JFrame;
 
-import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
 
 /**
  * @author maeglin89273
