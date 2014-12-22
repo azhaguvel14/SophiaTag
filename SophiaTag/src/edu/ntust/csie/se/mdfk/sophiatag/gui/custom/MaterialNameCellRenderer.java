@@ -18,8 +18,8 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
  */
 public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 	private static final Color NORMAL_FILE_COLOR = new Color(60, 60, 60);
-	private static final Color NEW_FILE_COLOR = new Color(0, 155, 88);
-	private static final Color LOST_FILE_COLOR = Color.RED;
+	private static final Color NEW_FILE_COLOR = ColorSwatch.GREEN;
+	private static final Color LOST_FILE_COLOR = ColorSwatch.RED;
 	private static final Color SELECTED_COLOR = Color.WHITE;
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

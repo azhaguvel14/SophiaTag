@@ -9,8 +9,9 @@ import javax.swing.event.ListSelectionEvent;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LogoutController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialSelectedController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.SearchController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.WindowClosingController;
-import edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton.TagButton.TextChangedEvent;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.TextChangedEvent;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
 
 /**
@@ -26,7 +27,7 @@ public class MainBundle extends ControllerBundle<MainView> {
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 
 		this.addActionEventController("logout", new LogoutController()); //Tung
 		this.addActionEventController("change_root_dir", null); //紀
-		this.addActionEventController("search", null); //紀
+		this.addActionEventController("search", new SearchController()); //紀
 		this.addActionEventController("open_dir", null); //常
 		this.addActionEventController("add_tag", null); //CoZy
 		this.addActionEventController("remove_tag", null);//常

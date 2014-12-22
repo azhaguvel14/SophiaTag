@@ -1,4 +1,4 @@
-package edu.ntust.csie.se.mdfk.sophiatag.gui.tagbutton;
+package edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -12,11 +12,13 @@ import javax.swing.ButtonModel;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
+
 public class TagButtonUI extends BasicButtonUI {
 		
 		private static final int NORMAL = 0, HOVER = 1, PRESSED = 2, DISABLED = 3;
 		
-		private static final Color[] COLORS = {new Color(0x196eef), new Color(0x2f7cf0), new Color(0x155ECC), new Color(0xFCFCFC)};
+		private static final Color[] COLORS = {ColorSwatch.BLUE, new Color(0x2f7cf0), new Color(0x155ECC), new Color(0xFCFCFC)};
 		
 		private final boolean leftPart;
 		private final Color[] buttonColors;
