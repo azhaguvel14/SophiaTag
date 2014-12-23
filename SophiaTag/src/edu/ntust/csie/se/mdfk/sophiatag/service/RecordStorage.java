@@ -74,32 +74,22 @@ public class RecordStorage {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 * @generated
 	 * @ordered
 	 */
 	
-	public NecessaryRecord loadRecord() {
+	public NecessaryRecord loadRecord() throws IOException, ClassNotFoundException {
 		if (!this.hasSavedRecord()) {
 			return null;
 		}
 		
 		NecessaryRecord record = null;
 		
-		try {
-			ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
-			record = (NecessaryRecord) inStream.readObject();
-			inStream.close();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ObjectInputStream inStream = new ObjectInputStream(new FileInputStream(file));
+		record = (NecessaryRecord) inStream.readObject();
+		inStream.close();
 		
 		return record;
 	}

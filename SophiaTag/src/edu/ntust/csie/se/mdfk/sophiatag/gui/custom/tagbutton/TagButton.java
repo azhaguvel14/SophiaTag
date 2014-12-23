@@ -7,12 +7,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.EventObject;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -48,11 +50,11 @@ public class TagButton extends JPanel {
 	private JButton removeBtn;
 	private JTextField renameBox;
 	
-	private Tag tag;
+	private final Tag tag;
 	private final boolean editable;
 	
-	
-	
+	private TextChangedListener textChangeListener = null;
+	private RemoveTagListener removeTagListener = null;
 	public TagButton() {
 		this(new Tag("New Tag"), true);
 	}
@@ -60,8 +62,7 @@ public class TagButton extends JPanel {
 	public TagButton(Tag tag, boolean editable) {
 		this.tag = tag;
 		this.editable = editable;
-		this.setEnabled(false);
-		this.setOpaque(false);
+		
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
 		this.prepareViewAndLayout();
@@ -76,12 +77,6 @@ public class TagButton extends JPanel {
 		return this.tag;
 	}
 	
-	public void setTag(Tag newTag) {
-		this.tag = newTag;
-		this.renameBtn.setText(this.tag.getText());
-		this.renameBox.setText(this.tag.getText());
-	}
-	
 	public void editTag() {
 		renameBtn.setVisible(false);
 		renameBox.setVisible(true);
@@ -90,6 +85,7 @@ public class TagButton extends JPanel {
 	}
 	
 	private void prepareViewAndLayout() {
+		this.setEnabled(false);
 		this.setOpaque(false);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -140,6 +136,14 @@ public class TagButton extends JPanel {
 	}
 	
 	private void addInteractiveListeners() {
+		removeBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TagButton.this.removeTagListener.removeTag(new RemoveTagEvent(TagButton.this, getTag()));
+			}
+			
+		});
 		renameBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -159,7 +163,7 @@ public class TagButton extends JPanel {
 					renameBtn.setVisible(true);
 					
 					if (changedText != null) {
-						TagButton.this.firePropertyChange(TEXT_PROPERTY, TagButton.this.getTag(), changedText);
+						TagButton.this.textChangeListener.textChanged(new TextChangedEvent(this, getTag(), changedText));
 					}
 					
 				}
@@ -190,28 +194,28 @@ public class TagButton extends JPanel {
 		
 	}
 	
-	public void addTextChangedListener(TextChangedListener listener) {
+	public void setTextChangedListener(TextChangedListener listener) {
 		if (this.isEditable()) {
-			this.addPropertyChangeListener(TEXT_PROPERTY, listener);
+			this.textChangeListener = listener;
 		}
 	}
 	
-	public void removeTextChangedListener(TextChangedListener listener) {
+	public void removeTextChangedListener() {
 		if (this.isEditable()) {
-			this.removePropertyChangeListener(TEXT_PROPERTY, listener);
+			this.textChangeListener = null;
 		}
 	}
 	
 	
-	public void addRemoveListener(ActionListener listener) {
+	public void setRemoveTagListener(RemoveTagListener listener) {
 		if (this.isEditable()) {
-			this.removeBtn.addActionListener(listener);
+			this.removeTagListener = listener;
 		}
 	}
 	
-	public void removeRemoveListener(ActionListener listener) {
+	public void removeRemoveTagListener() {
 		if (this.isEditable()) {
-			this.removeBtn.removeActionListener(listener);
+			this.removeTagListener = null;
 		}
 	}
 
@@ -220,30 +224,44 @@ public class TagButton extends JPanel {
 		return editable;
 	}
 	
-	public static abstract class TextChangedListener implements PropertyChangeListener {
-		@Override
-		public void propertyChange(PropertyChangeEvent event) {
-			this.textChanged(new TextChangedEvent(event.getSource(), (Tag)event.getOldValue(), (String)event.getNewValue()));
-		}
-		
-		
+	public interface TextChangedListener {
 		public abstract void textChanged(TextChangedEvent event);
 		
 	}
-
-	public static class TextChangedEvent extends PropertyChangeEvent {
 	
+	public interface RemoveTagListener {
+		public abstract void removeTag(RemoveTagEvent event);
+	}
+	
+	public static class TextChangedEvent extends EventObject {
+		private final String newText;
+		private final Tag oldTag;
 		private TextChangedEvent(Object source, Tag oldTag, String newText) {
-			super(source, TagButton.TEXT_PROPERTY, oldTag, newText);
+			super(source);
+			this.oldTag = oldTag;
+			this.newText = newText;
 		}
 		
 		public Tag getOldTag() {
-			return (Tag)this.getOldValue();
+			return this.oldTag;
 		}
 		
 		public String getNewText() {
-			return (String)this.getNewValue();
+			return this.newText;
 		}
 	}
 	
+	public static class RemoveTagEvent extends EventObject {
+		private final Tag tag;
+		
+		public RemoveTagEvent(Object source, Tag tag) {
+			super(source);
+			this.tag = tag;
+			
+		}
+		
+		public Tag getTag() {
+			return this.tag;
+		}
+	}
 }

@@ -31,7 +31,7 @@ public class TagsCellRenderer extends DefaultTableCellRenderer {
 	private static String toTagString(Collection<Tag> tags) {
 		StringBuffer value = new StringBuffer("<html><body style=\"white-space:nowrap\">");
 		for (Iterator<Tag> iter = tags.iterator(); iter.hasNext();) {
-			value.append(iter.next().getHighlightText());
+			value.append(iter.next().getHighlightHTML());
 			if (iter.hasNext()) {
 				value.append(", ");
 			}

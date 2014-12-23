@@ -45,6 +45,8 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialListModel;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialTable;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.RemoveTagEvent;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.RemoveTagListener;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.TextChangedEvent;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.TextChangedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
@@ -78,7 +80,7 @@ public class MainView extends View {
 	
 	private MaterialListModel tableModel;
 	
-	private ActionListener sharedTagRemovedListner;
+	private RemoveTagListener sharedTagRemovedListner;
 	private TextChangedListener sharedTagEditedListener;
 
 	private MaterialOperationListener materialOperaionListener;
@@ -390,10 +392,10 @@ public class MainView extends View {
 			
 		};
 		
-		this.sharedTagRemovedListner = new ActionListener() {
+		this.sharedTagRemovedListner = new RemoveTagListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent event) {
+			public void removeTag(RemoveTagEvent event) {
 				glue.handleEvent("remove_tag", event);
 			}
 			
@@ -520,6 +522,8 @@ public class MainView extends View {
 			setMaterialNameDirLabel(material);
 			setupTagPanel(material.getTargetsView());
 		}
+		tagPanel.validate();
+		tagPanel.repaint();
 		
 		this.addTagButton.setEnabled(!isClear);
 		this.openDirButton.setEnabled(!isClear);
@@ -540,8 +544,7 @@ public class MainView extends View {
 		{
 			addTagButton(tag, isEistable);
 		}
-		tagPanel.validate();
-		tagPanel.repaint();
+		
 	}
 	
 	private void setMaterialNameDirLabel(Material material)
@@ -566,14 +569,14 @@ public class MainView extends View {
 	}
 	
 	private void removeListenersFromTagButton(TagButton button) {
-		button.removeTextChangedListener(sharedTagEditedListener);
-		button.removeRemoveListener(sharedTagRemovedListner);
+		button.removeTextChangedListener();
+		button.removeRemoveTagListener();
 	}
 	
 	private TagButton addTagButton(Tag tag, boolean editable) {
 		TagButton button = new TagButton(tag, editable);
-		button.addTextChangedListener(sharedTagEditedListener);
-		button.addRemoveListener(sharedTagRemovedListner);
+		button.setTextChangedListener(sharedTagEditedListener);
+		button.setRemoveTagListener(sharedTagRemovedListner);
 		this.tagPanel.add(button);
 		return button;
 	}

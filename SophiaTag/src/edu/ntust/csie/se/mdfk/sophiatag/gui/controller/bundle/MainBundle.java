@@ -33,16 +33,17 @@ public class MainBundle extends ControllerBundle<MainView> {
 		
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 
 		this.addActionEventController("logout", new LogoutController());
+
 		this.addActionEventController("change_root_dir", null); //紀
 		this.addActionEventController("search", new SearchController()); //紀
 		this.addActionEventController("open_dir", new OpenDirectoryController()); //CoZy
 		this.addActionEventController("add_tag", new AddTagController()); //常
-		//常
 		this.addActionEventController("discard_material", null); //CoZy
 		
 		this.addController("material_selected", ListSelectionEvent.class, new MaterialSelectedController());
 		this.addController("edit_tag", TextChangedEvent.class, new EditTagController());//常
 		this.addController("remove_tag", RemoveTagEvent.class, new RemoveTagController());
+
 	}
 
 }

@@ -111,11 +111,9 @@ public class MaterialTagger {
 	 */
 	
 	public void attachTagToMaterial(Tag tag, Material material) {
-		tag.attachedTo(material);
-		material.attachedTo(tag);
-		
-		this.eventDispatcher.dispatch(this.invokers.get("attm"), tag, material);
-		
+		if (tag.attachedTo(material) && material.attachedTo(tag)) {
+			this.eventDispatcher.dispatch(this.invokers.get("attm"), tag, material);
+		}
 	}
 	
 	/**
@@ -126,9 +124,9 @@ public class MaterialTagger {
 	 */
 	
 	public void detachTagFromMaterial(Tag tag, Material material) {
-		tag.detachedFrom(material);	
-		material.detachedFrom(tag);
-		this.eventDispatcher.dispatch(this.invokers.get("dtfm"), tag, material);
+		if (tag.detachedFrom(material) && material.detachedFrom(tag)) {
+			this.eventDispatcher.dispatch(this.invokers.get("dtfm"), tag, material);
+		}
 	}
 	
 	/**
@@ -156,9 +154,9 @@ public class MaterialTagger {
 	
 	public void changeTextOfTag(String text, Tag tag) {
 		String oldText = tag.getText();
-		tag.setText(text);
-		
-		this.eventDispatcher.dispatch(this.invokers.get("ctot"), oldText, tag);
+		if (tag.setText(text)) {
+			this.eventDispatcher.dispatch(this.invokers.get("ctot"), oldText, tag);
+		}
 	}
 	
 	

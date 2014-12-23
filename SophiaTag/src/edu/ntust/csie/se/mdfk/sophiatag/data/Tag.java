@@ -1,5 +1,6 @@
 package edu.ntust.csie.se.mdfk.sophiatag.data;
-import java.util.Random;
+
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
 
 
 /**
@@ -14,15 +15,16 @@ public class Tag extends Attachable<Material>{
 	 */
 	private static final long serialVersionUID = 6577249205844764790L;
 	
-	private static final String HIGHTLIGHT_COLOR_STRING = "#ffff7f";
-	private static final String KEYWORD_COLOR_STRING = "#3c3c3c";
+	private static final String HIGHTLIGHT_COLOR_STRING = ColorSwatch.toNoAlphaString(ColorSwatch.LIGHT_YELLOW);
+	private static final String KEYWORD_COLOR_STRING = ColorSwatch.toNoAlphaString(ColorSwatch.ORANGE);
 	
-	private static final String HIGHLIGHT_WRAPPER_START = "<span style=\"background:" + HIGHTLIGHT_COLOR_STRING + "; color:" + KEYWORD_COLOR_STRING + ";\">";
+	private static final String HIGHLIGHT_WRAPPER_START = "<span style=\"font-weight:bold;background:" + HIGHTLIGHT_COLOR_STRING + "; color:" + KEYWORD_COLOR_STRING + ";\">";
 	private static final String HIGHLIGHT_WRAPPER_END = "</span>";
 	
 	private String text;
 	
-	private transient String highlightedText;
+	private transient String highlightedHTML;
+	private transient String highlightedPart;
 	
 	
 	/**
@@ -55,14 +57,28 @@ public class Tag extends Attachable<Material>{
 	 * @ordered
 	 */
 	
-	void setText(String text) {
-		this.text = text;
-		this.highlightedText = text;
+	boolean setText(String text) {
+		if (this.text == null || !this.text.equals(text)) {
+			this.text = text;
+			if (this.highlightedPart != null) { //has been highlighed
+				this.highlight(highlightedPart);
+			}
+			return true;
+		}
 		
+		return false;
 	}
 	
 	public void highlight(String part) {
-		int prefixStart = this.text.indexOf(part);
+		// the highlight condition is restricted by prefixing part, it can be modified this restriction in the future
+		if (!this.text.startsWith(part)) {
+			this.clearHighlight();
+			return;
+		}
+		
+		this.highlightedPart = part;
+		
+		int prefixStart = 0;
 		int posfixStart = prefixStart + part.length();
 		
 		StringBuffer buffer = new StringBuffer(this.text.substring(0, prefixStart));
@@ -71,12 +87,11 @@ public class Tag extends Attachable<Material>{
 		buffer.append(HIGHLIGHT_WRAPPER_END);
 		buffer.append(this.text.substring(posfixStart));
 		
-		this.highlightedText = buffer.toString();
+		this.highlightedHTML = buffer.toString();
 	}
 	
-	public String getHighlightText() {
-//		return this.text;
-		return this.highlightedText == null? this.text: this.highlightedText;
+	public String getHighlightHTML() {
+		return this.highlightedPart == null? this.text: this.highlightedHTML;
 	}
 	
 	@Override
@@ -85,7 +100,8 @@ public class Tag extends Attachable<Material>{
 	}
 
 	public void clearHighlight() {
-		this.highlightedText = null;
+		this.highlightedPart = null;
+		this.highlightedHTML = null;
 	}
 	
 }

@@ -3,6 +3,8 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 
+import java.io.IOException;
+
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher.TagDatabase;
 
@@ -27,7 +29,12 @@ public class SophiaTagServices {
 		this.storage = new RecordStorage();
 		
 		if (storage.hasSavedRecord()) {
-			initializeRecordedServices(this.storage);
+			try {
+				initializeRecordedServices(this.storage);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
 			this.scanner.updateMaterialPool(this.list);
 			this.ready = true;
 		}
@@ -45,12 +52,14 @@ public class SophiaTagServices {
 		this.ready = true;
 	}
 	
-	private void initializeRecordedServices(RecordStorage storage) {
+	private void initializeRecordedServices(RecordStorage storage) throws ClassNotFoundException, IOException {
 		if (!storage.hasSavedRecord()) {
 			throw new IllegalStateException("The record file should be created on the file system beforehand");
 		}
 		
-		RecordStorage.NecessaryRecord record = storage.loadRecord();
+		RecordStorage.NecessaryRecord record;
+		record = storage.loadRecord();
+			
 		this.scanner = new MaterialScanner(record.getRootDirectory());
 		this.list = record.getMaterialList();
 		this.list.restoreInit();

@@ -20,12 +20,12 @@ public abstract class Attachable<T> implements Serializable{
 		this.targets = new HashSet<T>();
 	}
 	
-	protected final void attachedTo(T target) {
-		targets.add(target);
+	protected final boolean attachedTo(T target) {
+		return targets.add(target);
 	}
 	
-	protected final void detachedFrom(T target) {
-		targets.remove(target);
+	protected final boolean detachedFrom(T target) {
+		return targets.remove(target);
 	}
 	
 	public final boolean isAttached() {
