@@ -33,7 +33,7 @@ public class MaterialSearcher {
 	public static final int WRAP_WORD = 0;
 	public static final int START_WITH = 1;
 	private final TagDatabase database;
-	
+	private int searchConfig;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -41,11 +41,12 @@ public class MaterialSearcher {
 	 * @generated
 	 */
 	MaterialSearcher(){
-		this.database = new TagDatabase();
+		this(new TagDatabase());
 	}
 	
 	MaterialSearcher(TagDatabase database){
 		this.database = database;
+		this.setSearchConfig(START_WITH);
 	}
 
 	/**
@@ -55,14 +56,15 @@ public class MaterialSearcher {
 	 * @ordered
 	 */
 	
-	public SearchResult query(String text, int searchConfig) {
+	
+	public SearchResult query(String text) {
 		clearHighlight();
 		if (text.isEmpty()) {
 			return new SearchResult(new LinkedList<Material>(), new LinkedList<String>());
 		}
 		
 		Set<String> keywords = parseQueryText(text);
-		Set<Collection<Material>> tags = this.queryTags(keywords, searchConfig);
+		Set<Collection<Material>> tags = this.queryTags(keywords);
 		return new SearchResult(this.findIntersection(tags), keywords);
 	}
 	
@@ -121,9 +123,9 @@ public class MaterialSearcher {
 	 * @ordered
 	 */
 	
-	private Set<Collection<Material>> queryTags(Set<String> tagLiterals, int searchConfig) {
+	private Set<Collection<Material>> queryTags(Set<String> tagLiterals) {
 		
-		switch (searchConfig) {
+		switch (this.getSearchConfig()) {
 		case WRAP_WORD:
 			return wrapWordSearch(tagLiterals);
 		case START_WITH:
@@ -171,6 +173,14 @@ public class MaterialSearcher {
 		return tagSet;
 	}
 	
+	public int getSearchConfig() {
+		return searchConfig;
+	}
+
+	public void setSearchConfig(int searchConfig) {
+		this.searchConfig = searchConfig;
+	}
+
 	public static class SearchResult {
 		private final Collection<Material> result;
 		private final Collection<String> queryKeywords;

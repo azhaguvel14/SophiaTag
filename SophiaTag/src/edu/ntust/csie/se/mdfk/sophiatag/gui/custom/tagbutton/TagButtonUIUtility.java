@@ -18,6 +18,7 @@ public abstract class TagButtonUIUtility {
 		return getTagPartShape(isLeftPart, x, y, width, height, STROKE_WIDTH);
 	}
 	
+	
 	static Shape getTagPartShape(boolean isLeftPart, double x, double y, double width, double height, float strokeWidth) {
 		double strokePadding = strokeWidth / 2;
 		double drawPadding = strokePadding + RADIUS;

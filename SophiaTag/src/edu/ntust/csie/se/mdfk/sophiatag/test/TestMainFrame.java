@@ -23,6 +23,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.WrapLayout;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton;
 
 import java.awt.Color;
+import javax.swing.JToggleButton;
 
 public class TestMainFrame {
 
@@ -31,7 +32,6 @@ public class TestMainFrame {
 	private JButton logoutButton;
 	private JLabel rootDirLabel;
 	private JButton changeDirButton;
-	private JButton searchButton;
 	private JLabel fileNameLabel;
 	private JLabel fileDirLabel;
 	private JButton openDirButton;
@@ -43,6 +43,7 @@ public class TestMainFrame {
 	private JScrollPane tagScrollPane;
 	private JPanel tagPanel;
 	private TagButton tagButton;
+	private JToggleButton tglbtnWholeWord;
 
 	/**
 	 * Launch the application.
@@ -151,13 +152,13 @@ public class TestMainFrame {
 		searchPanel.add(queryField, gbc_queryField);
 		queryField.setColumns(10);
 		
-		searchButton = new JButton("Search");
-		GridBagConstraints gbc_searchButton = new GridBagConstraints();
-		gbc_searchButton.anchor = GridBagConstraints.EAST;
-		gbc_searchButton.fill = GridBagConstraints.VERTICAL;
-		gbc_searchButton.gridx = 1;
-		gbc_searchButton.gridy = 0;
-		searchPanel.add(searchButton, gbc_searchButton);
+		tglbtnWholeWord = new JToggleButton("Whole word");
+		GridBagConstraints gbc_tglbtnWholeWord = new GridBagConstraints();
+		gbc_tglbtnWholeWord.fill = GridBagConstraints.VERTICAL;
+		gbc_tglbtnWholeWord.anchor = GridBagConstraints.EAST;
+		gbc_tglbtnWholeWord.gridx = 1;
+		gbc_tglbtnWholeWord.gridy = 0;
+		searchPanel.add(tglbtnWholeWord, gbc_tglbtnWholeWord);
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();

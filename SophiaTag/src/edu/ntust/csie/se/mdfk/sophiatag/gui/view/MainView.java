@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -66,7 +67,6 @@ public class MainView extends View {
 	private JButton logoutButton;
 	private JLabel rootDirLabel;
 	private JButton changeRootDirButton;
-	private JButton searchButton;
 	private JLabel materialNameLabel;
 	private JLabel materialDirLabel;
 	private JButton openDirButton;
@@ -84,6 +84,8 @@ public class MainView extends View {
 	private TextChangedListener sharedTagEditedListener;
 
 	private MaterialOperationListener materialOperaionListener;
+
+	private JToggleButton toggleButton;
 
 	/**
 	 * @param x
@@ -120,8 +122,8 @@ public class MainView extends View {
 		
 		this.logoutButton.setActionCommand("logout");
 		this.changeRootDirButton.setActionCommand("change_root_dir");
-		this.searchButton.setActionCommand("search");
 		this.openDirButton.setActionCommand("open_dir");
+		this.toggleButton.setActionCommand("search_config");
 		this.addTagButton.setActionCommand("add_tag");
 		this.discardButton.setActionCommand("discard_material");
 		
@@ -202,27 +204,26 @@ public class MainView extends View {
 		GridBagLayout gbl_searchPanel = new GridBagLayout();
 		gbl_searchPanel.columnWidths = new int[]{0, 0};
 		gbl_searchPanel.rowHeights = new int[]{0};
-		gbl_searchPanel.columnWeights = new double[]{1.0, 0.0};
+		gbl_searchPanel.columnWeights = new double[]{0.0, 1.0};
 		gbl_searchPanel.rowWeights = new double[]{0.0};
 		searchPanel.setLayout(gbl_searchPanel);
+		
+		toggleButton = new JToggleButton("Tags start with");
+		GridBagConstraints gbc_wholeWordToggleBtn = new GridBagConstraints();
+		gbc_wholeWordToggleBtn.fill = GridBagConstraints.VERTICAL;
+		gbc_wholeWordToggleBtn.anchor = GridBagConstraints.WEST;
+		gbc_wholeWordToggleBtn.gridx = 0;
+		gbc_wholeWordToggleBtn.gridy = 0;
+		searchPanel.add(toggleButton, gbc_wholeWordToggleBtn);
 		
 		queryField = new JTextField();
 		GridBagConstraints gbc_queryField = new GridBagConstraints();
 		gbc_queryField.fill = GridBagConstraints.BOTH;
 		gbc_queryField.insets = new Insets(0, 0, 0, 5);
-		gbc_queryField.gridx = 0;
+		gbc_queryField.gridx = 1;
 		gbc_queryField.gridy = 0;
 		searchPanel.add(queryField, gbc_queryField);
 		queryField.setColumns(10);
-		
-		searchButton = new JButton("Search");
-		GridBagConstraints gbc_searchButton = new GridBagConstraints();
-		gbc_searchButton.anchor = GridBagConstraints.EAST;
-		gbc_searchButton.fill = GridBagConstraints.VERTICAL;
-		gbc_searchButton.gridx = 1;
-		gbc_searchButton.gridy = 0;
-		searchPanel.add(searchButton, gbc_searchButton);
-		
 		
 		materialProfilePanel = new JPanel();
 		GridBagConstraints gbc_materialProfilePanel = new GridBagConstraints();
@@ -401,6 +402,18 @@ public class MainView extends View {
 			
 		};
 		
+		this.toggleButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				toggleButton.setText(toggleButton.getModel().isSelected()? "Tags exactly are": "Tags start with");
+				glue.handleEvent(toggleButton.getActionCommand(), e);
+				glue.handleEvent("search", e);
+				
+			}
+			
+		});
+		
 		ActionListener sharedButtonListener = new ActionListener() {
 
 			@Override
@@ -411,26 +424,18 @@ public class MainView extends View {
 		
 		this.logoutButton.addActionListener(sharedButtonListener);
 		this.changeRootDirButton.addActionListener(sharedButtonListener);
-		this.searchButton.addActionListener(sharedButtonListener);
 		this.openDirButton.addActionListener(sharedButtonListener);
 		this.addTagButton.addActionListener(sharedButtonListener);
 		this.discardButton.addActionListener(sharedButtonListener);
 		
-		
+
 		this.queryField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					glue.handleEvent("search", null);
-				}
-			}
-			
+						
 			@Override
 			public void keyReleased(KeyEvent e) {
 				glue.handleEvent("search", null);
 			}
 		});
-		
 		
 		this.materialTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

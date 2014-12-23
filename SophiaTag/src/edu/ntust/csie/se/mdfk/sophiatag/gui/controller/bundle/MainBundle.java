@@ -15,6 +15,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MainViewInitController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialDiscardController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MaterialSelectedController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.OpenDirectoryController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.SearchConfigController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.SearchController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.WindowClosingController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButton.RemoveTagEvent;
@@ -40,7 +41,7 @@ public class MainBundle extends ControllerBundle<MainView> {
 		this.addActionEventController("open_dir", new OpenDirectoryController()); //CoZy
 		this.addActionEventController("add_tag", new AddTagController()); //常
 		this.addActionEventController("discard_material", new MaterialDiscardController()); //CoZy
-		
+		this.addActionEventController("search_config", new SearchConfigController());
 		this.addController("material_selected", ListSelectionEvent.class, new MaterialSelectedController());
 		this.addController("edit_tag", TextChangedEvent.class, new EditTagController());//常
 		this.addController("remove_tag", RemoveTagEvent.class, new RemoveTagController());

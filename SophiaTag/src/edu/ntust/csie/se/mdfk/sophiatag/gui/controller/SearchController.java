@@ -24,7 +24,7 @@ public class SearchController implements MainViewActionEventController {
 //			return;
 //		}
 		
-		SearchResult searchResult = services.getMaterialSearcher().query(queryText, MaterialSearcher.START_WITH);
+		SearchResult searchResult = services.getMaterialSearcher().query(queryText);
 		MaterialList shownList;
 		if (searchResult.hasResult()) {
 			shownList = services.getMaterialList().select(searchResult.getResult());
