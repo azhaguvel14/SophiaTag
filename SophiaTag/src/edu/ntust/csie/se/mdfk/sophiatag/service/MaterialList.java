@@ -79,6 +79,7 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	public MaterialList select(Collection<Material> selections) {
 		if (this.selection != null) {
 			MaterialTagger.getInstance().removeMaterialDiscardedListener(this.selection);
+			this.selection.listeners.clear();
 		}
 		this.selection = new Selection(selections, materials);
 		
@@ -123,15 +124,6 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 			super.addMaterials(materials);
 		}
 		
-		@Override
-		public void addMaterialRemovedListener(MaterialRemovedListener listener) {
-			MaterialList.this.addMaterialRemovedListener(listener);
-		}
-		
-		@Override
-		public void removeMaterialRemovedListener(MaterialRemovedListener listener) {
-			MaterialList.this.removeMaterialRemovedListener(listener);
-		}
 	}
 	
 }

@@ -110,10 +110,12 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	
 	
 	public void setList(MaterialList list) {
-		if (this.content == null) {
-			list.addMaterialRemovedListener(this);
+		if (this.content != null) {
+			this.content.removeMaterialRemovedListener(this);
 		}
+		list.addMaterialRemovedListener(this);
 		this.content = list;
+		
 		this.fireTableDataChanged();
 		
 	}

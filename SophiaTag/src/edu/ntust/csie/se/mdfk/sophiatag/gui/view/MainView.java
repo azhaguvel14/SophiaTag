@@ -416,6 +416,7 @@ public class MainView extends View {
 		this.addTagButton.addActionListener(sharedButtonListener);
 		this.discardButton.addActionListener(sharedButtonListener);
 		
+		
 		this.queryField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -465,6 +466,7 @@ public class MainView extends View {
 
 			@Override
 			public void modelChange(ModelChangeEvent<Material> evt) {
+				
 				setMaterialProfile(evt.getModel());
 				setDiscardButtonEnabled(evt.getModel());
 			}

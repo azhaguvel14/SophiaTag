@@ -13,7 +13,6 @@ public class MaterialDiscardController implements MainViewActionEventController 
 	@Override
 	public void handle(Scope scope, ActionEvent event,
 			SophiaTagServices services, MainView view) {
-		// TODO Auto-generated method stub
 		Material material = scope.get("selectedMaterial");
 		MaterialTagger.getInstance().discardMaterial(material);
 	}
