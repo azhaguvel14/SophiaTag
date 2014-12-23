@@ -17,8 +17,8 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
  *
  */
 public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
-	private static final Color NORMAL_FILE_COLOR = new Color(60, 60, 60);
-	private static final Color NEW_FILE_COLOR = ColorSwatch.GREEN;
+	private static final Color NORMAL_FILE_COLOR = ColorSwatch.GREEN;
+	private static final Color NEW_FILE_COLOR = new Color(60, 60, 60);//ColorSwatch.GREEN;
 	private static final Color LOST_FILE_COLOR = ColorSwatch.RED;
 	private static final Color SELECTED_COLOR = Color.WHITE;
 	@Override
@@ -45,9 +45,10 @@ public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 				
 				delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
 				if (!material.isAttached()) {
-					delegate.setFont(this.boldThisFont(delegate.getFont()));
+					
 					delegate.setForeground(NEW_FILE_COLOR);
 				} else {
+					delegate.setFont(this.boldThisFont(delegate.getFont()));
 					delegate.setForeground(NORMAL_FILE_COLOR);
 				}
 			}

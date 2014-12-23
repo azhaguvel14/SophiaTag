@@ -24,7 +24,6 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	private MaterialListModel.GetFieldFunction[] getFieldFunctions;
 	
 	private MaterialList content = null;
-	private Collection<Tag> highlights;
 	private Path rootDir;
 	
 	private static final Class<?>[] classes = {Material.class, String.class, Collection.class};
@@ -126,15 +125,6 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 		
 		MaterialTagger.getInstance().removeMaterialTaggedListener(this);
 		MaterialTagger.getInstance().removeTagTextChangedListener(this);
-	}
-	
-
-	public void setHighlightedTags(Collection<Tag> tags) {
-		this.highlights = tags;
-	}
-	
-	public Collection<Tag> getHighlightedTags() {
-		return this.highlights;
 	}
 	
 	public void setRootDirectory(String rootDir) {

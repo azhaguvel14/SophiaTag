@@ -77,11 +77,10 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	}
 	
 	public MaterialList select(Collection<Material> selections) {
-		if (this.selection == null) {
-			this.selection = new Selection(selections, materials);
-		} else {
-			this.selection.setList(selections);
+		if (this.selection != null) {
+			MaterialTagger.getInstance().removeMaterialDiscardedListener(this.selection);
 		}
+		this.selection = new Selection(selections, materials);
 		
 		return this.selection;
 		

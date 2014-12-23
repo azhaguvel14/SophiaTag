@@ -10,6 +10,7 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.Scope;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.MaterialListModel;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.view.MainView;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
+import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialSearcher.SearchResult;
 import edu.ntust.csie.se.mdfk.sophiatag.service.SophiaTagServices;
 
@@ -17,19 +18,21 @@ public class SearchController implements MainViewActionEventController {
 
 	@Override
 	public void handle(Scope scope, ActionEvent event, SophiaTagServices services, MainView view) {
+		String queryText = view.getQueryText();
+//		if(queryText.isEmpty()) {
+//			scope.set("listModel", services.getMaterialList());
+//			return;
+//		}
 		
-		SearchResult searchResult = services.getMaterialSearcher().query(view.getQueryText());
+		SearchResult searchResult = services.getMaterialSearcher().query(queryText, MaterialSearcher.START_WITH);
 		MaterialList shownList;
-		Collection<Tag> highlights = null;
 		if (searchResult.hasResult()) {
 			shownList = services.getMaterialList().select(searchResult.getResult());
-			highlights = searchResult.getQueryTags();
 		} else {
 			shownList = services.getMaterialList();
 		}
 		
 		scope.set("listModel", shownList);
-		scope.set("highlights", highlights);
 		
 	}
 

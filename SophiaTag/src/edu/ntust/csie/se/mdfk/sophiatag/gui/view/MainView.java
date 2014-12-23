@@ -487,14 +487,6 @@ public class MainView extends View {
 			
 		});
 		
-		scope.addModelChangeListener("highlights", new ModelChangeListener<Collection<Tag>>() {
-
-			@Override
-			public void modelChange(ModelChangeEvent<Collection<Tag>> evt) {
-				tableModel.setHighlightedTags(evt.getModel());
-			}
-			
-		});
 	}
 	
 	public String getQueryText() {
