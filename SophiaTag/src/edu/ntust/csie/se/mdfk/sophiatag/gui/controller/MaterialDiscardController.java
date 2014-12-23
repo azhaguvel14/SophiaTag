@@ -15,9 +15,7 @@ public class MaterialDiscardController implements MainViewActionEventController 
 			SophiaTagServices services, MainView view) {
 		// TODO Auto-generated method stub
 		Material material = scope.get("selectedMaterial");
-		if(material.isLost()== true ){
-			MaterialTagger.getInstance().discardMaterial(material);
-		}
+		MaterialTagger.getInstance().discardMaterial(material);
 	}
 
 }
