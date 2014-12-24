@@ -31,7 +31,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialDis
 	public MaterialListModel() {
 		initializeColumnList();
 		initializeFieldFunctions();
-		
+		MaterialTagger.getInstance().addMaterialDiscardedListener(this);
 		MaterialTagger.getInstance().addMaterialTaggedListener(this);
 		MaterialTagger.getInstance().addTagTextChangedListener(this);
 	}
@@ -129,8 +129,8 @@ public class MaterialListModel extends AbstractTableModel implements MaterialDis
 	
 	@Override
 	public void onDiscarded(Material material) {
-//		this.fireTableRowsDeleted(indexInList, );
-		this.fireTableDataChanged();
+		int indexInList = this.content.getLatestRemovedIndex();
+		this.fireTableRowsDeleted(indexInList, indexInList);
 	}
 	
 	@Override

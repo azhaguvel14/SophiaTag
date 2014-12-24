@@ -16,6 +16,7 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	
 	private List<Material> materials;
 	private transient MaterialList selection = null;
+	private transient int latestRemovedIndex = -1;
 	
 	MaterialList() {
 		this(new UniqueList<Material>());
@@ -59,9 +60,13 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		this.addMaterials(newMaterials);
 	}
 	
+	public int getLatestRemovedIndex() {
+		return this.latestRemovedIndex;
+	}
+	
 	public void onDiscarded(Material material) {
 		
-		int index = materials.indexOf(material);
+		this.latestRemovedIndex  = materials.indexOf(material);
 		materials.remove(material);
 		
 	}
