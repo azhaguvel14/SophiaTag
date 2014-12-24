@@ -1,6 +1,7 @@
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -8,9 +9,12 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
@@ -67,7 +71,11 @@ public class MaterialSearcher {
 		
 		Set<String> keywords = parseQueryText(text);
 		Set<Collection<Material>> tags = this.queryTags(keywords);
-		return new SearchResult(this.findIntersection(tags), keywords);
+		Set<Material> result = this.findIntersection(tags);
+		if (result.isEmpty()) {
+			this.highlighter.clearKeywords();
+		}
+		return new SearchResult(result, keywords);
 	}
 	
 	public TagDatabase getTagDatabase() {
@@ -81,13 +89,17 @@ public class MaterialSearcher {
 	 */
 	
 	private Set<String> parseQueryText(String text) {
-		Set<String> result = new HashSet<String>();
+		TreeSet<String> result = new TreeSet<String>();
+		String trimed;
 		String[] tokens = text.split("&&");
 		for (String token : tokens) {
-			result.add(token.trim());
+			trimed = token.trim();
+			if (!trimed.isEmpty()) {
+				result.add(trimed);
+			}
 		}
 		
-		return result;	
+		return result.descendingSet();	
 	}
 	
 	/**
@@ -139,7 +151,8 @@ public class MaterialSearcher {
 				tagSet.clear();
 				return tagSet;
 			}
-			this.highlightTag(literal, tag);
+			this.highlighter.addKeyword(literal);
+			this.highlighter.highlightByLatestKeyword(tag);
 			tagSet.add(tag.getTargetsView());
 			
 		}
@@ -153,8 +166,9 @@ public class MaterialSearcher {
 		for (String keyword: keywords) {
 			
 			union = new HashSet<Material>();
+			this.highlighter.addKeyword(keyword);
 			for (Tag tag: this.database.getPrefixedTags(keyword)) {
-				this.highlightTag(keyword, tag);
+				this.highlighter.highlightByLatestKeyword(tag);
 				union.addAll(tag.getTargetsView());
 			}
 			
@@ -168,11 +182,6 @@ public class MaterialSearcher {
 		}
 		
 		return tagSet;
-	}
-	
-	private void highlightTag(String keyword, Tag tag) {
-		this.highlighter.addKeyword(keyword);
-		this.highlighter.highlightByLatestKeyword(tag);
 	}
 	
 	public int getSearchConfig() {

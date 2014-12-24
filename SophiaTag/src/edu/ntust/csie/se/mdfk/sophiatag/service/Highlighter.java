@@ -3,9 +3,14 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.service;
 
+import java.awt.Color;
 import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
@@ -21,45 +26,51 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
  */
 public class Highlighter implements TagTextChangedListener,	MaterialTaggedListener {
 	
-	private static final String HIGHTLIGHT_COLOR_STRING = ColorSwatch.toNoAlphaString(ColorSwatch.LIGHT_YELLOW);
-	private static final String KEYWORD_COLOR_STRING = ColorSwatch.toNoAlphaString(ColorSwatch.ORANGE);
-	
-	private static final String HIGHLIGHT_WRAPPER_START = "<span style=\"font-weight:bold;background:" + HIGHTLIGHT_COLOR_STRING + "; color:" + KEYWORD_COLOR_STRING + ";\">";
+	private static final String HIGHLIGHT_OUTTER_WRAPPER_START_TMPLATE = "<span style=\"background:%s;\">";
+	private static final String HIGHLIGHT_INNER_WRAPPER_START_TMPLATE = "<span style=\"font-weight:bold; color:%s;\">";
 	private static final String HIGHLIGHT_WRAPPER_END = "</span>";
 	
-	private NavigableSet<String> keywords;
+	private NavigableMap<String, KeywordColorBundle> keywords;
 	private Set<Tag> highLightedTags;
 	private String latestKeywordCache;
 	
+	private Random hueGenerator;
+	private static final long RAND_SEED = 118 * 227 * 349 * 454 * 555;
 	Highlighter() {
-		this.keywords = new TreeSet<String>();
+		this.hueGenerator = new Random(RAND_SEED);
+		this.keywords = new TreeMap<String, KeywordColorBundle>();
 		this.highLightedTags = new HashSet<Tag>();
+		
 		MaterialTagger.getInstance().addMaterialTaggedListenerAsService(this);
 		MaterialTagger.getInstance().addTagTextChangedListenerAsService(this);
 	}
 	
 	public void addKeyword(String keyword) {
+		
 		this.latestKeywordCache = keyword;
-		this.keywords.add(keyword);
+		this.keywords.put(keyword, new KeywordColorBundle(this.hueGenerator.nextFloat()));
 	}
 	
 	public void highlightByLatestKeyword(Tag tag) {
 		if (this.latestKeywordCache == null) {
 			return;
 		}
-		this.markAndAddTag(tag);
+		this.markAndAddTag(this.keywords.floorEntry(this.latestKeywordCache), tag);
 		
 	}
 	
 	public void highlight(Tag tag) {
-		this.latestKeywordCache = this.keywords.floor(tag.getText());
-		this.markAndAddTag(tag);
+		Entry<String, KeywordColorBundle> entry = this.keywords.floorEntry(tag.getText());
+		if (entry == null) {
+			return;
+		}
+		this.latestKeywordCache = entry.getKey();
+		this.markAndAddTag(entry, tag);
 	}
 	
-	private boolean markHighlightOnTag(String keyword, Tag tag) {
-		if (keyword == null) {
-			return false;
-		}
+	private boolean markHighlightOnTag(Entry<String, KeywordColorBundle> entry, Tag tag) {
+		
+		String keyword = entry.getKey();
 		int prefixStart = tag.getText().indexOf(keyword);
 		
 		if (prefixStart < 0) {
@@ -68,18 +79,21 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		
 		int posfixStart = prefixStart + keyword.length();
 		
-		StringBuffer buffer = new StringBuffer(tag.getText().substring(0, prefixStart));
-		buffer.append(HIGHLIGHT_WRAPPER_START);
+		KeywordColorBundle colors = entry.getValue();
+		StringBuffer buffer = new StringBuffer(String.format(HIGHLIGHT_OUTTER_WRAPPER_START_TMPLATE, colors.backColor));
+		buffer.append(tag.getText().substring(0, prefixStart));
+		buffer.append(String.format(HIGHLIGHT_INNER_WRAPPER_START_TMPLATE, colors.foreColor));
 		buffer.append(keyword);
 		buffer.append(HIGHLIGHT_WRAPPER_END);
 		buffer.append(tag.getText().substring(posfixStart));
+		buffer.append(HIGHLIGHT_WRAPPER_END);
 		
 		tag.setHighlightHTML(buffer.toString());
 		return true;
 	}
 	
-	private void markAndAddTag(Tag tag) {
-		if(this.markHighlightOnTag(this.latestKeywordCache, tag)) {
+	private void markAndAddTag(Entry<String, KeywordColorBundle> entry, Tag tag) {
+		if(this.markHighlightOnTag(entry, tag)) {
 			this.highLightedTags.add(tag);
 		}
 	}
@@ -91,6 +105,7 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		}
 		
 		highLightedTags.clear();
+		this.hueGenerator.setSeed(RAND_SEED);
 	}
 	/* (non-Javadoc)
 	 * @see edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener#onDetag(edu.ntust.csie.se.mdfk.sophiatag.data.Tag, edu.ntust.csie.se.mdfk.sophiatag.data.Material)
@@ -115,5 +130,16 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	public void onTextChanged(String oldText, Tag newTag) {
 		this.highlight(newTag);
 	}
-
+	
+	private class KeywordColorBundle {
+		private String foreColor;
+		private String backColor;
+		
+		private KeywordColorBundle(float hue) {
+			this.foreColor = ColorSwatch.toNoAlphaString(Color.getHSBColor(hue, 0.95f, 0.9f));
+			this.backColor = ColorSwatch.toNoAlphaString(Color.getHSBColor(hue, 0.1f, 1f));
+		}
+		
+		
+	}
 }
