@@ -19,9 +19,9 @@ public class PrepareTestRecord {
 	
 	private static final String TEST_PATH = "/home/maeglin89273/Desktop/Android App";
 	
-	private static final int TAGGING_TIMES = 150;
-	private static final int TAG_ID_RANGE = 100;
-	private static final float RANGE = 0.15f;
+	private static final int TAGGING_TIMES = 100;
+	private static final int TAG_ID_RANGE = 50;
+	private static final float RANGE = 0.17f;
 	
 	private final SophiaTagServices services;
 	private final Random rand;
@@ -55,7 +55,7 @@ public class PrepareTestRecord {
 	}
 	
 	private Tag genTag() {
-		String text = "ID" + rand.nextInt(TAG_ID_RANGE);
+		String text = Integer.toString(rand.nextInt(TAG_ID_RANGE));
 		return services.getMaterialSearcher().getTagDatabase().getTag(text);
 	}
 	

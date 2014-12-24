@@ -35,7 +35,7 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	private String latestKeywordCache;
 	
 	private Random hueGenerator;
-	private static final long RAND_SEED = 118 * 227 * 349 * 454 * 555;
+	private static final long RAND_SEED = 77 * 68 * 70 * 75 * ((18 * 27 * 49 * 54 * 55) << 3);
 	Highlighter() {
 		this.hueGenerator = new Random(RAND_SEED);
 		this.keywords = new TreeMap<String, KeywordColorBundle>();

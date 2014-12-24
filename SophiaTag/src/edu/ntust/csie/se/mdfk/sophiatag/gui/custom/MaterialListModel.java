@@ -150,7 +150,9 @@ public class MaterialListModel extends AbstractTableModel implements MaterialDis
 	
 	private void updateMaterialRow(Material material) {
 		int row = this.content.indexOf(material);
-		this.fireTableRowsUpdated(row, row);
+		if (row >= 0) {
+			this.fireTableRowsUpdated(row, row);
+		}
 	}
 	
 	private interface GetFieldFunction {

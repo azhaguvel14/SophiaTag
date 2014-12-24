@@ -26,7 +26,6 @@ public class TagButtonUI extends BasicButtonUI {
 		public TagButtonUI(boolean leftPart) {
 			this.leftPart = leftPart;
 			this.buttonColors = COLORS;
-//			this.buttonColors = this.leftPart ? LEFT_PART_COLORS : RIGHT_PART_COLORS;
 			
 		}
 		

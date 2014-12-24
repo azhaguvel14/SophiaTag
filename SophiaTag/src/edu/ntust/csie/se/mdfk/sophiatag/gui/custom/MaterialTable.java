@@ -18,6 +18,7 @@ public class MaterialTable extends JTable {
 		this.setSelectionRestrictions();
 		
 		this.getTableHeader().setReorderingAllowed(false);
+		
 		this.getColumnModel().getColumn(0).setCellRenderer(new MaterialNameCellRenderer());
 		this.getColumnModel().getColumn(2).setCellRenderer(new TagsCellRenderer());
 		
