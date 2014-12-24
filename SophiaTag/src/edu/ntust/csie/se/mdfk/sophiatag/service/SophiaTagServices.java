@@ -18,6 +18,7 @@ public class SophiaTagServices {
 	
 	// service objects
 	private MaterialSearcher searcher;
+	private Highlighter highlighter;
 	private MaterialScanner scanner;
 	private MaterialList list;
 	private RecordStorage storage;
@@ -27,6 +28,7 @@ public class SophiaTagServices {
 	public SophiaTagServices() {
 		
 		this.storage = new RecordStorage();
+		this.highlighter = new Highlighter();
 		
 		if (storage.hasSavedRecord()) {
 			try {
@@ -45,7 +47,7 @@ public class SophiaTagServices {
 	private void initializeNewServices(String path) {
 		this.scanner = new MaterialScanner(path);
 		this.list = new MaterialList(this.scanner.newScan());
-		this.searcher = new MaterialSearcher();
+		this.searcher = new MaterialSearcher(this.getHighLighter());
 		
 		this.saveRecord();
 		
@@ -65,7 +67,7 @@ public class SophiaTagServices {
 		this.list.restoreInit();
 		TagDatabase db = record.getTagDatabase();
 		db.restoreInit();
-		this.searcher = new MaterialSearcher(db);
+		this.searcher = new MaterialSearcher(db, this.getHighLighter());
 					
 	}
 	
@@ -104,5 +106,9 @@ public class SophiaTagServices {
 	
 	public String getRootDirectory() {
 		return this.scanner.getRootDirectory();
+	}
+
+	public Highlighter getHighLighter() {
+		return this.highlighter;
 	}
 }

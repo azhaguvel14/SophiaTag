@@ -29,6 +29,7 @@ public class LogoutController implements MainViewActionEventController {
 		{
 			case JOptionPane.YES_OPTION:
 				services.saveRecord();
+				services.getHighLighter().clearKeywords();
 				view.getFrame().dispose();
 				LoginView loginForm = new LoginView(services.isServiceReady());
 				MVCGlue.glue(services, loginForm, new LoginBundle());

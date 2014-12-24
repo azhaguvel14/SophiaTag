@@ -408,7 +408,7 @@ public class MainView extends View {
 			public void actionPerformed(ActionEvent e) {
 				toggleButton.setText(toggleButton.getModel().isSelected()? "Tags exactly are": "Tags start with");
 				glue.handleEvent(toggleButton.getActionCommand(), e);
-				glue.handleEvent("search", e);
+				glue.handleEvent("search", null);
 				
 			}
 			
@@ -430,10 +430,15 @@ public class MainView extends View {
 		
 
 		this.queryField.addKeyListener(new KeyAdapter() {
-						
 			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					glue.handleEvent("search", e);
+				}
+			}
+			
 			public void keyReleased(KeyEvent e) {
-				glue.handleEvent("search", null);
+				glue.handleEvent("search", e);
 			}
 		});
 		

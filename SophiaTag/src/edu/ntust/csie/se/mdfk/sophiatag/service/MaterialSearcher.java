@@ -33,6 +33,7 @@ public class MaterialSearcher {
 	public static final int WRAP_WORD = 0;
 	public static final int START_WITH = 1;
 	private final TagDatabase database;
+	private final Highlighter highlighter;
 	private int searchConfig;
 	
 	/**
@@ -40,12 +41,13 @@ public class MaterialSearcher {
 	 * <!--  end-user-doc  -->
 	 * @generated
 	 */
-	MaterialSearcher(){
-		this(new TagDatabase());
+	MaterialSearcher(Highlighter highlighter){
+		this(new TagDatabase(), highlighter);
 	}
 	
-	MaterialSearcher(TagDatabase database){
+	MaterialSearcher(TagDatabase database, Highlighter highlighter){
 		this.database = database;
+		this.highlighter = highlighter;
 		this.setSearchConfig(START_WITH);
 	}
 
@@ -58,7 +60,7 @@ public class MaterialSearcher {
 	
 	
 	public SearchResult query(String text) {
-		clearHighlight();
+		this.highlighter.clearKeywords();
 		if (text.isEmpty()) {
 			return new SearchResult(new LinkedList<Material>(), new LinkedList<String>());
 		}
@@ -68,13 +70,6 @@ public class MaterialSearcher {
 		return new SearchResult(this.findIntersection(tags), keywords);
 	}
 	
-	private void clearHighlight() {
-		for (Tag tag: this.database.tagMap.values()) {
-			tag.clearHighlight();
-		}
-		
-	}
-
 	public TagDatabase getTagDatabase() {
 		return this.database;
 	}
@@ -144,7 +139,7 @@ public class MaterialSearcher {
 				tagSet.clear();
 				return tagSet;
 			}
-			tag.highlight(literal);
+			this.highlightTag(literal, tag);
 			tagSet.add(tag.getTargetsView());
 			
 		}
@@ -152,15 +147,17 @@ public class MaterialSearcher {
 		return tagSet;
 	}
 	
-	private Set<Collection<Material>> startWithSearch(Set<String> tagLiterals) {
+	private Set<Collection<Material>> startWithSearch(Set<String> keywords) {
 		Set<Collection<Material>> tagSet = new HashSet<Collection<Material>>();
 		Set<Material> union;
-		for (String literal: tagLiterals) {
+		for (String keyword: keywords) {
+			
 			union = new HashSet<Material>();
-			for (Tag tag: this.database.getPrefixedTags(literal)) {
-				tag.highlight(literal);
+			for (Tag tag: this.database.getPrefixedTags(keyword)) {
+				this.highlightTag(keyword, tag);
 				union.addAll(tag.getTargetsView());
 			}
+			
 			if (union.isEmpty()) {
 				tagSet.clear();
 				return tagSet;
@@ -171,6 +168,11 @@ public class MaterialSearcher {
 		}
 		
 		return tagSet;
+	}
+	
+	private void highlightTag(String keyword, Tag tag) {
+		this.highlighter.addKeyword(keyword);
+		this.highlighter.highlightByLatestKeyword(tag);
 	}
 	
 	public int getSearchConfig() {
@@ -270,8 +272,8 @@ public class MaterialSearcher {
 		}
 
 		void restoreInit() {
-			MaterialTagger.getInstance().addMaterialTaggedListener(this);
-			MaterialTagger.getInstance().addTagTextChangedListener(this);
+			MaterialTagger.getInstance().addMaterialTaggedListenerAsService(this);
+			MaterialTagger.getInstance().addTagTextChangedListenerAsService(this);
 		}
 	}
 }

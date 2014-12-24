@@ -159,25 +159,36 @@ public class MaterialTagger {
 		}
 	}
 	
+	public void addMaterialTaggedListenerAsService(MaterialTaggedListener listener) {
+		this.eventDispatcher.addListener(MaterialTaggedListener.class, listener, true);
+	}
 	
 	public void addMaterialTaggedListener(MaterialTaggedListener listener) {
-		this.eventDispatcher.addListener(MaterialTaggedListener.class, listener);
+		this.eventDispatcher.addListener(MaterialTaggedListener.class, listener, false);
 	}
 	
 	public void removeMaterialTaggedListener(MaterialTaggedListener listener) {
 		this.eventDispatcher.removeListener(MaterialTaggedListener.class, listener);
 	}
 	
+	public void addMaterialDiscardedListenerAsService(MaterialDiscardedListener listener) {
+		this.eventDispatcher.addListener(MaterialDiscardedListener.class, listener, true);
+	}
+	
 	public void addMaterialDiscardedListener(MaterialDiscardedListener listener) {
-		this.eventDispatcher.addListener(MaterialDiscardedListener.class, listener);
+		this.eventDispatcher.addListener(MaterialDiscardedListener.class, listener, false);
 	}
 	
 	public void removeMaterialDiscardedListener(MaterialDiscardedListener listener) {
 		this.eventDispatcher.removeListener(MaterialDiscardedListener.class, listener);
 	}
 	
+	public void addTagTextChangedListenerAsService(TagTextChangedListener listener) {
+		this.eventDispatcher.addListener(TagTextChangedListener.class, listener, true);
+	}
+	
 	public void addTagTextChangedListener(TagTextChangedListener listener) {
-		this.eventDispatcher.addListener(TagTextChangedListener.class, listener);
+		this.eventDispatcher.addListener(TagTextChangedListener.class, listener, false);
 	}
 	
 	public void removeTagTextChangedListener(TagTextChangedListener listener) {
@@ -233,14 +244,19 @@ public class MaterialTagger {
 		 * <!--  end-user-doc  -->
 		 * @generated
 		 * @ordered
+		 * @param isService TODO
 		 */
 		
-		public void addListener(Class<? extends AttachmentModifiedListener> listenerClass, AttachmentModifiedListener listener) {
+		public void addListener(Class<? extends AttachmentModifiedListener> listenerClass, AttachmentModifiedListener listener, boolean isService) {
 			if (!isListenerClassExist(listenerClass)) {
 				this.listeners.put(listenerClass, new ArrayList<AttachmentModifiedListener>());
 			}
 			
-			this.getListenersOfSpecificClass(listenerClass).add(listener);
+			if (isService) {
+				this.getListenersOfSpecificClass(listenerClass).add(listener);
+			} else {
+				this.getListenersOfSpecificClass(listenerClass).add(0, listener);
+			}
 		}
 		
 		/**

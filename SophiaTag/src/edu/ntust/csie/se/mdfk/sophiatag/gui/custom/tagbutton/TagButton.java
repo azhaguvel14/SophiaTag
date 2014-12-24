@@ -136,14 +136,7 @@ public class TagButton extends JPanel {
 	}
 	
 	private void addInteractiveListeners() {
-		removeBtn.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				TagButton.this.removeTagListener.removeTag(new RemoveTagEvent(TagButton.this, getTag()));
-			}
-			
-		});
 		renameBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -154,6 +147,15 @@ public class TagButton extends JPanel {
 		});
 		
 		if (renameBox != null) {
+			removeBtn.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TagButton.this.removeTagListener.removeTag(new RemoveTagEvent(TagButton.this, getTag()));
+				}
+				
+			});
+			
 			renameBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {

@@ -11,14 +11,14 @@ import javax.swing.table.AbstractTableModel;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger;
+import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialDiscardedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
 import edu.ntust.csie.se.mdfk.sophiatag.data.UniqueList;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.TagTextChangedListener;
 import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList;
-import edu.ntust.csie.se.mdfk.sophiatag.service.MaterialList.MaterialRemovedListener;
 
-public class MaterialListModel extends AbstractTableModel implements MaterialRemovedListener, MaterialTaggedListener, TagTextChangedListener {
+public class MaterialListModel extends AbstractTableModel implements MaterialDiscardedListener, MaterialTaggedListener, TagTextChangedListener {
 	
 	private List<String> columnList;
 	private MaterialListModel.GetFieldFunction[] getFieldFunctions;
@@ -110,10 +110,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	
 	
 	public void setList(MaterialList list) {
-		if (this.content != null) {
-			this.content.removeMaterialRemovedListener(this);
-		}
-		list.addMaterialRemovedListener(this);
+		
 		this.content = list;
 		
 		this.fireTableDataChanged();
@@ -121,10 +118,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	}
 	
 	public void unsubscribeUpdates() {
-		if (this.content != null) {
-			this.content.removeMaterialRemovedListener(this);
-		}
-		
+		MaterialTagger.getInstance().removeMaterialDiscardedListener(this);
 		MaterialTagger.getInstance().removeMaterialTaggedListener(this);
 		MaterialTagger.getInstance().removeTagTextChangedListener(this);
 	}
@@ -134,8 +128,9 @@ public class MaterialListModel extends AbstractTableModel implements MaterialRem
 	}
 	
 	@Override
-	public void onRemoved(Material material, int indexInList) {
-		this.fireTableRowsDeleted(indexInList, indexInList);
+	public void onDiscarded(Material material) {
+//		this.fireTableRowsDeleted(indexInList, );
+		this.fireTableDataChanged();
 	}
 	
 	@Override

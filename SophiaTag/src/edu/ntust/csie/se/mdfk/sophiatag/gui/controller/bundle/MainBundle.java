@@ -3,6 +3,7 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.gui.controller.bundle;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
 import javax.swing.event.ListSelectionEvent;
@@ -37,11 +38,11 @@ public class MainBundle extends ControllerBundle<MainView> {
 		this.addActionEventController("logout", new LogoutController());
 
 		this.addActionEventController("change_root_dir", null); //紀
-		this.addActionEventController("search", new SearchController()); //紀
 		this.addActionEventController("open_dir", new OpenDirectoryController()); //CoZy
 		this.addActionEventController("add_tag", new AddTagController()); //常
 		this.addActionEventController("discard_material", new MaterialDiscardController()); //CoZy
 		this.addActionEventController("search_config", new SearchConfigController());
+		this.addController("search", KeyEvent.class, new SearchController()); //紀
 		this.addController("material_selected", ListSelectionEvent.class, new MaterialSelectedController());
 		this.addController("edit_tag", TextChangedEvent.class, new EditTagController());//常
 		this.addController("remove_tag", RemoveTagEvent.class, new RemoveTagController());

@@ -16,7 +16,6 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	
 	private List<Material> materials;
 	private transient MaterialList selection = null;
-	private transient List<MaterialRemovedListener> listeners;
 	
 	MaterialList() {
 		this(new UniqueList<Material>());
@@ -28,8 +27,7 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	}
 	
 	void restoreInit() {
-		this.listeners = new ArrayList<MaterialRemovedListener>();
-		MaterialTagger.getInstance().addMaterialDiscardedListener(this);
+		MaterialTagger.getInstance().addMaterialDiscardedListenerAsService(this);
 	}
 	
 	public void addMaterial(Material material) {
@@ -66,20 +64,11 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 		int index = materials.indexOf(material);
 		materials.remove(material);
 		
-		this.notifyMaterialRemovedListener(material, index);
-	}
-	
-	private void notifyMaterialRemovedListener(Material material, int index) {
-		for (int i = listeners.size() - 1; i >= 0; i--)  {
-			listeners.get(i).onRemoved(material, index);
-		}
-		
 	}
 	
 	public MaterialList select(Collection<Material> selections) {
 		if (this.selection != null) {
 			MaterialTagger.getInstance().removeMaterialDiscardedListener(this.selection);
-			this.selection.listeners.clear();
 		}
 		this.selection = new Selection(selections, materials);
 		
@@ -90,19 +79,6 @@ public class MaterialList implements MaterialDiscardedListener, Iterable<Materia
 	@Override
 	public Iterator<Material> iterator() {
 		return this.materials.iterator();
-	}
-	
-	public void addMaterialRemovedListener(MaterialRemovedListener listener) {
-		this.listeners.add(listener);
-	}
-	
-	public void removeMaterialRemovedListener(MaterialRemovedListener listener) {
-		this.listeners.remove(listener);
-	}
-	
-	
-	public interface MaterialRemovedListener {
-		public abstract void onRemoved(Material material, int indexInList);
 	}
 	
 	private class Selection extends MaterialList {

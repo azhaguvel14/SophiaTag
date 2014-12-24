@@ -12,7 +12,7 @@ import java.awt.Color;
 public abstract class ColorSwatch {
 	public static final Color BLUE = new Color(0x196eef);
 	public static final Color GREEN = new Color(0x09a460);
-	public static final Color ORANGE = new Color(0xffb219);
+	public static final Color ORANGE = new Color(0xff6519);
 	public static final Color RED = new Color(0xde5642);
 	
 	public static final Color PINK = new Color(0xff006a);
