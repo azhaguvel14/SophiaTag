@@ -69,8 +69,6 @@ public class MaterialListModel extends AbstractTableModel implements MaterialDis
 			public Object getSpecificField(Material material) {
 				return material.getTargetsView();
 			}
-			
-			
 		};
 		
 	}

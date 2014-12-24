@@ -24,7 +24,7 @@ public class Material extends Attachable<Tag>{
 	 * @ordered
 	 */
 	
-	private boolean lost = false;
+	private transient boolean lost = false;
 	
 	/**
 	 * <!-- begin-user-doc -->

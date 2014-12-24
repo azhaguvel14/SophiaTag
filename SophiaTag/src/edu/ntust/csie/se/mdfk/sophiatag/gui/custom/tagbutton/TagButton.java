@@ -37,7 +37,6 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton.TagButtonBorder.Mod
 public class TagButton extends JPanel {
 	
 	private static final String REMOVE_CHARACTOR = "×"; 
-	private static final String TEXT_PROPERTY = "text";
 	
 	private static final Border LEFT_BORDER = TagButtonBorder.makeBorder(Mode.BUTTON, true);
 	private static final Border RIGHT_BORDER = TagButtonBorder.makeBorder(Mode.BUTTON, false);
