@@ -123,6 +123,7 @@ public class MaterialListModel extends AbstractTableModel implements MaterialDis
 	
 	public void setRootDirectory(String rootDir) {
 		this.rootDir = Paths.get(rootDir);
+		this.fireTableDataChanged();
 	}
 	
 	@Override

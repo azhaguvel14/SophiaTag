@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.RemoveTagController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.AddTagController;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.ChangeDirectoryController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.EditTagController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.LogoutController;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.MainViewInitController;
@@ -37,7 +38,7 @@ public class MainBundle extends ControllerBundle<MainView> {
 		//replace null with the controller instance that you implement, you can refer to LoginBundle class 
 		this.addActionEventController("logout", new LogoutController());
 
-		this.addActionEventController("change_root_dir", null); //紀
+		this.addActionEventController("change_root_dir", new ChangeDirectoryController()); //紀
 		this.addActionEventController("open_dir", new OpenDirectoryController()); //CoZy
 		this.addActionEventController("add_tag", new AddTagController()); //常
 		this.addActionEventController("discard_material", new MaterialDiscardController()); //CoZy

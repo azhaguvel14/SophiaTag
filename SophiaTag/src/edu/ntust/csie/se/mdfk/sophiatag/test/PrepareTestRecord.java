@@ -19,8 +19,8 @@ public class PrepareTestRecord {
 	
 	private static final String TEST_PATH = "/home/maeglin89273/Desktop/Android App";
 	
-	private static final int TAGGING_TIMES = 100;
-	private static final int TAG_ID_RANGE = 50;
+	private static final int TAGGING_TIMES = 300;
+	private static final int TAG_ID_RANGE = 100000;
 	private static final float RANGE = 0.17f;
 	
 	private final SophiaTagServices services;
