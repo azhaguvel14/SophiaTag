@@ -23,16 +23,26 @@ public class Scope {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> void set(String name, T value) {
+	public <T> boolean set(String name, T value) {
 		if (value == null) {
 			this.remove(name);
-			return;
+			return true;
 		}
 		
 		T oldValue = (T)this.nameValueMap.get(name);
 		if (!value.equals(oldValue)) {
 			this.nameValueMap.put(name, value);
 			this.eventSupport.firePropertyChange(new ModelChangeEvent<T>(this, name, oldValue, value));
+			return true;
+		}
+		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> void notifyInternalValueChanged(String name) {
+		T value = (T) this.nameValueMap.get(name);
+		if (value!= null) {
+			this.eventSupport.firePropertyChange(new ModelChangeEvent<T>(this, name, null, value));
 		}
 	}
 	

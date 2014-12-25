@@ -22,7 +22,9 @@ public class SearchController implements MainViewEventController<KeyEvent> {
 			shownList = services.getMaterialList();
 		}
 		
-		scope.set("listModel", shownList);
+		if(!scope.set("listModel", shownList)) {
+			scope.<MaterialList>notifyInternalValueChanged("listModel");
+		}
 		
 	}
 
