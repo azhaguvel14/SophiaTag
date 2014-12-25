@@ -21,6 +21,8 @@ public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 	private static final Color NEW_FILE_COLOR = new Color(60, 60, 60);//ColorSwatch.GREEN;
 	private static final Color LOST_FILE_COLOR = ColorSwatch.RED;
 	private static final Color SELECTED_COLOR = Color.WHITE;
+	private static final String LOST_HINT = "<html><body style=\"color:red;\"><span style=\"white-space:nowrap;font-weight:bold;\">(LOST!) </span>";
+	private static final String HTML_END = "</body></html>";
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
@@ -30,17 +32,13 @@ public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 		
 		if (isSelected) {
 			if (material.isLost()) {
-				materialName += " (Lost)";
+				materialName = LOST_HINT + materialName + HTML_END;
 			}
 			delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
-			delegate.setForeground(SELECTED_COLOR);
 		} else {
 			if (material.isLost()) {
-		
-				materialName += " (Lost)";
+				materialName = LOST_HINT + materialName + HTML_END;
 				delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
-				delegate.setForeground(LOST_FILE_COLOR);
-				delegate.setFont(this.italicThisFont(delegate.getFont()));
 			} else {
 				
 				delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
@@ -55,10 +53,6 @@ public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 		}
 		return delegate;
 		
-	}
-	
-	private Font italicThisFont(Font original) {
-		return original.deriveFont(Font.ITALIC);
 	}
 	
 	private Font boldThisFont(Font original) {
