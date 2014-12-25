@@ -73,7 +73,7 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		String keyword = entry.getKey();
 		int prefixStart = tag.getText().indexOf(keyword);
 		
-		if (prefixStart < 0) {
+		if (prefixStart != 0) {
 			return false;
 		}
 		
