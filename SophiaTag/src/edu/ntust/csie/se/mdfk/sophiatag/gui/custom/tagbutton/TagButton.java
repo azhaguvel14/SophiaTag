@@ -44,6 +44,8 @@ public class TagButton extends JPanel {
 			
 	private static final ButtonUI LEFT_UI = new TagButtonUI(true);
 	private static final ButtonUI RIGHT_UI = new TagButtonUI(false);
+
+	private static final Color RENAME_BOX_GB_COLOR = new Color(0xFCFCFC);
 	
 	private JButton renameBtn;
 	private JButton removeBtn;
@@ -54,6 +56,7 @@ public class TagButton extends JPanel {
 	
 	private TextChangedListener textChangeListener = null;
 	private RemoveTagListener removeTagListener = null;
+	
 	public TagButton() {
 		this(new Tag("New Tag"), true);
 	}
@@ -62,25 +65,12 @@ public class TagButton extends JPanel {
 		this.tag = tag;
 		this.editable = editable;
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		
 		this.prepareViewAndLayout();
 		this.initializeSubComponents();
 		this.addButtons();
 		this.pack();
 		
 		this.addInteractiveListeners();
-	}
-	
-	public Tag getTag() {
-		return this.tag;
-	}
-	
-	public void editTag() {
-		renameBtn.setVisible(false);
-		renameBox.setVisible(true);
-		renameBox.requestFocusInWindow();
-		renameBox.selectAll();
 	}
 	
 	private void prepareViewAndLayout() {
@@ -92,7 +82,6 @@ public class TagButton extends JPanel {
 	
 	private void initializeSubComponents() {
 		renameBtn = new JButton(this.tag.getText());
-		renameBtn.setForeground(this.isEditable()? Color.WHITE: Color.DARK_GRAY);
 		renameBtn.setFont(boldIt(renameBtn.getFont()));
 		renameBtn.setContentAreaFilled(false);
 		renameBtn.setEnabled(this.isEditable());
@@ -103,12 +92,11 @@ public class TagButton extends JPanel {
 		if (this.isEditable()) {
 			renameBox = new JTextField(this.tag.getText());
 			renameBox.setUI(new BasicTextFieldUI());
-			renameBox.setBackground(new Color(0xFCFCFC));
+			renameBox.setBackground(RENAME_BOX_GB_COLOR);
 			renameBox.setBorder(TEXT_BORDER);
 			renameBox.setVisible(false);
 			
 			removeBtn = new JButton(REMOVE_CHARACTOR);
-			removeBtn.setForeground(TagButtonUIUtility.DARK_BLUE);
 			removeBtn.setFont(boldIt(removeBtn.getFont()));
 			removeBtn.setContentAreaFilled(false);
 			
@@ -121,6 +109,10 @@ public class TagButton extends JPanel {
 		return font.deriveFont(Font.BOLD);
 	}
 	
+	private void pack() {
+		this.setSize(this.getPreferredSize());
+	}
+	
 	private void addButtons() {
 		this.add(renameBtn);
 		
@@ -130,9 +122,7 @@ public class TagButton extends JPanel {
 		}
 	}
 	
-	private void pack() {
-		this.setSize(this.getPreferredSize());
-	}
+
 	
 	private void addInteractiveListeners() {
 
@@ -145,7 +135,7 @@ public class TagButton extends JPanel {
 			
 		});
 		
-		if (renameBox != null) {
+		if (this.isEditable()) {
 			removeBtn.addActionListener(new ActionListener() {
 
 				@Override
@@ -180,6 +170,21 @@ public class TagButton extends JPanel {
 				
 			});
 		}
+	}
+	
+	public boolean isEditable() {
+		return editable;
+	}
+	
+	public Tag getTag() {
+		return this.tag;
+	}
+	
+	public void editTag() {
+		renameBtn.setVisible(false);
+		renameBox.setVisible(true);
+		renameBox.requestFocusInWindow();
+		renameBox.selectAll();
 	}
 	
 	private String changeText(String newText) {
@@ -220,11 +225,6 @@ public class TagButton extends JPanel {
 		}
 	}
 
-	
-	public boolean isEditable() {
-		return editable;
-	}
-	
 	public interface TextChangedListener {
 		public abstract void textChanged(TextChangedEvent event);
 		

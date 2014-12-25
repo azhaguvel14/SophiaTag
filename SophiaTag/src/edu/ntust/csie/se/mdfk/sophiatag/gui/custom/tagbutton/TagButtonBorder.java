@@ -12,6 +12,8 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
+
 public class TagButtonBorder extends AbstractBorder {
 		
 		public enum Mode {
@@ -20,9 +22,8 @@ public class TagButtonBorder extends AbstractBorder {
 	
 		private static final int NORMAL = 0;
 		private static final int DISABLED = 1;
-//		
-		private static final Color[] BUTTON_COLORS = {TagButtonUIUtility.DARK_BLUE, new Color(0x939393)};
-		private static final Color[] TEXTBOX_COLORS = {new Color(0x13a2b3), TagButtonUIUtility.DARK_BLUE};
+		private static final Color[] BUTTON_COLORS = {ColorSwatch.DARK_BLUE, new Color(0x939393)};
+		private static final Color[] TEXTBOX_COLORS = {new Color(0x13a2b3), ColorSwatch.DARK_BLUE};
 		private final Insets insets;
 		
 		private final boolean leftPart;

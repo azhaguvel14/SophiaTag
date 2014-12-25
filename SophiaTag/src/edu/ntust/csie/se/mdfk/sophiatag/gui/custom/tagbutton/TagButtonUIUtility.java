@@ -13,7 +13,7 @@ public abstract class TagButtonUIUtility {
 	static final float FOCUSED_STROKE_WIDTH = 1.5f;
 	
 	static final RenderingHints HINTS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	static final Color DARK_BLUE = new Color(0x0e3d85);
+	
 	static Shape getTagPartShape(boolean isLeftPart, double x, double y, double width, double height) {
 		return getTagPartShape(isLeftPart, x, y, width, height, STROKE_WIDTH);
 	}

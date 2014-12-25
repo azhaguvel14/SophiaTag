@@ -99,7 +99,7 @@ public class SophiaTagServices {
 		this.getMaterialSearcher().getTagDatabase().drop();
 		this.scanner.setRootDirectory(path);
 		this.getMaterialList().setList(this.scanner.newScan());
-		
+		this.highlighter.clearKeywords();
 		this.saveRecord();
 		
 	}

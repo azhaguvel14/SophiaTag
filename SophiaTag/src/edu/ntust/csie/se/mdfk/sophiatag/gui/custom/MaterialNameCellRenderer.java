@@ -3,9 +3,7 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.gui.custom;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -17,12 +15,10 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
  *
  */
 public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
-	private static final Color NORMAL_FILE_COLOR = ColorSwatch.GREEN;
-	private static final Color NEW_FILE_COLOR = new Color(60, 60, 60);//ColorSwatch.GREEN;
-	private static final Color LOST_FILE_COLOR = ColorSwatch.RED;
-	private static final Color SELECTED_COLOR = Color.WHITE;
-	private static final String LOST_HINT = "<html><body style=\"color:red;\"><span style=\"white-space:nowrap;font-weight:bold;\">(LOST!) </span>";
-	private static final String HTML_END = "</body></html>";
+	private static final String LOST_HINT = "(LOST!) ";
+	private static final String NORMAL_FILE_TMP = "<html><body style=\"color:" + ColorSwatch.toNoAlphaString(ColorSwatch.GREEN) + ";font-weight:bold;\">%s</body></html>";
+	private static final String LOST_HINT_TMP = "<html><body style=\"color:red;\"><span style=\"white-space:nowrap;font-weight:bold;\">" + LOST_HINT + "</span>%s</body></html>";
+	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
@@ -32,32 +28,20 @@ public class MaterialNameCellRenderer extends DefaultTableCellRenderer {
 		
 		if (isSelected) {
 			if (material.isLost()) {
-				materialName = LOST_HINT + materialName + HTML_END;
+				materialName = LOST_HINT + materialName;
 			}
 			delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
 		} else {
 			if (material.isLost()) {
-				materialName = LOST_HINT + materialName + HTML_END;
-				delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
-			} else {
-				
-				delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
-				if (!material.isAttached()) {
-					
-					delegate.setForeground(NEW_FILE_COLOR);
-				} else {
-					delegate.setFont(this.boldThisFont(delegate.getFont()));
-					delegate.setForeground(NORMAL_FILE_COLOR);
-				}
+				materialName = String.format(LOST_HINT_TMP, materialName);
+			} else if (material.isAttached()) {
+				materialName = String.format(NORMAL_FILE_TMP, materialName);
 			}
+			
+			delegate = super.getTableCellRendererComponent(table, materialName, isSelected, hasFocus, row, column);
 		}
 		return delegate;
 		
 	}
-	
-	private Font boldThisFont(Font original) {
-		return original.deriveFont(Font.BOLD);
-	}
-	
 	
 }
