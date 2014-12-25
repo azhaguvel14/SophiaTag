@@ -1,0 +1,15 @@
+/**
+ * 
+ */
+package edu.ntust.csie.se.mdfk.sophiatag;
+
+/**
+ * @author maeglin89273
+ *
+ */
+public interface SophiaTagConfig {
+	public static String SOFTWARE_NAME = "SophiaTag";
+	public static String VERSION = "Beta 1.0.4";
+	public static String SOFTWARE_TITLE = SOFTWARE_NAME + " " + VERSION;
+	public static boolean DEBUG = false;
+}

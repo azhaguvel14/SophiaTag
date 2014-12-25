@@ -5,6 +5,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import javax.swing.JFrame;
 
+import edu.ntust.csie.se.mdfk.sophiatag.SophiaTagConfig;
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
 
 /**
@@ -24,7 +25,7 @@ public abstract class View {
 	
 	private void initializeFrame(int x, int y, int width, int height) {
 		frame = new JFrame();
-		frame.setTitle("SophiaTag");
+		frame.setTitle(SophiaTagConfig.SOFTWARE_TITLE);
 		frame.setBounds(x, y, width, height);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

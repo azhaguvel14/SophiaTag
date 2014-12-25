@@ -5,6 +5,7 @@ package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -116,7 +117,7 @@ public class MainView extends View {
 	private void initializeComponentState(User user) {
 		
 		this.getFrame().setResizable(true);
-//		this.getFrame().setMinimumSize(new Dimension(600, 700));
+		this.getFrame().setMinimumSize(new Dimension(600, 700));
 		
 		this.userLabel.setText(user.getTitle());
 		
