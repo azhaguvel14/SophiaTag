@@ -456,6 +456,7 @@ public class MainView extends View {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				glue.handleEvent("init", e);
+				queryField.requestFocusInWindow();
 			}
 			
 			@Override
