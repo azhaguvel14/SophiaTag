@@ -8,14 +8,22 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
 
 public class TestAgent {
 	public static void main(String[] args) {
-		System.out.println(ColorSwatch.BLUE.toString());
-		System.out.println("#" + Integer.toHexString(ColorSwatch.BLUE.getRGB() & 0x00ffffff));
+		TestG<Integer> test = new TestG<Integer>(1);
+		Object o = test;
+		TestG<String> test2 = (TestG<String>)o;
+		System.out.println(test2.get());
 		
-		Random rand = new Random(100);
+	}
+	
+	private static class TestG<T> {
+		private T field;
+		TestG(T value) {
+			this.field = value;
+		}
 		
-		System.out.println(rand.nextDouble());
-		System.out.println(rand.nextDouble());
-		System.out.println(rand.nextDouble());
+		T get() {
+			return field;
+		}
 	}
 }
 

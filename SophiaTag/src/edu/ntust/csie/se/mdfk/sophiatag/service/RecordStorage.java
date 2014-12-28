@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import edu.ntust.csie.se.mdfk.sophiatag.data.Material;
@@ -27,7 +30,7 @@ public class RecordStorage {
 	 * @ordered
 	 */
 	
-	private static final String FILE_PATH = "record.dat";
+	private static final String FILE_PATH = getJarDir() + "/record.dat";
 	
 	private File file;
 	
@@ -98,6 +101,11 @@ public class RecordStorage {
 		return this.file.exists();
 	}
 	
+	public static String getJarDir() {
+		Path jarPath = Paths.get(RecordStorage.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		return jarPath.getParent().toFile().getName();
+	}
+	
 	public static class NecessaryRecord implements Serializable{
 		private final String rootDirectory;
 		private final MaterialList list;
@@ -121,9 +129,8 @@ public class RecordStorage {
 		public MaterialSearcher.TagDatabase getTagDatabase() {
 			return tagDatabase;
 		}
-		
-		
-		
 	}
+	
+	
 }
 

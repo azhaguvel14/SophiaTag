@@ -364,8 +364,7 @@ public class MainView extends View {
 		gbc_discardButton.gridx = 0;
 		gbc_discardButton.gridy = 2;
 		tablePanel.add(discardButton, gbc_discardButton);
-		
-		
+	
 	}
 	
 	private void boldLabel(JLabel label) {
