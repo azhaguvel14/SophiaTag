@@ -539,9 +539,13 @@ public class MainView extends View {
 		tagPanel.repaint();
 		
 		this.addTagButton.setEnabled(!isClear);
-		this.openDirButton.setEnabled(!isClear);
+		this.openDirButton.setEnabled(!isClear && isDirectoryExist(material));
 	}
 	
+	private boolean isDirectoryExist(Material material) {
+		return material.getUnderlyingFile().getParentFile().exists();
+	}
+
 	private void setupTagPanel(Iterable<Tag> tags) {
 		/* you should clear buttons on tagPanel first (use clearTagPanel())
 		* 1. loop through the tags (using "for each" loop),
