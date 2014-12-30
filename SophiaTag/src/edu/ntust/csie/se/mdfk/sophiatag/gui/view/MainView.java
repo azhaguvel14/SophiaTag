@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
@@ -136,13 +138,14 @@ public class MainView extends View {
 		this.addTagButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.CHANGE_TAG_ON_MATERIAL));
 		this.discardButton.setVisible(limitedFlagMap.get(FuntionalLimitation.LimitableFunction.EDIT_MATERIAL_TABLE));
 		
-		this.setDiscardButtonEnabled(null);;
+		this.setDiscardButtonEnabled(null);
+		
 		
 	}
 	
 	@Override
 	protected void buildView(JFrame frame) {
-		JPanel mainPanel = new JPanel();
+		final JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
@@ -150,6 +153,8 @@ public class MainView extends View {
 		gbl_mainPanel.rowHeights = new int[]{0, 0, 0, 0, 0};
 		gbl_mainPanel.columnWeights = new double[]{1.0};
 		gbl_mainPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1};
+		forcePanelFocusable(mainPanel);
+		
 		mainPanel.setLayout(gbl_mainPanel);
 		
 		JPanel userPanel = new JPanel();
@@ -319,6 +324,7 @@ public class MainView extends View {
 		WrapLayout wl_tagPanel = new WrapLayout();
 		wl_tagPanel.setAlignment(FlowLayout.LEFT);
 		tagPanel.setLayout(wl_tagPanel);
+		forcePanelFocusable(tagPanel);
 		
 		JPanel tablePanel = new JPanel();
 		GridBagConstraints gbc_tablePanel = new GridBagConstraints();
@@ -367,6 +373,17 @@ public class MainView extends View {
 	
 	}
 	
+	private void forcePanelFocusable(final JPanel panel) {
+		// this is not the best solution to finish editing a tag
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				panel.requestFocusInWindow();
+			}
+		});
+		
+	}
+
 	private void boldLabel(JLabel label) {
 		label.setFont(label.getFont().deriveFont(Font.BOLD));
 	}
