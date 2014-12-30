@@ -103,7 +103,7 @@ public class RecordStorage {
 	
 	public static String getJarDir() {
 		Path jarPath = Paths.get(RecordStorage.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		return jarPath.getParent().toFile().getName();
+		return jarPath.getParent().toFile().getPath();
 	}
 	
 	public static class NecessaryRecord implements Serializable{
