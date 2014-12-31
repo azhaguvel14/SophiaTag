@@ -22,21 +22,23 @@ public class LoginController implements EventController<ActionEvent, LoginView> 
 	public void handle(Scope scope, ActionEvent event, SophiaTagServices services, LoginView view) {
 		User user = createUser(event.getActionCommand());
 		
-		String account = view.getAccountField().getText();
-		String rawPassword = new String(view.getPasswordField().getPassword());
+		String account = view.getAccount();
+		String rawPassword = new String(view.getPassword());
 		
 		if (IdentityAuthorizer.authorize(account, rawPassword, user)) {
+			view.clearError();
 			try {
 				makeServicesReady(services, view);
 			} catch (IllegalStateException exception) {
+				view.setError("there is an error when scanning directories");
 				return;
 			}
 			
 			setupMainView(services, user).getFrame().setVisible(true);
 			view.getFrame().dispose();
 		} else {
-			view.clearFields();
-			view.getAccountField().requestFocusInWindow();
+			view.setError("wrong account or password");
+			
 		}
 	}
 	

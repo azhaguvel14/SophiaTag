@@ -3,6 +3,7 @@
  */
 package edu.ntust.csie.se.mdfk.sophiatag.gui.view;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import edu.ntust.csie.se.mdfk.sophiatag.gui.controller.glue.MVCGlue;
+import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
 
 /**
  * @author maeglin89273
@@ -36,6 +38,7 @@ public class LoginView extends View {
 	private JButton adminLoginButton;
 	private JButton designerLoginButton;
 	private JPanel mainPanel;
+	private JLabel errorLabel;
 	
 	/**
 	 * 
@@ -113,6 +116,17 @@ public class LoginView extends View {
 		gbc_trademarkLabel.gridy = 4;
 		mainPanel.add(trademarkLabel, gbc_trademarkLabel);
 		
+		errorLabel = new JLabel("Wrong account or password");
+		errorLabel.setFont(errorLabel.getFont().deriveFont(Font.BOLD));
+		errorLabel.setForeground(Color.RED);
+		GridBagConstraints gbc_errorLabel = new GridBagConstraints();
+//		gbc_errorLabel.insets = new Insets(5, 0, 5, 0);
+		gbc_errorLabel.gridwidth = 2;
+		gbc_errorLabel.gridx = 0;
+		gbc_errorLabel.gridy = 6;
+		mainPanel.add(errorLabel, gbc_errorLabel);
+		errorLabel.setVisible(false);
+		
 		loginAsLabel = new JLabel("Login as");
 		loginAsLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 		GridBagConstraints gbc_loginAsLabel = new GridBagConstraints();
@@ -144,17 +158,28 @@ public class LoginView extends View {
 		
 	}
 	
-	public void clearFields() {
+	public void setError(String msg) {
+		this.resetFields();
+		this.errorLabel.setText(msg);
+		this.errorLabel.setVisible(true);
+	}
+	public void clearError() {
+		this.resetFields();
+		this.errorLabel.setVisible(false);
+	}
+	
+	private void resetFields() {
 		accountField.setText("");
 		passwordField.setText("");
+		accountField.requestFocusInWindow();
 	}
 	
-	public JTextField getAccountField() {
-		return this.accountField;
+	public String getAccount() {
+		return this.accountField.getText();
 	}
 	
-	public JPasswordField getPasswordField() {
-		return this.passwordField;
+	public char[] getPassword() {
+		return this.passwordField.getPassword();
 	}
 
 	@Override
