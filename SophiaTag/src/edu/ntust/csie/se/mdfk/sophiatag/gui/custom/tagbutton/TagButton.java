@@ -148,14 +148,15 @@ public class TagButton extends JPanel {
 			renameBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					String changedText = changeText(renameBox.getText());
+					String changedText = renameBox.getText();
+					TextChangedEvent event = new TextChangedEvent(this, getTag(), changedText);
+					TagButton.this.textChangeListener.textChanged(event);
+					changedText = event.getDisplayedText();
 					
+					renameBox.setText(changedText);
+					renameBtn.setText(changedText);
 					renameBox.setVisible(false);
 					renameBtn.setVisible(true);
-					
-					if (changedText != null) {
-						TagButton.this.textChangeListener.textChanged(new TextChangedEvent(this, getTag(), changedText));
-					}
 					
 				}
 			});
@@ -185,19 +186,6 @@ public class TagButton extends JPanel {
 		renameBox.setVisible(true);
 		renameBox.requestFocusInWindow();
 		renameBox.selectAll();
-	}
-	
-	private String changeText(String newText) {
-		newText = newText.trim();
-		if (newText.isEmpty() || this.tag.getText().equals(newText)) {
-			this.renameBox.setText(this.tag.getText());
-			return null;
-		}
-		
-		this.renameBox.setText(newText);
-		this.renameBtn.setText(newText);
-		return newText;
-		
 	}
 	
 	public void setTextChangedListener(TextChangedListener listener) {
@@ -235,20 +223,30 @@ public class TagButton extends JPanel {
 	}
 	
 	public static class TextChangedEvent extends EventObject {
-		private final String newText;
+		private final String rawNewText;
 		private final Tag oldTag;
+		private String displayedText;
 		private TextChangedEvent(Object source, Tag oldTag, String newText) {
 			super(source);
 			this.oldTag = oldTag;
-			this.newText = newText;
+			this.rawNewText = newText;
+			this.setDisplayedText(newText);
 		}
 		
 		public Tag getOldTag() {
 			return this.oldTag;
 		}
 		
-		public String getNewText() {
-			return this.newText;
+		public String getRawNewText() {
+			return this.rawNewText;
+		}
+		
+		public String getDisplayedText() {
+			return this.displayedText;
+		}
+		
+		public void setDisplayedText(String text) {
+			this.displayedText = text;
 		}
 	}
 	

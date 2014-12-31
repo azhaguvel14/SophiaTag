@@ -478,7 +478,6 @@ public class MainView extends View {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				glue.handleEvent("window_closing", e);
-				System.out.println("closing");
 			}
 			
 			@Override

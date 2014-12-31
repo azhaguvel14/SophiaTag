@@ -36,7 +36,7 @@ public class MaterialSearcher {
 	
 	public static final int WRAP_WORD = 0;
 	public static final int START_WITH = 1;
-	private static final String AND_OPERATOR = "&&";
+	public static final String SEPARATOR = "&&";
 	private final TagDatabase database;
 	private final Highlighter highlighter;
 	private int searchConfig;
@@ -92,7 +92,7 @@ public class MaterialSearcher {
 	private Set<String> parseQueryText(String text) {
 		TreeSet<String> result = new TreeSet<String>();
 		String trimed;
-		String[] tokens = text.split(AND_OPERATOR);
+		String[] tokens = text.split(SEPARATOR);
 		for (String token : tokens) {
 			trimed = token.trim();
 			if (!trimed.isEmpty()) {
