@@ -102,7 +102,13 @@ public class RecordStorage {
 	}
 	
 	public static String getJarDir() {
-		Path jarPath = Paths.get(RecordStorage.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		Path jarPath = null;
+		try {
+			jarPath = Paths.get(RecordStorage.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return jarPath.getParent().toFile().getPath();
 	}
 	
