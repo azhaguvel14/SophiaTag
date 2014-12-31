@@ -112,7 +112,7 @@ public class RecordStorage {
 		return jarPath.getParent().toFile().getPath();
 	}
 	
-	public static class NecessaryRecord implements Serializable{
+	public static class NecessaryRecord implements Serializable {
 		private final String rootDirectory;
 		private final MaterialList list;
 		private final MaterialSearcher.TagDatabase tagDatabase;

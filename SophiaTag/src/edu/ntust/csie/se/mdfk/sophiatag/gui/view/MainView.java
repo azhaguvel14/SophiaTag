@@ -551,8 +551,7 @@ public class MainView extends View {
 			setMaterialNameDirLabel(material);
 			setupTagPanel(material.getTargetsView());
 		}
-		tagPanel.validate();
-		tagPanel.repaint();
+		this.refreshTagPanel();
 		
 		this.addTagButton.setEnabled(!isClear);
 		this.openDirButton.setEnabled(!isClear && isDirectoryExist(material));
@@ -627,20 +626,27 @@ public class MainView extends View {
 		
 		this.removeListenersFromTagButton(button);
 		this.tagPanel.remove(i);
+		
+	}
+	
+	private void refreshTagPanel() {
 		this.tagPanel.validate();
 		this.tagPanel.repaint();
 	}
-
+			
+	
 	private class MaterialOperationListener implements MaterialTaggedListener {
 
 		@Override
 		public void onDetag(Tag tag, Material material) {
 			removeTagButton(tag);
+			refreshTagPanel();
 		}
 
 		@Override
 		public void onTag(Tag tag, Material material) {
 			addTagButton(tag, true);
+			refreshTagPanel();
 		}
 		
 	}

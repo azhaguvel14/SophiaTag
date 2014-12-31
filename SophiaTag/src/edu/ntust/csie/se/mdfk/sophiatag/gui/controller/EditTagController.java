@@ -31,7 +31,7 @@ public class EditTagController implements MainViewEventController<TextChangedEve
 		MaterialTagger tagger = MaterialTagger.getInstance();
 		
 		if (newTag == null) {
-			tagger.changeTextOfTag(event.getRawNewText(), oldTag);
+			tagger.changeTextOfTag(correctedText, oldTag);
 		} else {
 			tagger.detachTagFromMaterial(oldTag, material);
 			tagger.attachTagToMaterial(newTag, material); // if the tag already attached, tagger won't notify the listeners 

@@ -47,15 +47,15 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	
 	public void addKeyword(String keyword) {
 		
-		this.latestKeywordCache = keyword;
-		this.keywords.put(keyword, new KeywordColorBundle(this.hueGenerator.nextFloat()));
+		this.latestKeywordCache = keyword.toLowerCase();
+		this.keywords.put(this.latestKeywordCache, new KeywordColorBundle(this.hueGenerator.nextFloat()));
 	}
 	
 	public void highlightByLatestKeyword(Tag tag) {
 		if (this.latestKeywordCache == null) {
 			return;
 		}
-		this.markAndAddTag(this.keywords.floorEntry(this.latestKeywordCache), tag);
+		this.highlightAndAddTag(this.keywords.floorEntry(this.latestKeywordCache), tag);
 		
 	}
 	
@@ -65,13 +65,14 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 			return;
 		}
 		this.latestKeywordCache = entry.getKey();
-		this.markAndAddTag(entry, tag);
+		this.highlightAndAddTag(entry, tag);
 	}
 	
 	private boolean markHighlightOnTag(Entry<String, KeywordColorBundle> entry, Tag tag) {
 		
 		String keyword = entry.getKey();
-		int prefixStart = tag.getText().indexOf(keyword);
+		String originalText = tag.getText();
+		int prefixStart = originalText.toLowerCase().indexOf(keyword);
 		
 		if (prefixStart != 0) {
 			return false;
@@ -81,18 +82,18 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		
 		KeywordColorBundle colors = entry.getValue();
 		StringBuffer buffer = new StringBuffer(String.format(HIGHLIGHT_OUTTER_WRAPPER_START_TMPLATE, colors.backColor));
-		buffer.append(tag.getText().substring(0, prefixStart));
+		buffer.append(originalText.substring(0, prefixStart));
 		buffer.append(String.format(HIGHLIGHT_INNER_WRAPPER_START_TMPLATE, colors.foreColor));
-		buffer.append(keyword);
+		buffer.append(originalText.substring(prefixStart, posfixStart));
 		buffer.append(HIGHLIGHT_WRAPPER_END);
-		buffer.append(tag.getText().substring(posfixStart));
+		buffer.append(originalText.substring(posfixStart));
 		buffer.append(HIGHLIGHT_WRAPPER_END);
 		
 		tag.setHighlightHTML(buffer.toString());
 		return true;
 	}
 	
-	private void markAndAddTag(Entry<String, KeywordColorBundle> entry, Tag tag) {
+	private void highlightAndAddTag(Entry<String, KeywordColorBundle> entry, Tag tag) {
 		if(this.markHighlightOnTag(entry, tag)) {
 			this.highLightedTags.add(tag);
 		}

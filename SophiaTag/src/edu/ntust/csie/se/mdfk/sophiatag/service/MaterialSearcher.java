@@ -40,6 +40,7 @@ public class MaterialSearcher {
 	private final TagDatabase database;
 	private final Highlighter highlighter;
 	private int searchConfig;
+	private final SearchFunction[] searchFunctions;
 	
 	/**
 	 * <!-- begin-user-doc -->
@@ -54,8 +55,31 @@ public class MaterialSearcher {
 		this.database = database;
 		this.highlighter = highlighter;
 		this.setSearchConfig(START_WITH);
+		this.searchFunctions = new SearchFunction[2];
+		this.initSearchFunctions();
 	}
+	
+	private void initSearchFunctions() {
+		
+		this.searchFunctions[WRAP_WORD] = new SearchFunction() {
 
+			@Override
+			public Collection<Tag> search(String keyword) {
+				return MaterialSearcher.this.database.getTagsIgnoreCase(keyword);
+			}
+			
+		};
+		
+		this.searchFunctions[START_WITH] = new SearchFunction() {
+
+			@Override
+			public Collection<Tag> search(String keyword) {
+				return MaterialSearcher.this.database.getPrefixedTags(keyword);
+			}
+			
+		};
+	}
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!--  end-user-doc  -->
@@ -71,7 +95,7 @@ public class MaterialSearcher {
 		}
 		
 		Set<String> keywords = parseQueryText(text);
-		Set<Collection<Material>> tags = this.queryTags(keywords);
+		Set<Collection<Material>> tags = this.queryTags(keywords, this.searchFunctions[this.getSearchConfig()]);
 		Set<Material> result = this.findIntersection(tags);
 		if (result.isEmpty()) {
 			this.highlighter.clearKeywords();
@@ -124,54 +148,14 @@ public class MaterialSearcher {
 		return result;
 	}
 	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Set<Collection<Material>> queryTags(Set<String> tagLiterals) {
-		
-		switch (this.getSearchConfig()) {
-		case WRAP_WORD:
-			return wrapWordSearch(tagLiterals);
-		case START_WITH:
-			return startWithSearch(tagLiterals);
-		}
-		
-		return null;
-	}
-	
-	private Set<Collection<Material>> wrapWordSearch(Set<String> tagLiterals) {
-		Tag tag;
-		Set<Collection<Material>> tagSet = new HashSet<Collection<Material>>();
-		for (String literal: tagLiterals) {
-			
-			tag = this.database.getTagIfExist(literal);
-			
-			if (tag == null) {
-				tagSet.clear();
-				return tagSet;
-			}
-			this.highlighter.addKeyword(literal);
-			this.highlighter.highlightByLatestKeyword(tag);
-			
-			tagSet.add(tag.getTargetsView());
-			
-		}
-		
-		return tagSet;
-	}
-	
-	private Set<Collection<Material>> startWithSearch(Set<String> keywords) {
+	private Set<Collection<Material>> queryTags(Set<String> keywords, SearchFunction  function) {
 		Set<Collection<Material>> tagSet = new HashSet<Collection<Material>>();
 		Set<Material> union;
 		for (String keyword: keywords) {
 			
 			union = new HashSet<Material>();
 			this.highlighter.addKeyword(keyword);
-			for (Tag tag: this.database.getPrefixedTags(keyword)) {
+			for (Tag tag: function.search(keyword)) {
 				this.highlighter.highlightByLatestKeyword(tag);
 				union.addAll(tag.getTargetsView());
 			}
@@ -219,23 +203,33 @@ public class MaterialSearcher {
 		
 	}
 	
+	private interface SearchFunction {
+		public Collection<Tag> search(String keyword);
+	}
 	
 	public static class TagDatabase implements Serializable, TagTextChangedListener, MaterialTaggedListener {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -749559691139964422L;
-		private Map<String, Tag> tagMap;
-		private NavigableMap<String, Tag> sortedTagMap;
+		private Map<String, Map<String, Tag>> tagMap;
+		private NavigableMap<String, Map<String, Tag>> sortedTagMap;
 		
 		public TagDatabase() {
-			this.tagMap = new HashMap<String, Tag>();
-			this.sortedTagMap = new TreeMap<String, Tag>();
+			this.tagMap = new HashMap<String, Map<String, Tag>>();
+			this.sortedTagMap = new TreeMap<String, Map<String, Tag>>();
 			this.restoreInit();
 		}
 		
+		public Collection<Tag> getTagsIgnoreCase(String tagLiteral) {
+			Map<String, Tag> submap = tagMap.get(tagLiteral.toLowerCase());
+			
+			return submap == null? new LinkedList<Tag>(): Collections.unmodifiableCollection(submap.values());
+		}
+		
 		public Tag getTagIfExist(String tagLiteral) {
-			return tagMap.get(tagLiteral);
+			Map<String, Tag> submap = tagMap.get(tagLiteral.toLowerCase());
+			return submap == null? null: submap.get(tagLiteral);
 		}
 		
 		public Tag getTag(String tagLiteral) {
@@ -244,14 +238,15 @@ public class MaterialSearcher {
 		}
 		
 		public Collection<Tag> getPrefixedTags(String prefix) {
+			prefix = prefix.toLowerCase();
 			Collection<Tag> result = new LinkedList<Tag>();
-			Set<Entry<String, Tag>> potentialTags = this.sortedTagMap.tailMap(prefix).entrySet();
+			Set<Entry<String, Map<String, Tag>>> potentialTags = this.sortedTagMap.tailMap(prefix).entrySet();
 			
-			for (Entry<String, Tag> pair : potentialTags) {
+			for (Entry<String, Map<String, Tag>> pair : potentialTags) {
 				if (!pair.getKey().startsWith(prefix)) {
 					break;
 				}
-				result.add(pair.getValue());
+				result.addAll(pair.getValue().values());
 			}
 			
 			return result;
@@ -263,25 +258,44 @@ public class MaterialSearcher {
 		}
 		
 		public void onTextChanged(String oldText, Tag newTag) {
-			this.tagMap.remove(oldText);
-			this.tagMap.put(newTag.getText(), newTag);
-			this.sortedTagMap.remove(oldText);
-			this.sortedTagMap.put(newTag.getText(), newTag);
+			
+			this.remove(oldText);
+			this.put(newTag);
+		}
+		
+		private void remove(String text) {
+			String index = text.toLowerCase();
+			Map<String, Tag> sharedSubmap = this.tagMap.get(index);
+			if (sharedSubmap != null) {
+				sharedSubmap.remove(text);
+				
+				if (sharedSubmap.isEmpty()) {
+					this.tagMap.remove(index);
+					this.sortedTagMap.remove(index);
+				}
+			}
+		}
+		
+		private void put(Tag tag) {
+			String tagIndex = tag.getText().toLowerCase();
+			Map<String, Tag> sharedSubmap = this.tagMap.get(tagIndex);
+			if (sharedSubmap == null) {
+				sharedSubmap = new HashMap<String, Tag>();
+				this.tagMap.put(tagIndex, sharedSubmap);
+				this.sortedTagMap.put(tagIndex, sharedSubmap);
+			}
+			
+			sharedSubmap.put(tag.getText(), tag);
 		}
 		
 		public void onTag(Tag tag, Material material) {
-			if (!this.tagMap.containsKey(tag.getText())) {
-				this.tagMap.put(tag.getText(), tag);
-				this.sortedTagMap.put(tag.getText(), tag);
-			}
+			this.put(tag);
 		}
 	
 		public void onDetag(Tag tag, Material material) {
 			if (!tag.isAttached()) {
-				this.tagMap.remove(tag.getText());
-				this.sortedTagMap.remove(tag.getText());
+				this.remove(tag.getText());
 			}
-			
 		}
 
 		void restoreInit() {
