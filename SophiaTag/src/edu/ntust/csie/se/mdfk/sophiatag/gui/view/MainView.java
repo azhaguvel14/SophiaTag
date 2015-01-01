@@ -145,7 +145,7 @@ public class MainView extends View {
 	
 	@Override
 	protected void buildView(JFrame frame) {
-		final JPanel mainPanel = new JPanel();
+		JPanel mainPanel = new JPanel();
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_mainPanel = new GridBagLayout();
