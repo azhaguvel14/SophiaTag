@@ -32,7 +32,7 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	
 	private NavigableMap<String, KeywordColorBundle> keywords;
 	private Set<Tag> highLightedTags;
-	private String latestKeywordCache;
+	private Entry<String, KeywordColorBundle> latestKeywordCache;
 	
 	private Random hueGenerator;
 	private static final long RAND_SEED = 77 * 68 * 70 * 75 * ((18 * 27 * 49 * 54 * 55) << 3);
@@ -46,25 +46,25 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	}
 	
 	public void addKeyword(String keyword) {
-		
-		this.latestKeywordCache = keyword.toLowerCase();
-		this.keywords.put(this.latestKeywordCache, new KeywordColorBundle(this.hueGenerator.nextFloat()));
+		keyword = keyword.toLowerCase();
+		this.keywords.put(keyword, new KeywordColorBundle(this.hueGenerator.nextFloat()));
+		this.latestKeywordCache = this.keywords.floorEntry(keyword);
 	}
 	
 	public void highlightByLatestKeyword(Tag tag) {
 		if (this.latestKeywordCache == null) {
 			return;
 		}
-		this.highlightAndAddTag(this.keywords.floorEntry(this.latestKeywordCache), tag);
+		this.highlightAndAddTag(this.latestKeywordCache, tag);
 		
 	}
 	
 	public void highlight(Tag tag) {
-		Entry<String, KeywordColorBundle> entry = this.keywords.floorEntry(tag.getText());
+		Entry<String, KeywordColorBundle> entry = this.keywords.floorEntry(tag.getText().toLowerCase());
 		if (entry == null) {
 			return;
 		}
-		this.latestKeywordCache = entry.getKey();
+		this.latestKeywordCache = entry;
 		this.highlightAndAddTag(entry, tag);
 	}
 	
