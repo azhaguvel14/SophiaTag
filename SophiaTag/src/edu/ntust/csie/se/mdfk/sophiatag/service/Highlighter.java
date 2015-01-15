@@ -26,6 +26,9 @@ import edu.ntust.csie.se.mdfk.sophiatag.gui.custom.ColorSwatch;
  */
 public class Highlighter implements TagTextChangedListener,	MaterialTaggedListener {
 	
+	public static final int LEADING_MODE = 0;
+	public static final int WRAPPING_MODE = 1;
+	
 	private static final String HIGHLIGHT_OUTTER_WRAPPER_START_TMPLATE = "<span style=\"background:%s;\">";
 	private static final String HIGHLIGHT_INNER_WRAPPER_START_TMPLATE = "<span style=\"font-weight:bold; color:%s;\">";
 	private static final String HIGHLIGHT_WRAPPER_END = "</span>";
@@ -36,6 +39,9 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 	
 	private Random hueGenerator;
 	private static final long RAND_SEED = 77 * 68 * 70 * 75 * ((18 * 27 * 49 * 54 * 55) << 3);
+	
+	private int mode = LEADING_MODE;
+	
 	Highlighter() {
 		this.hueGenerator = new Random(RAND_SEED);
 		this.keywords = new TreeMap<String, KeywordColorBundle>();
@@ -72,9 +78,15 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		
 		String keyword = entry.getKey();
 		String originalText = tag.getText();
-		int prefixStart = originalText.toLowerCase().indexOf(keyword);
+		String lowerText = originalText.toLowerCase();
+		int prefixStart = lowerText.indexOf(keyword);
+		
 		
 		if (prefixStart != 0) {
+			return false;
+		}
+		
+		if (this.mode == WRAPPING_MODE && !lowerText.equals(keyword) ) {
 			return false;
 		}
 		
@@ -108,6 +120,15 @@ public class Highlighter implements TagTextChangedListener,	MaterialTaggedListen
 		highLightedTags.clear();
 		this.hueGenerator.setSeed(RAND_SEED);
 	}
+	
+	public void setHighlightingMode(int mode) {
+		this.mode = mode;
+	}
+	
+	public int getHighlightingMode() {
+		return this.mode;
+	}
+	
 	/* (non-Javadoc)
 	 * @see edu.ntust.csie.se.mdfk.sophiatag.data.MaterialTagger.MaterialTaggedListener#onDetag(edu.ntust.csie.se.mdfk.sophiatag.data.Tag, edu.ntust.csie.se.mdfk.sophiatag.data.Material)
 	 */

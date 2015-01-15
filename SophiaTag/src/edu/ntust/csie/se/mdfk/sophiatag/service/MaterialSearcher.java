@@ -34,8 +34,8 @@ import edu.ntust.csie.se.mdfk.sophiatag.data.Tag;
 
 public class MaterialSearcher {
 	
-	public static final int WRAP_WORD = 0;
-	public static final int START_WITH = 1;
+	public static final int WRAP_WORD = Highlighter.WRAPPING_MODE;
+	public static final int START_WITH = Highlighter.LEADING_MODE;
 	public static final String SEPARATOR = "&&";
 	private final TagDatabase database;
 	private final Highlighter highlighter;
@@ -95,6 +95,7 @@ public class MaterialSearcher {
 		}
 		
 		Set<String> keywords = parseQueryText(text);
+		this.highlighter.setHighlightingMode(this.getSearchConfig());
 		Set<Collection<Material>> tags = this.queryTags(keywords, this.searchFunctions[this.getSearchConfig()]);
 		Set<Material> result = this.findIntersection(tags);
 		if (result.isEmpty()) {

@@ -9,7 +9,7 @@ package edu.ntust.csie.se.mdfk.sophiatag;
  */
 public interface SophiaTagConfig {
 	public static String SOFTWARE_NAME = "SophiaTag";
-	public static String VERSION = "Alpha 1.0.9";
+	public static String VERSION = "Alpha 1.1.0";
 	public static String SOFTWARE_TITLE = SOFTWARE_NAME + " " + VERSION;
 	public static boolean DEBUG = false;
 }

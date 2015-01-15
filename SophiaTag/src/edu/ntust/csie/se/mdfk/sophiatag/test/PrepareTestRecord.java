@@ -19,14 +19,19 @@ public class PrepareTestRecord {
 	
 	private static final String TEST_PATH = "/home/maeglin89273/Desktop/Android App";
 	
-	private static final int TAGGING_TIMES = 300;
-	private static final int TAG_ID_RANGE = 100000;
+	private static final int TAGGING_TIMES = 500;
+	private static final int TAG_ID_LENGTH = 1;
 	private static final float RANGE = 0.17f;
 	
 	private final SophiaTagServices services;
 	private final Random rand;
 	private MaterialList list;
 	
+	private static char[] ID_CHARS = new char[] {
+//		'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+	};
 	/**
 	 * @param args
 	 */
@@ -55,10 +60,17 @@ public class PrepareTestRecord {
 	}
 	
 	private Tag genTag() {
-		String text = Integer.toString(rand.nextInt(TAG_ID_RANGE));
-		return services.getMaterialSearcher().getTagDatabase().getTag(text);
+		return services.getMaterialSearcher().getTagDatabase().getTag(genId());
 	}
 	
+	private String genId() {
+		StringBuffer buffer = new StringBuffer(TAG_ID_LENGTH);
+		for (int i = 0; i < buffer.capacity(); i++) {
+			buffer.append(ID_CHARS[rand.nextInt(ID_CHARS.length)]);
+		}
+		
+		return buffer.toString();
+	}
 	private Material genMat() {
 		return this.list.get(rand.nextInt((int)(RANGE * list.size())));
 	}
