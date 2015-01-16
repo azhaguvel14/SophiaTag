@@ -1,6 +1,5 @@
 package edu.ntust.csie.se.mdfk.sophiatag.gui.custom.tagbutton;
 
-import java.awt.Color;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Area;

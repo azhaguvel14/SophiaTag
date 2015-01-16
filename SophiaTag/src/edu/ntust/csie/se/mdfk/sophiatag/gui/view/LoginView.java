@@ -162,6 +162,7 @@ public class LoginView extends View {
 		this.resetFields();
 		this.errorLabel.setText(msg);
 		this.errorLabel.setVisible(true);
+		this.getFrame().pack();
 	}
 	public void clearError() {
 		this.resetFields();
